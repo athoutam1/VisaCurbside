@@ -2,6 +2,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+require("dotenv").config();
 
 var app = express();
 
@@ -11,5 +12,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use("/sampleData", require("./routes/sampleData"));
+app.use("/dataAccess", require("./routes/dataAccess"));
 
 module.exports = app;

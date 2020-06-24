@@ -3,6 +3,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 import '../models/user.dart';
 
@@ -33,6 +34,12 @@ class AuthService {
     // save persistent data
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('user', json.encode(_userFromFirebaseUser(currentUser)));
+
+    await http.post('http://localhost:3005/dataAccess/createUser', body: {
+      "id": currentUser.uid,
+      "name": currentUser.displayName,
+      "email": currentUser.email
+    });
 
     return _userFromFirebaseUser(currentUser);
   }
