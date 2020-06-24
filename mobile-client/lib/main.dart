@@ -3,15 +3,23 @@ import 'package:provider/provider.dart';
 import './authListener.dart';
 import 'package:visa_curbside/services/auth.dart';
 import './models/user.dart';
-// import 'package:http/http.dart' as http;
-// import 'dart:convert';
-// import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import './models/dataStore.dart';
+import 'dart:convert';
 
-void main() async {
-  runApp(MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  String userString = (prefs.getString('user'));
+  if (userString != null) {
+    globalUser = User.fromJson(json.decode(userString));
+  }
+  runApp(MyApp(userString != null));
 }
 
 class MyApp extends StatelessWidget {
+  final bool _isLoggedIn;
+  MyApp(this._isLoggedIn);
   @override
   Widget build(BuildContext context) {
     return StreamProvider<User>.value(
@@ -21,11 +29,13 @@ class MyApp extends StatelessWidget {
         theme: CupertinoThemeData(
           primaryColor: CupertinoColors.systemBlue,
         ),
-        home: AuthListener(),
+        home: AuthListener(_isLoggedIn),
       ),
     );
   }
 }
+
+// Just an example widget we had to show HTTP requests example:
 
 // class Sample extends StatefulWidget {
 //   @override

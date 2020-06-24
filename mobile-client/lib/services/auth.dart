@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/user.dart';
 
@@ -27,6 +30,10 @@ class AuthService {
 
     final FirebaseUser currentUser = await _auth.currentUser();
 
+    // save persistent data
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('user', json.encode(_userFromFirebaseUser(currentUser)));
+
     return _userFromFirebaseUser(currentUser);
   }
 
@@ -38,6 +45,8 @@ class AuthService {
   Future signOut() async {
     // await googleSignIn.signOut();
     await _auth.signOut();
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('user');
     print("User Sign Out");
   }
 }

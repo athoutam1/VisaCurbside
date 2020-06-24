@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:visa_curbside/services/auth.dart';
+import '../../models/dataStore.dart';
 
 class Home extends StatelessWidget {
   final AuthService _auth = AuthService();
@@ -10,7 +11,8 @@ class Home extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text("Welcome to the home page"),
+          Text("Welcome to the home page. Here's your UID:"),
+          Text(globalUser != null ? globalUser.uid : ""),
           Center(
             child: CupertinoButton.filled(
               child: Text("Log out"),
