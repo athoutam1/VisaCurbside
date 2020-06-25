@@ -48,9 +48,9 @@ router.get("/merchantDetails", async (req, res) => {
   }
 });
 
-// Takes in merchant ID and item ID and returns the full item details (for the item details page)
+// Takes in item ID and returns the full item details (for the item details page)
 router.get("/itemDetails", async (req, res) => {
-  const { merchantID, itemID } = req.query;
+  const { itemID } = req.query;
   try {
     const i = new merchant.Item(
       Number(itemID),
