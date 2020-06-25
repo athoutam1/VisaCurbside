@@ -6,9 +6,9 @@ const admin = require("../services/firebase").admin;
 const sql = require("../services/mysql");
 
 router.post("/deleteUser", async (req, res) => {
-  const { uid } = req.body;
+  const { id } = req.body;
   try {
-    await admin.auth().deleteUser(uid);
+    await admin.auth().deleteUser(id);
     res.sendStatus(200);
   } catch (error) {
     res.sendStatus(500);
