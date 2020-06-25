@@ -11,7 +11,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use("/sampleData", require("./routes/sampleData"));
-app.use("/dataAccess", require("./routes/dataAccess"));
+app.use("/user", require("./routes/user"));
+app.use("/merchant", require("./routes/merchant"));
+app.use("/order", require("./routes/order"));
 
 module.exports = app;

@@ -35,7 +35,7 @@ class AuthService {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('user', json.encode(_userFromFirebaseUser(currentUser)));
 
-    await http.post('http://localhost:3005/dataAccess/createUser', body: {
+    await http.post('http://localhost:3005/user/createUser', body: {
       "id": currentUser.uid,
       "name": currentUser.displayName,
       "email": currentUser.email
