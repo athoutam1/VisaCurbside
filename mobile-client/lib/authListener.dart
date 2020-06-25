@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:visa_curbside/screens/onboarding/onboarding.dart';
 import './screens/home/home.dart';
 import './screens/login/login.dart';
 import './models/user.dart';
@@ -13,13 +14,13 @@ class AuthListener extends StatelessWidget {
     final user = Provider.of<User>(context);
 
     if (_isLoggedIn) {
-      return Home();
+      return Onboarding();
     }
 
     if (user == null) {
       return Login();
     } else {
-      return Home();
+      return Onboarding();
     }
   }
 }
