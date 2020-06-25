@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './authListener.dart';
 import 'package:visa_curbside/services/auth.dart';
@@ -24,7 +25,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamProvider<User>.value(
       value: AuthService().user,
-      child: CupertinoApp(
+      child: new CupertinoApp(
+        localizationsDelegates: [
+          DefaultMaterialLocalizations.delegate,
+          DefaultCupertinoLocalizations.delegate,
+          DefaultWidgetsLocalizations.delegate,
+        ],
         title: 'My App',
         theme: CupertinoThemeData(
           primaryColor: CupertinoColors.systemBlue,
