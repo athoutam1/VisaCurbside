@@ -1,28 +1,36 @@
 import 'package:flutter/cupertino.dart';
-import 'package:visa_curbside/services/auth.dart';
-import '../../models/dataStore.dart';
+
+import '../search/search.dart';
+import '../order/order.dart';
 
 class Home extends StatelessWidget {
-  final AuthService _auth = AuthService();
-
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text("Welcome to the home page. Here's your UID:"),
-          Text(globalUser != null ? globalUser.uid : ""),
-          Center(
-            child: CupertinoButton.filled(
-              child: Text("Log out"),
-              onPressed: () async {
-                await _auth.signOut();
-              },
-            ),
-          )
+    return CupertinoTabScaffold(
+      tabBar: CupertinoTabBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.search),
+            title: Text('Search'),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.create_solid),
+            title: Text('Orders'),
+          ),
         ],
+        currentIndex: 0,
       ),
+      tabBuilder: (context, index) {
+        switch (index) {
+          case 0:
+            return Search();
+            break;
+          case 1:
+            return Order();
+            break;
+        }
+        return null;
+      },
     );
   }
 }
