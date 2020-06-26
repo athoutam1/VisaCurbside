@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:visa_curbside/models/dataStore.dart';
 
 import '../models/user.dart';
 
@@ -30,11 +31,15 @@ class AuthService {
     // final FirebaseUser user = authResult.user;
 
     final FirebaseUser currentUser = await _auth.currentUser();
-
+    
     // save persistent data
     final prefs = await SharedPreferences.getInstance();
     prefs.setString('user', json.encode(_userFromFirebaseUser(currentUser)));
-
+    
+    String userString = (prefs.getString('user'));
+    if (userString != null) {
+      globalUser = User.fromJson(json.decode(userString));
+    } 
     await http.post('http://localhost:3005/user/createUser', body: {
       "id": currentUser.uid,
       "name": currentUser.displayName,
