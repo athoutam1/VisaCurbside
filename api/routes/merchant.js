@@ -6,43 +6,72 @@ const admin = require("../services/firebase").admin;
 const sql = require("../services/mysql");
 const merchant = require("../models/merchant");
 
-// Takes in search query and returns a merchant preview (info to put in search results)
+// Takes in search query and returns a store preview (info to put in search results)
 router.get("/search", async (req, res) => {
   const { query } = req.query;
   try {
-    res.json([
-      new merchant.MerchantPreview(1, "Costco"),
-      new merchant.MerchantPreview(2, "Publix"),
-    ]);
+    let [response, responseFields] = await sql.query(`
+      SELECT * FROM Stores
+      WHERE lower(name) LIKE '${query.toLowerCase()}%'
+      LIMIT 10;    
+    `);
+    response = response.map(
+      (response) =>
+        new merchant.StorePreview(
+          response.merchantID,
+          response.merchantName,
+          response.id,
+          response.name
+        )
+    );
+    res.json(response);
   } catch (error) {
     res.sendStatus(500);
   }
 });
 
-// Takes in search query and returns an item preview (info to put in search results)
-router.get("/itemSearch", async (req, res) => {
-  const { query } = req.query;
-  try {
-    res.json([
-      new merchant.ItemPreview(1, "Ketchup", 5),
-      new merchant.ItemPreview(2, "Hot Sauce", 7),
-    ]);
-  } catch (error) {
-    res.sendStatus(500);
-  }
-});
-
-// Takes in merchant ID and returns the full merchant details (for the merchant page)
-router.get("/merchantDetails", async (req, res) => {
+// Takes in store ID and returns the full store details (for the store details page)
+router.get("/storeDetails", async (req, res) => {
   const { id } = req.query;
   try {
-    const m = new merchant.Merchant(
-      Number(id),
-      "Costco",
-      "this is a store that sells bulk thing",
-      "124 Costco Dr, United States"
+    let [response, responseFields] = await sql.query(`
+      SELECT * FROM Stores
+      WHERE id = ${id};
+    `);
+    if (response.length == 0) res.sendStatus(400);
+    response = new merchant.Store(
+      response[0].merchantID,
+      response[0].merchantName,
+      response[0].id,
+      response[0].name,
+      response[0].description,
+      response[0].location
     );
-    res.json(m);
+    res.json(response);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
+// Takes in storeID and search query and returns an item preview (info to put in search results)
+router.get("/itemSearch", async (req, res) => {
+  const { storeID, query } = req.query;
+  try {
+    let [response, responseFields] = await sql.query(`
+      SELECT * FROM Items
+      WHERE storeID = "${storeID}" AND lower(name) LIKE '${query.toLowerCase()}%'
+      LIMIT 10;    
+    `);
+    response = response.map(
+      (response) =>
+        new merchant.ItemPreview(
+          response.id,
+          response.name,
+          response.price,
+          response.imageURL
+        )
+    );
+    res.json(response);
   } catch (error) {
     res.sendStatus(500);
   }
@@ -52,29 +81,47 @@ router.get("/merchantDetails", async (req, res) => {
 router.get("/itemDetails", async (req, res) => {
   const { itemID } = req.query;
   try {
-    const i = new merchant.Item(
-      Number(itemID),
-      "Lay's Chips",
-      "these are potato chips",
-      2.99
+    let [response, responseFields] = await sql.query(`
+      SELECT * FROM Items
+      WHERE id = ${itemID};
+    `);
+    if (response.length == 0) res.sendStatus(400);
+    response = new merchant.Item(
+      response[0].id,
+      response[0].name,
+      response[0].price,
+      response[0].imageURL,
+      response[0].description
     );
-    res.json(i);
+    res.json(response);
   } catch (error) {
     res.sendStatus(500);
   }
 });
 
-// Takes in list of item IDs, merchantID, and user ID
+// Takes in list of item IDs, storeID, and user ID
 router.post("/confirmOrder", async (req, res) => {
-  const { merchantID, itemIDs, userID } = req.body;
+  const { storeID, itemIDs, userID } = req.body;
   console.log(
-    `User with ID ${userID} is trying to buy ${itemIDs} at merchant ${merchantID}`
+    `User with ID ${userID} is trying to buy ${itemIDs} at store ${storeID}`
   );
   try {
+    let [response, responseFields] = await sql.query(`
+        INSERT INTO Orders(shopperID, storeID, isPending, isReadyForPickup, time)
+        VALUES("${userID}", "${storeID}", 1, 0, NOW());
+      `);
+    let orderID = response.insertId;
+    for (const itemID of itemIDs) {
+      await sql.query(`
+        INSERT INTO orderedItems(itemID, orderID, shopperID)
+        VALUES(${itemID}, ${orderID}, "${userID}");
+      `);
+    }
     res.json({
-      orderID: 123,
+      orderID,
     });
   } catch (error) {
+    console.error(error);
     res.sendStatus(500);
   }
 });
