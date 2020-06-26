@@ -7,6 +7,7 @@ const sql = require("../services/mysql");
 
 router.post("/deleteUser", async (req, res) => {
   const { id } = req.body;
+  
   try {
     await admin.auth().deleteUser(id);
     res.sendStatus(200);
