@@ -53,13 +53,13 @@ router.get("/storeDetails", async (req, res) => {
   }
 });
 
-// Takes in search query and returns an item preview (info to put in search results)
+// Takes in storeID and search query and returns an item preview (info to put in search results)
 router.get("/itemSearch", async (req, res) => {
-  const { query } = req.query;
+  const { storeID, query } = req.query;
   try {
     let [response, responseFields] = await sql.query(`
       SELECT * FROM Items
-      WHERE lower(name) LIKE '${query.toLowerCase()}%'
+      WHERE storeID = "${storeID}" AND lower(name) LIKE '${query.toLowerCase()}%'
       LIMIT 10;    
     `);
     response = response.map(

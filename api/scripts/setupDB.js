@@ -28,7 +28,7 @@ const promisePool = pool.promise();
     `);
     await sql.query(`
       CREATE TABLE Stores(
-        id VARCHAR(255) PRIMARY KEY,
+        id INT PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         merchantID VARCHAR(255) NOT NULL,
         merchantName VARCHAR(255) NOT NULL,
@@ -46,12 +46,14 @@ const promisePool = pool.promise();
         name VARCHAR(255) NOT NULL,
         price DOUBLE NOT NULL,
         description MEDIUMTEXT NOT NULL,
-        imageURL MEDIUMTEXT
+        imageURL MEDIUMTEXT,
+        storeID INT NOT NULL,
+        FOREIGN KEY (storeID) REFERENCES Stores(id)
       );
     `);
     await sql.query(`
-      INSERT INTO Items(name, price, description, imageURL) 
-      VALUES("Ketchup", 2.99, "Tomato Sauce", "https://images-na.ssl-images-amazon.com/images/I/8199Xb1cVdL._SL1500_.jpg");
+      INSERT INTO Items(name, price, description, imageURL, storeID)
+      VALUES("Ketchup", 2.99, "Tomato Sauce", "https://images-na.ssl-images-amazon.com/images/I/8199Xb1cVdL._SL1500_.jpg", 1);
     `);
     await sql.query(`
       CREATE TABLE Orders(
