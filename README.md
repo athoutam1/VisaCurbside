@@ -26,4 +26,5 @@
   ```
 - Make sure MySQL is installed and running locally
 - Run `yarn setupDB` to create a database locally and fill in default values.
+- Install nodemon `yarn global add nodemon`
 - Run `yarn dev` to start the development server (restarts on saved changes)
