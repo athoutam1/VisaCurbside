@@ -104,6 +104,7 @@ router.get("/itemDetails", async (req, res) => {
 // Takes in list of item IDs, storeID, and user ID
 router.post("/confirmOrder", async (req, res) => {
   const { storeID, itemIDs, userID } = req.body;
+
   console.log(
     `User with ID ${userID} is trying to buy ${itemIDs} at store ${storeID}`
   );

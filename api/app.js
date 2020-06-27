@@ -14,5 +14,6 @@ app.use(cookieParser());
 app.use("/user", require("./routes/user"));
 app.use("/merchant", require("./routes/merchant"));
 app.use("/order", require("./routes/order"));
+app.use("/productData", require("./routes/productData"));
 
 module.exports = app;
