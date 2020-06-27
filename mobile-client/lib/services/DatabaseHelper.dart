@@ -27,16 +27,17 @@ class DatabaseHelper {
     return itemsList;
   }
 
-  List<Item> getItemsForCartFromList(List<int> items)  {
-    
-    List<Item> itemsList = new List<Item>();
-    items.forEach((element) async{
-      
+  Future<List<Item>> getItemsFromIDs(List<int> items)  async {
+    List<Item> itemsList = new List();
+    items.forEach((element) async {
       http.Response res = await http.get('http://localhost:3005/merchant/itemDetails?itemID=' + element.toString());
       Item i = Item.fromMap(jsonDecode(res.body));
       itemsList.add(i);
     });
-    print(itemsList);
+    
+    //manually creating a delay to allow calls to happen. Hard coded time delay, not the way to do it.
+    await new Future.delayed(const Duration(milliseconds: 25));
     return itemsList;
+
   }
 }

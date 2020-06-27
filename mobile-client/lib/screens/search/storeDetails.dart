@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:visa_curbside/services/DatabaseHelper.dart';
@@ -18,6 +20,7 @@ class StoreDetails extends StatefulWidget {
 
 class _StoreDetailsState extends State<StoreDetails> {
   List<int> _itemsInCart = new List();
+  double _total = 0;
   String _query = "";
 
   @override
@@ -30,7 +33,7 @@ class _StoreDetailsState extends State<StoreDetails> {
           child: Icon(CupertinoIcons.shopping_cart),
           onTap: () {
             Navigator.push(
-                context, CupertinoPageRoute(builder: (context) => Cart(_itemsInCart)));
+                context, CupertinoPageRoute(builder: (context) => Cart(_itemsInCart, _total, widget._store)));
           },
         ),
       ),
@@ -123,7 +126,18 @@ class _StoreDetailsState extends State<StoreDetails> {
       ),
     );
   }
-
+double getTotal(List<Item>itemsInCart) {
+  if (itemsInCart == null) {
+    return 0;
+  }
+    double total = 0;
+    itemsInCart.forEach((element) {
+      total += element.price;
+    });
+    double mod = pow(10.0, 2);
+    return ((total * mod).round().toDouble() / mod);
+  }
+  
   void showAddToCartDialog(BuildContext context, Item item) {
     showDialog(
       context: context,
@@ -144,6 +158,9 @@ class _StoreDetailsState extends State<StoreDetails> {
             child: Text("Yes"),
           onPressed: () {
             _itemsInCart.add(item.id);
+            List<Item> temp = List();
+            temp.add(item);
+            _total += getTotal(temp);
             Navigator.of(context, rootNavigator: true).pop();
             print("yes add to cart");
           }),
