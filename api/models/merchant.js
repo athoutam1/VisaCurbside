@@ -1,9 +1,10 @@
 exports.StorePreview = class StorePreview {
-  constructor(merchantID, merchantName, storeID, storeName) {
+  constructor(merchantID, merchantName, storeID, storeName, location) {
     this.merchantID = merchantID;
     this.merchantName = merchantName;
     this.storeID = storeID;
     this.storeName = storeName;
+    this.location = location;
   }
 };
 
@@ -14,7 +15,8 @@ exports.Store = class Store {
     storeID,
     storeName,
     description,
-    location
+    location,
+    imageURL
   ) {
     this.merchantID = merchantID;
     this.merchantName = merchantName;
@@ -22,6 +24,7 @@ exports.Store = class Store {
     this.storeName = storeName;
     this.description = description;
     this.location = location;
+    this.imageURL = imageURL;
   }
 };
 

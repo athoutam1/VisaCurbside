@@ -21,7 +21,8 @@ router.get("/search", async (req, res) => {
           response.merchantID,
           response.merchantName,
           response.id,
-          response.name
+          response.name,
+          response.location
         )
     );
     res.json(response);
@@ -45,7 +46,8 @@ router.get("/storeDetails", async (req, res) => {
       response[0].id,
       response[0].name,
       response[0].description,
-      response[0].location
+      response[0].location,
+      response[0].imageURL
     );
     res.json(response);
   } catch (error) {

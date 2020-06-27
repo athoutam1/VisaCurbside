@@ -33,7 +33,8 @@ const promisePool = pool.promise();
         merchantID VARCHAR(255) NOT NULL,
         merchantName VARCHAR(255) NOT NULL,
         description MEDIUMTEXT NOT NULL,
-        location MEDIUMTEXT NOT NULL
+        location MEDIUMTEXT NOT NULL,
+        imageURL MEDIUMTEXT
       );
     `);
     await sql.query(`
