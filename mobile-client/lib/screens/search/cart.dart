@@ -1,19 +1,38 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:visa_curbside/services/DatabaseHelper.dart';
+import 'package:visa_curbside/models/item.dart';
 
-class Cart extends StatelessWidget {
+var databaseHelper = new DatabaseHelper();
+
+class Cart extends StatefulWidget {
+  final List<int> _itemsInCart;
+  Cart(this._itemsInCart);
+  @override
+  _CartState createState() => _CartState();
+}
+
+class _CartState extends State<Cart> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text("Cart"),
+        middle: Text("Cart",
+        style: TextStyle(
+          fontSize: 24,
+          letterSpacing: 3
+        )),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Text("All your shopping items"),
-          Text("All your shopping items"),
-          Text("All your shopping items"),
+          CupertinoButton(
+            child: Text("testing"), 
+            onPressed: () {
+              List<Item> items = databaseHelper.getItemsForCartFromList(widget._itemsInCart);
+              print(items);
+            }
+          ),
           CupertinoButton.filled(
             child: Text("Confirm Order"),
             onPressed: () {

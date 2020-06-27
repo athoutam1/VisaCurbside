@@ -1,4 +1,3 @@
-import 'package:flappy_search_bar/scaled_tile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:visa_curbside/services/DatabaseHelper.dart';
@@ -91,7 +90,7 @@ class _SearchState extends State<Search> {
               ),
               SizedBox(height: 20,),
               FutureBuilder<List<Store>>(
-                future: _getStores(_query),
+                future: databaseHelper.getStores(_query),
                 initialData: List(),
                 builder: (context, snapshot) {
                   return snapshot.hasData ?
