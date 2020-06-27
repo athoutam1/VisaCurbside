@@ -9,7 +9,7 @@ class StoreDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text(_store.merchantName),
+        middle: Text("VisaCurbside"),
         trailing: GestureDetector(
           child: Icon(CupertinoIcons.shopping_cart),
           onTap: () {
@@ -18,11 +18,23 @@ class StoreDetails extends StatelessWidget {
           },
         ),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text("Welcome to the store page"),
-        ],
+      child: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  SizedBox(height: 100,),
+                  Text(_store.merchantName,
+                  style: TextStyle(
+                    fontSize: 48,
+                    fontWeight: FontWeight.bold
+                  ),),
+                ],
+              ),
+          ],
+        ),
       ),
     );
   }
