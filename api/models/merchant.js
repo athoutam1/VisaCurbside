@@ -29,10 +29,11 @@ exports.Store = class Store {
 };
 
 exports.ItemPreview = class ItemPreview {
-  constructor(id, name, price, imageURL) {
+  constructor(id, name, price, description, imageURL) {
     this.id = id;
     this.name = name;
     this.price = price;
+    this.description = description;
     this.imageURL = imageURL;
   }
 };

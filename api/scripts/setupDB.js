@@ -58,7 +58,15 @@ const promisePool = pool.promise();
     `);
     await sql.query(`
       INSERT INTO Items(name, price, description, imageURL, storeID)
-      VALUES("Ketchup", 2.99, "Tomato Sauce", "https://images-na.ssl-images-amazon.com/images/I/8199Xb1cVdL._SL1500_.jpg", 1);
+      VALUES("Ketchup", 2.99, "32 oz glass bottle", "https://images-na.ssl-images-amazon.com/images/I/8199Xb1cVdL._SL1500_.jpg", 1);
+    `);
+    await sql.query(`
+      INSERT INTO Items(name, price, description, imageURL, storeID)
+      VALUES("Mayo", 1.99, "24 oz plastic bottle", "https://images.heb.com/is/image/HEBGrocery/000143819", 1);
+    `);
+    await sql.query(`
+      INSERT INTO Items(name, price, description, imageURL, storeID)
+      VALUES("Mustard", 3.99, "6 oz metal bottle", "https://target.scene7.com/is/image/Target/GUEST_2ce6d6ff-cb12-4f89-b433-35dd2079d3ba?wid=488&hei=488&fmt=pjpeg", 1);
     `);
     await sql.query(`
       CREATE TABLE Orders(

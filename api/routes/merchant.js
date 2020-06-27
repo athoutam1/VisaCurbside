@@ -70,6 +70,7 @@ router.get("/itemSearch", async (req, res) => {
           response.id,
           response.name,
           response.price,
+          response.description,
           response.imageURL
         )
     );
