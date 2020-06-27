@@ -13,7 +13,7 @@ class PastOrderCard extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: Icon(CupertinoIcons.restart),
-            title: Text(_store.name),
+            title: Text(_store.merchantName),
             subtitle: Text('Placed on 6/23 at 3:45PM'),
             onTap: () {
               Navigator.push(context,

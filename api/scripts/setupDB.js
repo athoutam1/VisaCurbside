@@ -41,6 +41,10 @@ const promisePool = pool.promise();
       VALUES(1, "Publix in Tampa", "asd87870dd", "Publix", "this store sells food", "123 Publix Tampa Dr, USA");
     `);
     await sql.query(`
+      INSERT INTO Stores(id, name, merchantID, merchantName, description, location) 
+      VALUES(2, "Target Atlantic Station", "SID1", "Target", "food and home stuff", "Atlantic Station Dr, Atlanta, GA");
+    `);
+    await sql.query(`
       CREATE TABLE Items(
         id INT PRIMARY KEY AUTO_INCREMENT,
         name VARCHAR(255) NOT NULL,
