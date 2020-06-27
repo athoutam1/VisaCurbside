@@ -21,10 +21,11 @@ class _SearchState extends State<Search> {
 
   final SearchBarController<Store> _searchBarController = SearchBarController();
   bool isReplay = false;
+  String _query = "";
   
-  Future<List<Store>> _getStores() async {
+  Future<List<Store>> _getStores(String search) async {
     List<Store> storesList = new List<Store>();
-    http.Response res = await http.get('http://localhost:3005/merchant/search?query=');
+    http.Response res = await http.get('http://localhost:3005/merchant/search?query=' + search);
     List<dynamic> responses = jsonDecode(res.body);
     responses.forEach((element) {
       storesList.add(Store.fromMap(element));
@@ -57,34 +58,12 @@ class _SearchState extends State<Search> {
                 Text("Search for Stores Near You",
                 style: TextStyle(fontSize: 20),),
                 SizedBox(height: 20,),
-                // Padding(
-                //   padding: const EdgeInsets.all(40.0),
-                //   child: Container(
-                //     height:100,
-                //     child: Drawer(
-                //       child: SearchBar<Store>(
-                //         searchBarPadding: EdgeInsets.symmetric(horizontal: 10),
-                //         headerPadding: EdgeInsets.symmetric(horizontal: 10),
-                //         listPadding: EdgeInsets.symmetric(horizontal: 10),
-                //         onSearch: _getStores,
-                //         searchBarController: _searchBarController,
-                //         placeHolder: Text("Search for Stores"),
-                //         cancellationWidget: Text("cancel"),
-                //         emptyWidget: Text("empty widget"),
-                //         onCancelled: () {
-                //           print("cancelled search");
-                //         },
-                //         onItemFound:(Store store, int index) {
-                //           print(store);
-                //           return ListTile(
-                //             title: Text(store.storeName),
-                //             onTap: (){print(store.storeName);},
-                //           );
-                //         }
-                //       ),
-                //     ),
-                //   ),
-                // ),
+                CupertinoTextField(
+                  cursorWidth: 3,
+                  placeholder: "search",
+                  autocorrect: false,
+                  onChanged: (value) => setState(() => _query = value),
+                ),
                 SizedBox(height: 20,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -112,7 +91,7 @@ class _SearchState extends State<Search> {
               ),
               SizedBox(height: 20,),
               FutureBuilder<List<Store>>(
-                future: _getStores(),
+                future: _getStores(_query),
                 initialData: List(),
                 builder: (context, snapshot) {
                   return snapshot.hasData ?
