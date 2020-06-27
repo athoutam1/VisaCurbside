@@ -1,9 +1,37 @@
+import 'package:flappy_search_bar/scaled_tile.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:visa_curbside/services/DatabaseHelper.dart';
 import '../settings/settings.dart';
-import '../../models/store.dart';
+import 'package:visa_curbside/models/store.dart';
 import './storeDetails.dart';
+import 'package:flappy_search_bar/flappy_search_bar.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class Search extends StatelessWidget {
+var databaseHelper = new DatabaseHelper();
+
+class Search extends StatefulWidget {
+
+  @override
+  _SearchState createState() => _SearchState();
+}
+
+class _SearchState extends State<Search> {
+
+  final SearchBarController<Store> _searchBarController = SearchBarController();
+  bool isReplay = false;
+  
+  Future<List<Store>> _getStores() async {
+    List<Store> storesList = new List<Store>();
+    http.Response res = await http.get('http://localhost:3005/merchant/search?query=');
+    List<dynamic> responses = jsonDecode(res.body);
+    responses.forEach((element) {
+      storesList.add(Store.fromMap(element));
+    });
+    return storesList;
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -19,18 +47,111 @@ class Search extends StatelessWidget {
           },
         ),
       ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text("Search for the stores you want to shop at. (Home Page)"),
-          StoreCard(
-            Store(1, "Publix"),
+      child: SafeArea(
+        child: CupertinoPageScaffold(
+          child: Container(
+            padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
+            child: Column(  
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Text("Search for Stores Near You",
+                style: TextStyle(fontSize: 20),),
+                SizedBox(height: 20,),
+                // Padding(
+                //   padding: const EdgeInsets.all(40.0),
+                //   child: Container(
+                //     height:100,
+                //     child: Drawer(
+                //       child: SearchBar<Store>(
+                //         searchBarPadding: EdgeInsets.symmetric(horizontal: 10),
+                //         headerPadding: EdgeInsets.symmetric(horizontal: 10),
+                //         listPadding: EdgeInsets.symmetric(horizontal: 10),
+                //         onSearch: _getStores,
+                //         searchBarController: _searchBarController,
+                //         placeHolder: Text("Search for Stores"),
+                //         cancellationWidget: Text("cancel"),
+                //         emptyWidget: Text("empty widget"),
+                //         onCancelled: () {
+                //           print("cancelled search");
+                //         },
+                //         onItemFound:(Store store, int index) {
+                //           print(store);
+                //           return ListTile(
+                //             title: Text(store.storeName),
+                //             onTap: (){print(store.storeName);},
+                //           );
+                //         }
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                SizedBox(height: 20,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                  CupertinoButton(
+                    child: Text("Filter",
+                    style: TextStyle(
+                      color: CupertinoColors.black
+                    )),
+                    color: CupertinoColors.lightBackgroundGray,
+                    onPressed: () {
+                      print("Search filter button pressed");
+                    }),
+                    SizedBox(width: 20),
+                  CupertinoButton(
+                    child: Text("Sort",
+                    style: TextStyle(
+                      color: CupertinoColors.black
+                    )),
+                    color: CupertinoColors.lightBackgroundGray,
+                    onPressed: () {
+                      print("Sort filter button pressed");
+                    })
+                ],
+              ),
+              SizedBox(height: 20,),
+              FutureBuilder<List<Store>>(
+                future: _getStores(),
+                initialData: List(),
+                builder: (context, snapshot) {
+                  return snapshot.hasData ?
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.length,
+                    itemBuilder: (_, int position) {
+                      final store = snapshot.data[position];
+                      return Card(
+                        margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
+                        color: CupertinoColors.quaternaryLabel,
+                        child: ListTile(
+                          title: Text(store.storeName),
+                          //TODO: change subtitle to location
+                          subtitle: Text(store.merchantID),
+                          onTap: () {
+                            Navigator.push(context,
+                                CupertinoPageRoute(builder: (context) => StoreDetails(store)));
+                          },
+                          )
+                      );
+                    }
+                  )
+                : 
+                Center(
+                  child: CircularProgressIndicator()
+                );
+                }
+              )
+                    
+              ],
+            ),
+          )
           ),
-        ],
-      ),
+      )
     );
   }
 }
+
 
 class StoreCard extends StatelessWidget {
   Store _store;
@@ -38,7 +159,7 @@ class StoreCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CupertinoButton(
-      child: Text(_store.name),
+      child: Text(_store.merchantName),
       onPressed: () {
         Navigator.push(context,
             CupertinoPageRoute(builder: (context) => StoreDetails(_store)));

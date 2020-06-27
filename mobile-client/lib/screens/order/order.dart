@@ -25,11 +25,11 @@ class Order extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Text("Pending Orders:"),
-          PendingOrderCard(Store(3, 'Costco')),
+          PendingOrderCard(Store(merchantID: "id123", merchantName: "costco123", storeID: 3, storeName: "Costco 1")),
           Text("Ready for pickup:"),
-          PickupOrderCard(Store(3, 'Costco')),
+          PickupOrderCard(Store(merchantID: "id123", merchantName: "costco123", storeID: 3, storeName: "Costco 1")), 
           Text("Past orders:"),
-          PastOrderCard(Store(3, 'Costco')),
+          PastOrderCard(Store(merchantID: "id123", merchantName: "costco123", storeID: 3, storeName: "Costco 1")),
         ],
       ),
     );

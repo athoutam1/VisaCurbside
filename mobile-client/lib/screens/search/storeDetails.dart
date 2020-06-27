@@ -9,7 +9,7 @@ class StoreDetails extends StatelessWidget {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text(_store.name),
+        middle: Text(_store.merchantName),
         trailing: GestureDetector(
           child: Icon(CupertinoIcons.shopping_cart),
           onTap: () {
