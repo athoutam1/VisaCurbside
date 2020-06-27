@@ -59,23 +59,7 @@ class _CartState extends State<Cart> {
                       itemCount: snapshot.data.length,
                       itemBuilder: (_, int position) {
                         final item = snapshot.data[position];
-                        return Card(
-                          margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
-                          color: CupertinoColors.quaternaryLabel,
-                          child: ListTile(
-                            title: Text(item.name,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold
-                            )),
-                            isThreeLine: true,
-                            subtitle: Text(" ${item.description}\n " + "\$" + item.price.toString(),
-                            style: TextStyle(letterSpacing: 2)),
-                            onTap: () {
-                              print(item.name);
-
-                            },
-                            )
-                        );
+                        return ItemCard(item);
                       }
                     ),
                   )
@@ -148,4 +132,31 @@ void showConfirmOrderAlertDialog(BuildContext context, List<Item> itemsInCart, L
             })
         ],
       ));
+}
+
+class ItemCard extends StatelessWidget {
+  final Item _item;
+  ItemCard(this._item);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: <Widget>[
+            ListTile(
+              title: Text(_item.name,
+              style: TextStyle(
+                fontWeight: FontWeight.bold
+              )),
+              isThreeLine: true,
+              subtitle: Text(" ${_item.description}\n " + "\$" + _item.price.toString(),
+              style: TextStyle(letterSpacing: 2)),
+              onTap: () {
+                print("clicked" + _item.name);
+              },
+              )
+            ],
+          ),
+    );
+  }
 }

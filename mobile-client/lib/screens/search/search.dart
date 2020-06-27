@@ -99,19 +99,7 @@ class _SearchState extends State<Search> {
                     itemCount: snapshot.data.length,
                     itemBuilder: (_, int position) {
                       final store = snapshot.data[position];
-                      return Card(
-                        margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
-                        color: CupertinoColors.quaternaryLabel,
-                        child: ListTile(
-                          title: Text(store.storeName),
-                          //TODO: change subtitle to location
-                          subtitle: Text(store.merchantID),
-                          onTap: () {
-                            Navigator.push(context,
-                                CupertinoPageRoute(builder: (context) => StoreDetails(store)));
-                          },
-                          )
-                      );
+                      return StoreCard(store);
                     }
                   )
                 : 
@@ -136,12 +124,23 @@ class StoreCard extends StatelessWidget {
   StoreCard(this._store);
   @override
   Widget build(BuildContext context) {
-    return CupertinoButton(
-      child: Text(_store.merchantName),
-      onPressed: () {
-        Navigator.push(context,
+    return Card(
+      
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+            title: Text(_store.merchantName, 
+            style: TextStyle(fontWeight: FontWeight.bold)),
+            subtitle: Text(_store.storeName),
+            trailing: Icon(Icons.store),
+            onTap: () {
+              Navigator.push(context,
             CupertinoPageRoute(builder: (context) => StoreDetails(_store)));
-      },
+            }
+        )
+      ] 
+      )
     );
   }
 }

@@ -93,23 +93,24 @@ class _StoreDetailsState extends State<StoreDetails> {
                     itemCount: snapshot.data.length,
                     itemBuilder: (_, int position) {
                       final item = snapshot.data[position];
-                      return Card(
-                        margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
-                        color: CupertinoColors.quaternaryLabel,
-                        child: ListTile(
-                          title: Text(item.name,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold
-                          )),
-                          isThreeLine: true,
-                          subtitle: Text(" ${item.description}\n " + "\$" + item.price.toString(),
-                          style: TextStyle(letterSpacing: 2)),
-                          onTap: () {
-                            showAddToCartDialog(context, item);
-                            print("clicked" + item.name);
-                          },
-                          )
-                      );
+                      return ItemCard(item, showAddToCartDialog);
+                      // return Card(
+                      //   margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
+                      //   color: CupertinoColors.quaternaryLabel,
+                      //   child: ListTile(
+                      //     title: Text(item.name,
+                      //     style: TextStyle(
+                      //       fontWeight: FontWeight.bold
+                      //     )),
+                      //     isThreeLine: true,
+                      //     subtitle: Text(" ${item.description}\n " + "\$" + item.price.toString(),
+                      //     style: TextStyle(letterSpacing: 2)),
+                      //     onTap: () {
+                      //       showAddToCartDialog(context, item);
+                      //       print("clicked" + item.name);
+                      //     },
+                      //     )
+                      // );
                     }
                   )
                 : 
@@ -137,7 +138,7 @@ double getTotal(List<Item>itemsInCart) {
     double mod = pow(10.0, 2);
     return ((total * mod).round().toDouble() / mod);
   }
-  
+
   void showAddToCartDialog(BuildContext context, Item item) {
     showDialog(
       context: context,
@@ -174,4 +175,34 @@ double getTotal(List<Item>itemsInCart) {
       )
     );
   }
+  
+  
 }
+
+  class ItemCard extends StatelessWidget {
+    final Item _item;
+    final Function _showAddToCartDialog;
+    ItemCard(this._item, this._showAddToCartDialog);
+    @override
+    Widget build(BuildContext context) {
+      return Card(
+        child: Column(
+          children: <Widget>[
+              ListTile(
+                title: Text(_item.name,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold
+                )),
+                isThreeLine: true,
+                subtitle: Text(" ${_item.description}\n " + "\$" + _item.price.toString(),
+                style: TextStyle(letterSpacing: 2)),
+                onTap: () {
+                  _showAddToCartDialog(context, _item);
+                  print("clicked" + _item.name);
+                },
+                )
+              ],
+            ),
+      );
+    }
+  }
