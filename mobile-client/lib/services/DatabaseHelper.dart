@@ -34,11 +34,9 @@ class DatabaseHelper {
       Item i = Item.fromMap(jsonDecode(res.body));
       itemsList.add(i);
     });
-    
     //manually creating a delay to allow calls to happen. Hard coded time delay, not the way to do it.
     await new Future.delayed(const Duration(milliseconds: 25));
     return itemsList;
-
   }
 
   Future<List<Order>> getOrdersFromUID(String uid) async {
@@ -50,6 +48,7 @@ class DatabaseHelper {
     });
     return getOrderSequence(ordersList);
   }
+
 
   List<Order> getOrderSequence(List<Order> orders) {
     List<Order> pending = new List();
@@ -79,6 +78,12 @@ class DatabaseHelper {
       finalList.add(element);
     });
     return finalList;
+  }
 
+  Future<Store> getStoreDetailsFromID(int storeID) async {
+    Store store;
+    http.Response res = await http.get('http://localhost:3005/merchant/storeDetails?id=' + storeID.toString());
+    store = Store.fromJson(res.body);
+    return store;
   }
 }

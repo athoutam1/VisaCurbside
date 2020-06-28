@@ -106,14 +106,14 @@ void showConfirmOrderAlertDialog(BuildContext context, List<Item> itemsInCart, L
           CupertinoButton(
               child: Text("Submit"),
               onPressed: () async {
-                var headers = {'Content-Type': 'application/json'};
+                if (itemIDsinCart.length != 0) {
+                  var headers = {'Content-Type': 'application/json'};
                 String uri = 'http://localhost:3005/merchant/confirmOrder';
                  dynamic data = {
                   "storeID": store.storeID,
                   "itemIDs": itemIDsinCart,
                   "userID" : globalUser.uid.toString()
                  };
-                 print(data);
                 
                 http.Response res =
                 await http.post(uri, headers: headers,body: jsonEncode(data));
@@ -121,6 +121,10 @@ void showConfirmOrderAlertDialog(BuildContext context, List<Item> itemsInCart, L
                 print('status code:  ${res.statusCode}');
 
                 print("submit button clicked");
+                } else {
+                  print("Order cannot be empty");
+                }
+                
                 Navigator.of(context, rootNavigator: true).pop();
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
