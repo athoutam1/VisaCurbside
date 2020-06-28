@@ -17,7 +17,8 @@ var page;
 })();
 
 // Takes in barcode and estimates item details
-router.get("/", async (req, res) => {
+router.post("/", async (req, res) => {
+  console.log(req.body);
   try {
     await page.goto(
       `https://www.amazon.com/s?k=${req.body.barcode}&ref=nb_sb_noss`,
@@ -58,6 +59,10 @@ router.get("/", async (req, res) => {
         )[0]
       : null;
 
+    description = description
+      .split("\n")
+      .filter((item) => item != "")
+      .join(".\n");
     res.json({
       name,
       price,

@@ -1,0 +1,6 @@
+framework module Pods_merchant_app {
+  umbrella header "Pods-merchant-app-umbrella.h"
+
+  export *
+  module * { export * }
+}
