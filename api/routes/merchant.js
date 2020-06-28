@@ -102,6 +102,22 @@ router.get("/itemDetails", async (req, res) => {
   }
 });
 
+router.post("/changeOrderStatus", async (req, res) => {
+  const { orderID, isPending, isReadyForPickup } = req.body;
+  try {
+    await sql.query(`
+      UPDATE Orders
+      SET isPending = ${isPending ? 1 : 0}, isReadyForPickup = ${
+      isReadyForPickup ? 1 : 0
+    }, time = NOW()
+      WHERE id = ${orderID};
+    `);
+    res.sendStatus(200);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
 // Takes in list of item IDs, storeID, and user ID
 router.post("/confirmOrder", async (req, res) => {
   const { storeID, itemIDs, userID } = req.body;
