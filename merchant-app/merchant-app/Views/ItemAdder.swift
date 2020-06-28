@@ -12,6 +12,10 @@ import Alamofire
 import SDWebImageSwiftUI
 import FirebaseStorage
 
+func hideKeyboard() {
+    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+}
+
 struct ItemAdder: View {
     
     @Binding var items: [Item]
@@ -27,9 +31,11 @@ struct ItemAdder: View {
     @State var loading = false
     @State var loadingMessage = ""
     
+    @State var isTyping = false
     @State var imageURL: String = ""
     @State var itemImage: UIImage?
     @State var showImagePicker = false
+    @State var showError = false
     
     var body: some View {
         ZStack {
@@ -37,7 +43,7 @@ struct ItemAdder: View {
                 if sheetOption == .barcode {
                     ZStack {
                         CBScanner(supportBarcode: [.ean13])
-                            .interval(delay: 50.0) //Event will trigger every 5 seconds
+                            .interval(delay: 5.0) //Event will trigger every 5 seconds
                             .found{
                                 
                                 self.loadingMessage = "Predicting Product Data ..."
@@ -67,6 +73,8 @@ struct ItemAdder: View {
                                         
                                         self.sheetOption = .custom
                                     case .failure(let err):
+                                        self.loading = false
+                                        self.showError = true
                                         print(err)
                                     }
                                 }
@@ -81,6 +89,13 @@ struct ItemAdder: View {
                                 .padding(.top, 15)
                             Spacer()
                         }
+                    }
+                    .alert(isPresented: $showError) {
+                        Alert(title: Text("Product Unavailable"), message: Text("We couldn't find any data on this product"),
+                              primaryButton: .default(Text("Manual entry"), action: {
+                                self.sheetOption = .custom
+                              }),
+                              secondaryButton: .default(Text("Try again")))
                     }
                 } else if sheetOption == .custom {
                     ScrollView {
@@ -122,21 +137,39 @@ struct ItemAdder: View {
                         }
                         
                         VStack(spacing: 25) {
-                            TextField("Name", text: $itemName)
+                            TextField("Name", text: $itemName, onCommit: {
+                                self.isTyping = false
+                            })
+                                .onTapGesture {
+                                    self.isTyping = true
+                                }
                                 .padding(.vertical, 10)
                                 .padding(.horizontal, 5)
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray))
-                            TextField("Price", text: $itemPrice)
+                            
+                            TextField("Price", text: $itemPrice, onCommit: {
+                                self.isTyping = false
+                            })
+                                .onTapGesture {
+                                    self.isTyping = true
+                                }
                                 .padding(.vertical, 10)
                                 .padding(.horizontal, 5)
                                 .keyboardType(.decimalPad)
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray))
-                            MultilineTextField("Description", text: $itemDescription) { }
+                            
+                            MultilineTextField("Description", text: $itemDescription) {
+                                self.isTyping = false
+                            }
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray))
+                            .onTapGesture {
+                                self.isTyping = true
+                            }
                         }
                         .padding(.top, 10)
                         
                         Button(action: {
+                            self.isTyping = false
                             if self.itemName.trimmingCharacters(in: .whitespaces) == "" || self.itemPrice.trimmingCharacters(in: .whitespaces) == "" || self.itemDescription.trimmingCharacters(in: .whitespaces) == "" {
                                 print("Missing something")
                             } else {
@@ -190,6 +223,7 @@ struct ItemAdder: View {
                         .padding(.top, 30)
                         
                         Button(action: {
+                            self.isTyping = false
                             self.showSheet = false
                         }) {
                             Text("Cancel")
@@ -203,6 +237,9 @@ struct ItemAdder: View {
                     .padding(.top)
                 }
             }
+            .offset(y: self.isTyping ? -(UIScreen.main.bounds.height * 0.3) : 0)
+            .animation(self.isTyping ? .easeInOut : nil)
+            
             if self.loading {
                 VStack(spacing: 15) {
                     LottieView(filename: "loading")
@@ -216,7 +253,10 @@ struct ItemAdder: View {
                 
             }
         }
-            
+        .onTapGesture {
+            self.isTyping = false
+            hideKeyboard()
+        }
         .navigationBarTitle("")
         .navigationBarHidden(true)
     }
