@@ -83,6 +83,7 @@ class _PendingOrderState extends State<PendingOrder> {
                             },
                           ),
                         CupertinoButton(
+                          
                           child: Text("Pay Now"),
                           onPressed: () {
                             Navigator.push(context,
