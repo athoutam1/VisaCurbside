@@ -18,7 +18,8 @@ func hideKeyboard() {
 
 struct ItemAdder: View {
     
-    @Binding var items: [Item]
+//    @Binding var items: [Item]
+ @EnvironmentObject var dataStore: DataStore
     @Binding var sheetOption: sheetOption?
     @Binding var showSheet: Bool
     
@@ -52,7 +53,7 @@ struct ItemAdder: View {
                                 print($0)
                                 self.barcode = $0
                                 
-                                let url = "https://b7d42b2bc448.ngrok.io/productData"
+                                let url = "\(self.dataStore.proxy)/productData"
                                 let parameters: Parameters = [
                                     "barcode": self.barcode!
                                 ]
@@ -63,7 +64,7 @@ struct ItemAdder: View {
                                         self.loading = false
                                         
                                         let response = jsonData as! NSDictionary
-                                        let newItem = Item(name: response["name"] as! String, description: response["description"] as! String, price: (response["price"] as! NSString).doubleValue, imageURL: response["imageURL"] as! String)
+                                        let newItem = Item(name: response["name"] as! String, description: response["description"] as? String ?? "", price: (response["price"] as! NSString).doubleValue, imageURL: response["imageURL"] as! String)
                                         
                                         print(newItem)
                                         self.itemName = newItem.name
@@ -104,16 +105,16 @@ struct ItemAdder: View {
                             
                             if self.itemImage != nil {
                                 Image(uiImage: self.itemImage!)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: UIScreen.main.bounds.width * 0.9)
-                                .cornerRadius(15)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: UIScreen.main.bounds.width * 0.9)
+                                    .cornerRadius(15)
                             } else if self.imageURL != "" {
                                 WebImage(url: URL(string: self.imageURL))
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(maxWidth: UIScreen.main.bounds.width * 0.9, maxHeight: UIScreen.main.bounds.height * 0.5 )
-                                .cornerRadius(15)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(maxWidth: UIScreen.main.bounds.width * 0.9, maxHeight: UIScreen.main.bounds.height * 0.5 )
+                                    .cornerRadius(15)
                             } else {
                                 Image("placeholder")
                                     .resizable()
@@ -142,9 +143,9 @@ struct ItemAdder: View {
                             })
                                 .onTapGesture {
                                     self.isTyping = true
-                                }
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 5)
+                            }
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 5)
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray))
                             
                             TextField("Price", text: $itemPrice, onCommit: {
@@ -152,10 +153,10 @@ struct ItemAdder: View {
                             })
                                 .onTapGesture {
                                     self.isTyping = true
-                                }
-                                .padding(.vertical, 10)
-                                .padding(.horizontal, 5)
-                                .keyboardType(.decimalPad)
+                            }
+                            .padding(.vertical, 10)
+                            .padding(.horizontal, 5)
+                            .keyboardType(.decimalPad)
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray))
                             
                             MultilineTextField("Description", text: $itemDescription) {
@@ -195,12 +196,34 @@ struct ItemAdder: View {
                                             if let error = error {
                                                 print(error)
                                             } else {
-                                            self.loadingMessage = "Saving Item ..."
-                                        let newItem = Item(name: self.itemName, description: self.itemDescription, price: (self.itemPrice as NSString).doubleValue, imageURL: "\(uploadURL!)")
-                                               print(newItem)
-                                               self.items.append(newItem)
-                                                self.loading = false
-                                               self.showSheet = false
+                                                self.loadingMessage = "Saving Item ..."
+                                                var newItem = Item(name: self.itemName, description: self.itemDescription, price: (self.itemPrice as NSString).doubleValue, imageURL: "\(uploadURL!)")
+                                                
+                                                
+                                                let url = "\(self.dataStore.proxy)/merchantApp/addItemToCatalog"
+                                                let parameters: Parameters = [
+                                                    "name": newItem.name,
+                                                    "price": newItem.price,
+                                                    "description": newItem.description,
+                                                    "imageURL": newItem.imageURL,
+                                                    "storeID": 1
+                                                ]
+                                                
+                                                AF.request(url, method: .post, parameters: parameters).responseJSON { response in
+                                                    switch response.result {
+                                                    case .success(let jsonData):
+                                                        let response = jsonData as! NSDictionary
+                                                        newItem.id = response["itemID"] as? Int
+                                                        
+                                                        self.dataStore.items.append(newItem)
+                                                        self.loading = false
+                                                        self.showSheet = false
+                                                    case .failure(let err):
+                                                        print(err)
+                                                    }
+                                                }
+                                                
+                                                
                                             }
                                         }
                                         
@@ -208,11 +231,32 @@ struct ItemAdder: View {
                                 } else {
                                     self.loadingMessage = "Saving Item ..."
                                     self.loading = true
-                                    let newItem = Item(name: self.itemName, description: self.itemDescription, price: (self.itemPrice as NSString).doubleValue, imageURL: self.imageURL)
+                                    var newItem = Item(name: self.itemName, description: self.itemDescription, price: (self.itemPrice as NSString).doubleValue, imageURL: self.imageURL)
                                     print(newItem)
-                                    self.items.append(newItem)
-                                 self.loading = false
-                                    self.showSheet = false
+                                    
+                                    let url = "\(self.dataStore.proxy)/merchantApp/addItemToCatalog"
+                                    let parameters: Parameters = [
+                                        "name": newItem.name,
+                                        "price": newItem.price,
+                                        "description": newItem.description,
+                                        "imageURL": newItem.imageURL,
+                                        "storeID": 1
+                                    ]
+                                    
+                                    AF.request(url, method: .post, parameters: parameters).responseJSON { response in
+                                        switch response.result {
+                                        case .success(let jsonData):
+                                            let response = jsonData as! NSDictionary
+                                            newItem.id = response["itemID"] as? Int
+                                            
+                                            self.dataStore.items.append(newItem)
+                                            self.loading = false
+                                            self.showSheet = false
+                                        case .failure(let err):
+                                            print(err)
+                                        }
+                                    }
+                                    
                                 }
                                 
                                 
@@ -243,7 +287,7 @@ struct ItemAdder: View {
             if self.loading {
                 VStack(spacing: 15) {
                     LottieView(filename: "loading")
-                    .frame(width: 80, height: 80)
+                        .frame(width: 80, height: 80)
                     Text(self.loadingMessage)
                 }
                 .padding()
@@ -265,8 +309,8 @@ struct ItemAdder: View {
 
 
 
-struct ItemAdder_Previews: PreviewProvider {
-    static var previews: some View {
-        ItemAdder(items: .constant([]), sheetOption: .constant(.custom), showSheet: .constant(false))
-    }
-}
+//struct ItemAdder_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ItemAdder(items: .constant([]), sheetOption: .constant(.custom), showSheet: .constant(false))
+//    }
+//}
