@@ -9,7 +9,7 @@
 import Foundation
 
 struct Item: Identifiable, Codable, Hashable {
-    var id: UUID = UUID()
+    var id: Int?
     var name: String = ""
     var description: String = ""
     var price: Double = 0.0

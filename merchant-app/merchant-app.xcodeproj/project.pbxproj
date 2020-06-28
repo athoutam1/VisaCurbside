@@ -14,18 +14,20 @@
 		3120A4DC24A828F80069A235 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3120A4DB24A828F80069A235 /* Assets.xcassets */; };
 		3120A4DF24A828F80069A235 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3120A4DE24A828F80069A235 /* Preview Assets.xcassets */; };
 		3120A4E224A828F80069A235 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3120A4E024A828F80069A235 /* LaunchScreen.storyboard */; };
-		313C803024A829E3009FFAE2 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 313C802F24A829E3009FFAE2 /* SwiftPackageProductDependency */; };
+		313C803024A829E3009FFAE2 /* CarBode in Frameworks */ = {isa = PBXBuildFile; productRef = 313C802F24A829E3009FFAE2 /* CarBode */; };
 		313C803224A82E88009FFAE2 /* ItemList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313C803124A82E88009FFAE2 /* ItemList.swift */; };
 		313C803524A82E97009FFAE2 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313C803424A82E97009FFAE2 /* Item.swift */; };
-		31570AC324A8313C000C89A6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 31570AC224A8313C000C89A6 /* SwiftPackageProductDependency */; };
+		31570AC324A8313C000C89A6 /* SDWebImageSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = 31570AC224A8313C000C89A6 /* SDWebImageSwiftUI */; };
 		31570AC724A8352C000C89A6 /* ItemAdder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31570AC624A8352C000C89A6 /* ItemAdder.swift */; };
 		31570AC924A847C7000C89A6 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31570AC824A847C7000C89A6 /* ImagePicker.swift */; };
-		31570ACC24A84B4D000C89A6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 31570ACB24A84B4D000C89A6 /* SwiftPackageProductDependency */; };
+		31570ACC24A84B4D000C89A6 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 31570ACB24A84B4D000C89A6 /* Alamofire */; };
 		31570ACE24A84DD6000C89A6 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31570ACD24A84DD6000C89A6 /* LottieView.swift */; };
-		31570AD124A84DFC000C89A6 /* BuildFile in Frameworks */ = {isa = PBXBuildFile; productRef = 31570AD024A84DFC000C89A6 /* SwiftPackageProductDependency */; };
+		31570AD124A84DFC000C89A6 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 31570AD024A84DFC000C89A6 /* Lottie */; };
 		31570AD324A84E9F000C89A6 /* loading.json in Resources */ = {isa = PBXBuildFile; fileRef = 31570AD224A84E9F000C89A6 /* loading.json */; };
 		31570AD524A85820000C89A6 /* TextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31570AD424A85820000C89A6 /* TextView.swift */; };
 		31570AD724A86305000C89A6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 31570AD624A86304000C89A6 /* GoogleService-Info.plist */; };
+		31570AD924A92AEF000C89A6 /* Splash.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31570AD824A92AEF000C89A6 /* Splash.swift */; };
+		31570ADB24A92BA1000C89A6 /* DataStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31570ADA24A92BA1000C89A6 /* DataStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +47,8 @@
 		31570AD224A84E9F000C89A6 /* loading.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loading.json; sourceTree = "<group>"; };
 		31570AD424A85820000C89A6 /* TextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextView.swift; sourceTree = "<group>"; };
 		31570AD624A86304000C89A6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		31570AD824A92AEF000C89A6 /* Splash.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Splash.swift; sourceTree = "<group>"; };
+		31570ADA24A92BA1000C89A6 /* DataStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStore.swift; sourceTree = "<group>"; };
 		848B8E4A2CD05DC6EF7DD289 /* Pods-merchant-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-merchant-app.release.xcconfig"; path = "Target Support Files/Pods-merchant-app/Pods-merchant-app.release.xcconfig"; sourceTree = "<group>"; };
 		871217B34A6030485252391F /* Pods-merchant-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-merchant-app.debug.xcconfig"; path = "Target Support Files/Pods-merchant-app/Pods-merchant-app.debug.xcconfig"; sourceTree = "<group>"; };
 		E5F7FD616A767907E6003DF8 /* Pods_merchant_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_merchant_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,10 +59,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				31570ACC24A84B4D000C89A6 /* BuildFile in Frameworks */,
-				31570AC324A8313C000C89A6 /* BuildFile in Frameworks */,
-				313C803024A829E3009FFAE2 /* BuildFile in Frameworks */,
-				31570AD124A84DFC000C89A6 /* BuildFile in Frameworks */,
+				31570ACC24A84B4D000C89A6 /* Alamofire in Frameworks */,
+				31570AC324A8313C000C89A6 /* SDWebImageSwiftUI in Frameworks */,
+				313C803024A829E3009FFAE2 /* CarBode in Frameworks */,
+				31570AD124A84DFC000C89A6 /* Lottie in Frameworks */,
 				27E5A476F91A75D8AE99DD80 /* Pods_merchant_app.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -91,13 +95,14 @@
 				313C803624A82F14009FFAE2 /* Views */,
 				3120A4D524A828F60069A235 /* AppDelegate.swift */,
 				3120A4D724A828F60069A235 /* SceneDelegate.swift */,
-				3120A4D924A828F60069A235 /* ContentView.swift */,
 				31570AD224A84E9F000C89A6 /* loading.json */,
 				3120A4DB24A828F80069A235 /* Assets.xcassets */,
 				3120A4E024A828F80069A235 /* LaunchScreen.storyboard */,
 				31570AD624A86304000C89A6 /* GoogleService-Info.plist */,
 				3120A4E324A828F80069A235 /* Info.plist */,
 				3120A4DD24A828F80069A235 /* Preview Content */,
+				31570AD824A92AEF000C89A6 /* Splash.swift */,
+				3120A4D924A828F60069A235 /* ContentView.swift */,
 			);
 			path = "merchant-app";
 			sourceTree = "<group>";
@@ -114,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				313C803424A82E97009FFAE2 /* Item.swift */,
+				31570ADA24A92BA1000C89A6 /* DataStore.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -144,7 +150,6 @@
 				871217B34A6030485252391F /* Pods-merchant-app.debug.xcconfig */,
 				848B8E4A2CD05DC6EF7DD289 /* Pods-merchant-app.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -167,10 +172,10 @@
 			);
 			name = "merchant-app";
 			packageProductDependencies = (
-				313C802F24A829E3009FFAE2 /* SwiftPackageProductDependency */,
-				31570AC224A8313C000C89A6 /* SwiftPackageProductDependency */,
-				31570ACB24A84B4D000C89A6 /* SwiftPackageProductDependency */,
-				31570AD024A84DFC000C89A6 /* SwiftPackageProductDependency */,
+				313C802F24A829E3009FFAE2 /* CarBode */,
+				31570AC224A8313C000C89A6 /* SDWebImageSwiftUI */,
+				31570ACB24A84B4D000C89A6 /* Alamofire */,
+				31570AD024A84DFC000C89A6 /* Lottie */,
 			);
 			productName = "merchant-app";
 			productReference = 3120A4D224A828F60069A235 /* merchant-app.app */;
@@ -201,10 +206,10 @@
 			);
 			mainGroup = 3120A4C924A828F60069A235;
 			packageReferences = (
-				313C802E24A829E3009FFAE2 /* RemoteSwiftPackageReference */,
-				31570AC124A8313C000C89A6 /* RemoteSwiftPackageReference */,
-				31570ACA24A84B4D000C89A6 /* RemoteSwiftPackageReference */,
-				31570ACF24A84DFC000C89A6 /* RemoteSwiftPackageReference */,
+				313C802E24A829E3009FFAE2 /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */,
+				31570AC124A8313C000C89A6 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */,
+				31570ACA24A84B4D000C89A6 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				31570ACF24A84DFC000C89A6 /* XCRemoteSwiftPackageReference "lottie-ios" */,
 			);
 			productRefGroup = 3120A4D324A828F60069A235 /* Products */;
 			projectDirPath = "";
@@ -281,6 +286,8 @@
 				313C803224A82E88009FFAE2 /* ItemList.swift in Sources */,
 				3120A4D624A828F60069A235 /* AppDelegate.swift in Sources */,
 				31570AC924A847C7000C89A6 /* ImagePicker.swift in Sources */,
+				31570ADB24A92BA1000C89A6 /* DataStore.swift in Sources */,
+				31570AD924A92AEF000C89A6 /* Splash.swift in Sources */,
 				31570AC724A8352C000C89A6 /* ItemAdder.swift in Sources */,
 				3120A4D824A828F60069A235 /* SceneDelegate.swift in Sources */,
 				31570AD524A85820000C89A6 /* TextView.swift in Sources */,
@@ -483,7 +490,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		313C802E24A829E3009FFAE2 /* RemoteSwiftPackageReference */ = {
+		313C802E24A829E3009FFAE2 /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/heart/CarBode-Barcode-Scanner-For-SwiftUI";
 			requirement = {
@@ -491,7 +498,7 @@
 				minimumVersion = 1.4.3;
 			};
 		};
-		31570AC124A8313C000C89A6 /* RemoteSwiftPackageReference */ = {
+		31570AC124A8313C000C89A6 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SDWebImage/SDWebImageSwiftUI.git";
 			requirement = {
@@ -499,7 +506,7 @@
 				minimumVersion = 1.5.0;
 			};
 		};
-		31570ACA24A84B4D000C89A6 /* RemoteSwiftPackageReference */ = {
+		31570ACA24A84B4D000C89A6 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
 			requirement = {
@@ -507,7 +514,7 @@
 				minimumVersion = 5.2.1;
 			};
 		};
-		31570ACF24A84DFC000C89A6 /* RemoteSwiftPackageReference */ = {
+		31570ACF24A84DFC000C89A6 /* XCRemoteSwiftPackageReference "lottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/airbnb/lottie-ios.git";
 			requirement = {
@@ -518,24 +525,24 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		313C802F24A829E3009FFAE2 /* SwiftPackageProductDependency */ = {
+		313C802F24A829E3009FFAE2 /* CarBode */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 313C802E24A829E3009FFAE2 /* RemoteSwiftPackageReference */;
+			package = 313C802E24A829E3009FFAE2 /* XCRemoteSwiftPackageReference "CarBode-Barcode-Scanner-For-SwiftUI" */;
 			productName = CarBode;
 		};
-		31570AC224A8313C000C89A6 /* SwiftPackageProductDependency */ = {
+		31570AC224A8313C000C89A6 /* SDWebImageSwiftUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 31570AC124A8313C000C89A6 /* RemoteSwiftPackageReference */;
+			package = 31570AC124A8313C000C89A6 /* XCRemoteSwiftPackageReference "SDWebImageSwiftUI" */;
 			productName = SDWebImageSwiftUI;
 		};
-		31570ACB24A84B4D000C89A6 /* SwiftPackageProductDependency */ = {
+		31570ACB24A84B4D000C89A6 /* Alamofire */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 31570ACA24A84B4D000C89A6 /* RemoteSwiftPackageReference */;
+			package = 31570ACA24A84B4D000C89A6 /* XCRemoteSwiftPackageReference "Alamofire" */;
 			productName = Alamofire;
 		};
-		31570AD024A84DFC000C89A6 /* SwiftPackageProductDependency */ = {
+		31570AD024A84DFC000C89A6 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 31570ACF24A84DFC000C89A6 /* RemoteSwiftPackageReference */;
+			package = 31570ACF24A84DFC000C89A6 /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
 		};
 /* End XCSwiftPackageProductDependency section */

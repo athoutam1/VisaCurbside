@@ -8,6 +8,7 @@
 
 import SwiftUI
 import SDWebImageSwiftUI
+import Alamofire
 
 enum sheetOption {
     case barcode, custom
@@ -15,9 +16,10 @@ enum sheetOption {
 
 struct ItemList: View {
     
-    @State var items: [Item] = [
-        Item(name: "Ketchup", description: "asdashd asdas dohasdoas", price: 2.99, imageURL: "https://images-na.ssl-images-amazon.com/images/I/71Q28KBgotL._SX679_.jpg")
-    ]
+    @EnvironmentObject var dataStore: DataStore
+//    @State var items: [Item] = [
+//        Item(name: "Ketchup", description: "asdashd asdas dohasdoas", price: 2.99, imageURL: "https://images-na.ssl-images-amazon.com/images/I/71Q28KBgotL._SX679_.jpg")
+//    ]
     
     @State private var showActionSheet = false
     @State private var showSheet = false
@@ -31,9 +33,10 @@ struct ItemList: View {
                 NavigationView {
                     VStack {
                         List {
-                            ForEach(items) { item in
+                            ForEach(self.dataStore.items) { item in
                                 ItemRow(item: item)
                             }
+                            .onDelete(perform: delete)
                         }
                         .navigationBarTitle("Product Catalog")
                         .navigationBarItems(trailing:
@@ -63,7 +66,27 @@ struct ItemList: View {
                     
                 }
             } else {
-                ItemAdder(items: self.$items, sheetOption: self.$sheetOption, showSheet: self.$showSheet)
+                ItemAdder(sheetOption: self.$sheetOption, showSheet: self.$showSheet).environmentObject(self.dataStore)
+            }
+        }
+        
+    }
+    
+    func delete(at offsets: IndexSet) {
+        let deletedItem = self.dataStore.items[offsets.first!]
+        self.dataStore.items.remove(atOffsets: offsets)
+        
+        let url = "\(self.dataStore.proxy)/merchantApp/deleteItemFromStore"
+        let parameters: Parameters = [
+            "itemID": deletedItem.id!
+        ]
+        
+        AF.request(url, method: .post, parameters: parameters).response { response in
+            switch response.result {
+            case .success(_):
+                print("Deleted \(deletedItem.name)")
+            case .failure(let err):
+                print(err)
             }
         }
         
