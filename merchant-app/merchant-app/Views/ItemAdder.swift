@@ -10,6 +10,7 @@ import SwiftUI
 import CarBode
 import Alamofire
 import SDWebImageSwiftUI
+import FirebaseStorage
 
 struct ItemAdder: View {
     
@@ -86,21 +87,20 @@ struct ItemAdder: View {
                         
                         ZStack(alignment: .bottomTrailing) {
                             
-                            if self.imageURL != "" {
+                            if self.itemImage != nil {
+                                Image(uiImage: self.itemImage!)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: UIScreen.main.bounds.width * 0.9)
+                                .cornerRadius(15)
+                            } else if self.imageURL != "" {
                                 WebImage(url: URL(string: self.imageURL))
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
                                 .frame(maxWidth: UIScreen.main.bounds.width * 0.9, maxHeight: UIScreen.main.bounds.height * 0.5 )
                                 .cornerRadius(15)
-                            }
-                            else if self.itemImage == nil {
-                                Image("placeholder")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: UIScreen.main.bounds.width * 0.9)
-                                    .cornerRadius(15)
                             } else {
-                                Image(uiImage: self.itemImage!)
+                                Image("placeholder")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
                                     .frame(width: UIScreen.main.bounds.width * 0.9)
@@ -131,9 +131,7 @@ struct ItemAdder: View {
                                 .padding(.horizontal, 5)
                                 .keyboardType(.decimalPad)
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray))
-                            MultilineTextField("Description", text: $itemDescription) {
-                                //
-                            }
+                            MultilineTextField("Description", text: $itemDescription) { }
                             .overlay(RoundedRectangle(cornerRadius: 5).stroke(Color.gray))
                         }
                         .padding(.top, 10)
@@ -142,8 +140,49 @@ struct ItemAdder: View {
                             if self.itemName.trimmingCharacters(in: .whitespaces) == "" || self.itemPrice.trimmingCharacters(in: .whitespaces) == "" || self.itemDescription.trimmingCharacters(in: .whitespaces) == "" {
                                 print("Missing something")
                             } else {
-                                let newItem = Item(name: self.itemName, description: self.itemDescription, price: (self.itemPrice as NSString).doubleValue, imageURL: self.imageURL)
-                                print(newItem)
+                                
+                                if self.itemImage != nil {
+                                    print("Picked a custom image")
+                                    self.loadingMessage = "Uploading Image ..."
+                                    self.loading = true
+                                    
+                                    let imageData = self.itemImage!.jpegData(compressionQuality: 0.75)
+                                    let storageRef = Storage.storage().reference().child("productPics/\(UUID()).png")
+                                    
+                                    let uploadTask = storageRef.putData(imageData!, metadata: nil, completion: { (metadata, err) in
+                                        if err != nil {
+                                            print(err!)
+                                            return
+                                        }
+                                    })
+                                    uploadTask.observe(.success) { snapshot in
+                                        print("Finished uploading")
+                                        
+                                        storageRef.downloadURL { (uploadURL, error) in
+                                            if let error = error {
+                                                print(error)
+                                            } else {
+                                            self.loadingMessage = "Saving Item ..."
+                                        let newItem = Item(name: self.itemName, description: self.itemDescription, price: (self.itemPrice as NSString).doubleValue, imageURL: "\(uploadURL!)")
+                                               print(newItem)
+                                               self.items.append(newItem)
+                                                self.loading = false
+                                               self.showSheet = false
+                                            }
+                                        }
+                                        
+                                    }
+                                } else {
+                                    self.loadingMessage = "Saving Item ..."
+                                    self.loading = true
+                                    let newItem = Item(name: self.itemName, description: self.itemDescription, price: (self.itemPrice as NSString).doubleValue, imageURL: self.imageURL)
+                                    print(newItem)
+                                    self.items.append(newItem)
+                                 self.loading = false
+                                    self.showSheet = false
+                                }
+                                
+                                
                             }
                         }) {
                             Text("Add item")

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>945958537323-6k2fgrok1reps9so3n5idj301qd3p728.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.945958537323-6k2fgrok1reps9so3n5idj301qd3p728</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBmifEWQ_cTnvojUM3uZyr5qRT0kvvgPEQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>945958537323</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.aashishthoutam.visaCurbside</string>
+	<key>PROJECT_ID</key>
+	<string>visa-curbside</string>
+	<key>STORAGE_BUCKET</key>
+	<string>visa-curbside.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:945958537323:ios:8d33b1a591ba212271492e</string>
+	<key>DATABASE_URL</key>
+	<string>https://visa-curbside.firebaseio.com</string>
+</dict>
+</plist>

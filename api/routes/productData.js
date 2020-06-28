@@ -59,6 +59,10 @@ router.post("/", async (req, res) => {
         )[0]
       : null;
 
+    description = description
+      .split("\n")
+      .filter((item) => item != "")
+      .join(".\n");
     res.json({
       name,
       price,
