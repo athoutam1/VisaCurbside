@@ -129,16 +129,22 @@ class StoreCard extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          ListTile(
-            title: Text(_store.merchantName, 
-            style: TextStyle(fontWeight: FontWeight.bold)),
-            subtitle: Text(_store.storeName),
-            trailing: Icon(Icons.store),
-            onTap: () {
-              Navigator.push(context,
-            CupertinoPageRoute(builder: (context) => StoreDetails(_store)));
-            }
-        )
+          Row(children: <Widget>[
+            Expanded(
+              child: ListTile(
+                title: Text(_store.merchantName, 
+                style: TextStyle(fontWeight: FontWeight.bold)),
+                subtitle: Text(_store.storeName),
+                trailing: Icon(Icons.store),
+                onTap: () {
+                  Navigator.push(context,
+                CupertinoPageRoute(builder: (context) => StoreDetails(_store)));
+                }
+              ),
+            ),
+          ],)
+          ,
+        
       ] 
       )
     );
