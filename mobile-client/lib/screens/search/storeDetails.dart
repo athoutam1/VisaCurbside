@@ -48,7 +48,7 @@ class _StoreDetailsState extends State<StoreDetails> {
                 Text(widget._store.merchantName,
                   style: TextStyle(
                     letterSpacing: 3,
-                    fontSize: 40,
+                    fontSize: 48,
                     fontWeight: FontWeight.bold)),
                 SizedBox(height: 25),
                 CupertinoTextField(

@@ -57,4 +57,45 @@ router.get("/details", async (req, res) => {
   }
 });
 
+// Returns all orders for a specific user based on user.UID
+router.get("/getOrdersByUser", async (req, res) => {
+  const { userID } = req.query;
+  console.log(
+    `Getting all orders for user with uid: ${userID}`
+  );
+  try {
+    let [response, responseFields] = await sql.query(`
+        SELECT * FROM ORDERS WHERE SHOPPERID = "${userID}";
+      `);
+      response = response.map(
+        (response) => 
+        new order.Order(
+          response.id,
+          response.storeID,
+          response.itemIDs,
+          response.shopperID,
+          response.isPending,
+          response.isReadyForPickup,
+          response.time
+        )
+      )
+    for (let i = 0; i < response.length; i++) {
+      let orderID = response[i].id;
+      let [response2, responseFields2] = await sql.query(`
+      SELECT itemID FROM ORDEREDITEMS WHERE ORDERID = ${orderID};
+    `);
+      let array = [];
+      for (let c = 0; c < response2.length; c++) {
+        array.push(response2[c].itemID)
+      }
+      response[i].itemIDs = array;
+    }
+    
+    res.json(response);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
 module.exports = router;
