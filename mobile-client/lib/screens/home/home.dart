@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 
 import '../search/search.dart';
-import '../order/order.dart';
+import '../order/order_page.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -27,7 +27,7 @@ class Home extends StatelessWidget {
             return Search();
             break;
           case 1:
-            return Order();
+            return OrderPage();
             break;
         }
         return null;

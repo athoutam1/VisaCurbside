@@ -1,20 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:visa_curbside/models/order.dart';
 import '../../models/store.dart';
 
 class PastOrderCard extends StatelessWidget {
-  final Store _store;
-  PastOrderCard(this._store);
+  final Order _order;
+  PastOrderCard(this._order);
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.grey.shade400,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
             leading: Icon(CupertinoIcons.restart),
-            title: Text(_store.merchantName),
-            subtitle: Text('Placed on 6/23 at 3:45PM'),
+            title: Text("Order ID: " + _order.id.toString()),
+            subtitle: Text(_order.time),
             onTap: () {
               Navigator.push(context,
                   CupertinoPageRoute(builder: (context) => PastOrder()));

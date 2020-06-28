@@ -8,7 +8,7 @@ import 'package:flappy_search_bar/flappy_search_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-var databaseHelper = new DatabaseHelper();
+DatabaseHelper databaseHelper = new DatabaseHelper();
 
 class Search extends StatefulWidget {
 

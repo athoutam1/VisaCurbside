@@ -27,7 +27,8 @@ class ItemDetails extends StatelessWidget {
                 ],
               ),
               SizedBox(height: 50,),
-              Text("Item Details:")
+              Text("Item Details:"),
+              Text(_item.description)
             ],
           ),
         ));
