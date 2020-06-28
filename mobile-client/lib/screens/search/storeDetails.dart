@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:visa_curbside/screens/search/item_details.dart';
 import 'package:visa_curbside/services/DatabaseHelper.dart';
 import '../../models/store.dart';
 import 'package:visa_curbside/models/item.dart';
@@ -94,23 +95,6 @@ class _StoreDetailsState extends State<StoreDetails> {
                     itemBuilder: (_, int position) {
                       final item = snapshot.data[position];
                       return ItemCard(item, showAddToCartDialog);
-                      // return Card(
-                      //   margin: EdgeInsets.fromLTRB(20, 6, 20, 0),
-                      //   color: CupertinoColors.quaternaryLabel,
-                      //   child: ListTile(
-                      //     title: Text(item.name,
-                      //     style: TextStyle(
-                      //       fontWeight: FontWeight.bold
-                      //     )),
-                      //     isThreeLine: true,
-                      //     subtitle: Text(" ${item.description}\n " + "\$" + item.price.toString(),
-                      //     style: TextStyle(letterSpacing: 2)),
-                      //     onTap: () {
-                      //       showAddToCartDialog(context, item);
-                      //       print("clicked" + item.name);
-                      //     },
-                      //     )
-                      // );
                     }
                   )
                 : 
@@ -179,30 +163,50 @@ double getTotal(List<Item>itemsInCart) {
   
 }
 
-  class ItemCard extends StatelessWidget {
-    final Item _item;
-    final Function _showAddToCartDialog;
-    ItemCard(this._item, this._showAddToCartDialog);
-    @override
-    Widget build(BuildContext context) {
-      return Card(
-        child: Column(
-          children: <Widget>[
-              ListTile(
-                title: Text(_item.name,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold
-                )),
-                isThreeLine: true,
-                subtitle: Text(" ${_item.description}\n " + "\$" + _item.price.toString(),
-                style: TextStyle(letterSpacing: 2)),
-                onTap: () {
-                  _showAddToCartDialog(context, _item);
-                  print("clicked" + _item.name);
-                },
+class ItemCard extends StatelessWidget {
+  final Item _item;
+  final Function _showAddToCartDialog;
+  ItemCard(this._item, this._showAddToCartDialog);
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  flex: 4,
+                  child: ListTile(
+                    title: Text(_item.name,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold
+                    )),
+                    isThreeLine: true,
+                    subtitle: Text(" ${_item.description}\n " + "\$" + _item.price.toString(),
+                    style: TextStyle(letterSpacing: 2)),
+                    onTap: () {
+                      Navigator.push(
+                context, CupertinoPageRoute(builder: (context) => ItemDetails(_item)));
+                      print("clicked" + _item.name);
+                    },
+                  ),
+                ),
+                Expanded(
+                  flex:1, 
+                  child: ListTile(
+                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                    selected: true,
+                    leading: Icon(Icons.add),
+                    onTap: () {
+                      _showAddToCartDialog(context, _item);
+                    },
+                  ),
                 )
+                
               ],
-            ),
-      );
-    }
+            )
+            ],
+          ),
+    );
   }
+}
