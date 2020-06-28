@@ -89,13 +89,15 @@ class _StoreDetailsState extends State<StoreDetails> {
                 initialData: List(),
                 builder: (context, snapshot) {
                   return snapshot.hasData ?
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (_, int position) {
-                      final item = snapshot.data[position];
-                      return ItemCard(item, showAddToCartDialog);
-                    }
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (_, int position) {
+                        final item = snapshot.data[position];
+                        return ItemCard(item, showAddToCartDialog);
+                      }
+                    ),
                   )
                 : 
                 Center(

@@ -72,25 +72,46 @@ router.get("/getOrdersByUser", async (req, res) => {
         new order.Order(
           response.id,
           response.storeID,
+          response.storeName,
           response.itemIDs,
+          response.total,
           response.shopperID,
           response.isPending,
           response.isReadyForPickup,
           response.time
         )
       )
+
     for (let i = 0; i < response.length; i++) {
       let orderID = response[i].id;
       let [response2, responseFields2] = await sql.query(`
       SELECT itemID FROM ORDEREDITEMS WHERE ORDERID = ${orderID};
     `);
+    let [response4, responseFields4] = await sql.query(`
+    select sum(price)from orders 
+    join ordereditems on orders.id = ordereditems.orderid 
+    join items on ordereditems.itemid=items.id 
+    where orders.id=${orderID};
+  `);
+      response[i].total = response4[0]['sum(price)'];
+      
       let array = [];
       for (let c = 0; c < response2.length; c++) {
         array.push(response2[c].itemID)
       }
       response[i].itemIDs = array;
     }
+
+
+    for (let i = 0; i < response.length; i++) {
+      let storeID = response[i].storeID;
+      let [response3, responseFields3] = await sql.query(`
+      SELECT name FROM STORES WHERE id = ${storeID};
+    `);
+      response[i].storeName = response3[0].name
+    }
     
+
     res.json(response);
   } catch (error) {
     console.error(error);

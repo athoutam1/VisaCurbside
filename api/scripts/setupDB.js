@@ -69,6 +69,12 @@ const promisePool = pool.promise();
       VALUES("Mustard", 3.99, "6 oz metal bottle", "https://target.scene7.com/is/image/Target/GUEST_2ce6d6ff-cb12-4f89-b433-35dd2079d3ba?wid=488&hei=488&fmt=pjpeg", 1);
     `);
     await sql.query(`
+    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Tuna", 0.99, "Blue fin tuna can", "url", 2);
+    `);
+    await sql.query(`
+    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Coca Cola", 0.99, "Soda Can", "url", 2);
+    `);
+    await sql.query(`
       CREATE TABLE Orders(
         id INT PRIMARY KEY AUTO_INCREMENT,
         shopperID VARCHAR(255) NOT NULL,

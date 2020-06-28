@@ -10,6 +10,9 @@ class Order {
   final int isPending;
   final int isReadyForPickup;
   final String time;
+  final String storeName;
+  final double total;
+
 
   Order({
     this.id,
@@ -19,8 +22,10 @@ class Order {
     this.isPending,
     this.isReadyForPickup,
     this.time,
+    this.storeName,
+    this.total,
   });
-
+  
   
 
   Order copyWith({
@@ -28,9 +33,11 @@ class Order {
     String storeID,
     List<int> itemIDs,
     String shopperID,
-    bool isPending,
-    bool isReadyForPickup,
+    int isPending,
+    int isReadyForPickup,
     String time,
+    String storeName,
+    double total,
   }) {
     return Order(
       id: id ?? this.id,
@@ -40,6 +47,8 @@ class Order {
       isPending: isPending ?? this.isPending,
       isReadyForPickup: isReadyForPickup ?? this.isReadyForPickup,
       time: time ?? this.time,
+      storeName: storeName ?? this.storeName,
+      total: total ?? this.total,
     );
   }
 
@@ -52,6 +61,8 @@ class Order {
       'isPending': isPending,
       'isReadyForPickup': isReadyForPickup,
       'time': time,
+      'storeName': storeName,
+      'total': total,
     };
   }
 
@@ -66,6 +77,8 @@ class Order {
       isPending: map['isPending'],
       isReadyForPickup: map['isReadyForPickup'],
       time: map['time'],
+      storeName: map['storeName'],
+      total: map['total'],
     );
   }
 
@@ -75,7 +88,7 @@ class Order {
 
   @override
   String toString() {
-    return 'Order(id: $id, storeID: $storeID, itemIDs: $itemIDs, shopperID: $shopperID, isPending: $isPending, isReadyForPickup: $isReadyForPickup, time: $time)';
+    return 'Order(id: $id, storeID: $storeID, itemIDs: $itemIDs, shopperID: $shopperID, isPending: $isPending, isReadyForPickup: $isReadyForPickup, time: $time, storeName: $storeName, total: $total)';
   }
 
   @override
@@ -90,7 +103,9 @@ class Order {
       o.shopperID == shopperID &&
       o.isPending == isPending &&
       o.isReadyForPickup == isReadyForPickup &&
-      o.time == time;
+      o.time == time &&
+      o.storeName == storeName &&
+      o.total == total;
   }
 
   @override
@@ -101,6 +116,8 @@ class Order {
       shopperID.hashCode ^
       isPending.hashCode ^
       isReadyForPickup.hashCode ^
-      time.hashCode;
+      time.hashCode ^
+      storeName.hashCode ^
+      total.hashCode;
   }
 }

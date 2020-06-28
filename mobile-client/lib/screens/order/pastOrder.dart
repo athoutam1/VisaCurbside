@@ -14,9 +14,10 @@ class PastOrderCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
+            isThreeLine: true,
             leading: Icon(CupertinoIcons.restart),
-            title: Text("Order ID: " + _order.id.toString()),
-            subtitle: Text(_order.time),
+            title: Text(_order.storeName),
+            subtitle: Text("Order ID: " + _order.id.toString() + "\n" + _order.time),
             onTap: () {
               Navigator.push(context,
                   CupertinoPageRoute(builder: (context) => PastOrder()));

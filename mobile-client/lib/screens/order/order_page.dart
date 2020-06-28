@@ -43,28 +43,30 @@ class _OrderPageState extends State<OrderPage> {
                 initialData: List(),
                 builder: (context, snapshot) {
                   return snapshot.hasData ?
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (_, int position) {
-                      final order = snapshot.data[position];
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (_, int position) {
+                        final order = snapshot.data[position];
 
 
-                      if (order.isPending == 1 && order.isReadyForPickup == 0) {
-                        return PendingOrderCard(order);
-                      } else if (order.isPending == 0 && order.isReadyForPickup == 1) {
-                        return PickupOrderCard(order); 
-                      } else if (order.isPending == 0 && order.isReadyForPickup == 0) {
-                        return PastOrderCard(order);
-                      } else if (order.shopperID == "READY_FOR_PICKUP_HEADER") {
-                        return Text(" Ready for Pick Up", style: kOrderHeadersTextStyle);
-                      } else if (order.shopperID == "PENDING_HEADER") {
-                        return Text(" Pending Orders", style: kOrderHeadersTextStyle);
-                      } else if (order.shopperID == "PAST_ORDER_HEADER") {
-                        return Text(" Past Orders", style: kOrderHeadersTextStyle);
+                        if (order.isPending == 1 && order.isReadyForPickup == 0) {
+                          return PendingOrderCard(order);
+                        } else if (order.isPending == 0 && order.isReadyForPickup == 1) {
+                          return PickupOrderCard(order); 
+                        } else if (order.isPending == 0 && order.isReadyForPickup == 0) {
+                          return PastOrderCard(order);
+                        } else if (order.shopperID == "READY_FOR_PICKUP_HEADER") {
+                          return Text(" Ready for Pick Up", style: kOrderHeadersTextStyle);
+                        } else if (order.shopperID == "PENDING_HEADER") {
+                          return Text(" Pending Orders", style: kOrderHeadersTextStyle);
+                        } else if (order.shopperID == "PAST_ORDER_HEADER") {
+                          return Text(" Past Orders", style: kOrderHeadersTextStyle);
+                        }
+
                       }
-
-                    }
+                    ),
                   )
                 : 
                 Center(

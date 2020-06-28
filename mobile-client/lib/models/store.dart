@@ -10,12 +10,19 @@ class Store {
   final String merchantName;
   final int storeID;
   final String storeName;
+  final String description;
+  final String location;
+
+  
   Store({
     this.merchantID,
     this.merchantName,
     this.storeID,
     this.storeName,
+    this.description,
+    this.location,
   });
+
   
 
   Store copyWith({
@@ -23,12 +30,16 @@ class Store {
     String merchantName,
     int storeID,
     String storeName,
+    String description,
+    String location,
   }) {
     return Store(
       merchantID: merchantID ?? this.merchantID,
       merchantName: merchantName ?? this.merchantName,
       storeID: storeID ?? this.storeID,
       storeName: storeName ?? this.storeName,
+      description: description ?? this.description,
+      location: location ?? this.location,
     );
   }
 
@@ -38,6 +49,8 @@ class Store {
       'merchantName': merchantName,
       'storeID': storeID,
       'storeName': storeName,
+      'description': description,
+      'location': location,
     };
   }
 
@@ -49,6 +62,8 @@ class Store {
       merchantName: map['merchantName'],
       storeID: map['storeID'],
       storeName: map['storeName'],
+      description: map['description'],
+      location: map['location'],
     );
   }
 
@@ -58,7 +73,7 @@ class Store {
 
   @override
   String toString() {
-    return 'Store(merchantID: $merchantID, merchantName: $merchantName, storeID: $storeID, storeName: $storeName)';
+    return 'Store(merchantID: $merchantID, merchantName: $merchantName, storeID: $storeID, storeName: $storeName, description: $description, location: $location)';
   }
 
   @override
@@ -69,7 +84,9 @@ class Store {
       o.merchantID == merchantID &&
       o.merchantName == merchantName &&
       o.storeID == storeID &&
-      o.storeName == storeName;
+      o.storeName == storeName &&
+      o.description == description &&
+      o.location == location;
   }
 
   @override
@@ -77,6 +94,8 @@ class Store {
     return merchantID.hashCode ^
       merchantName.hashCode ^
       storeID.hashCode ^
-      storeName.hashCode;
+      storeName.hashCode ^
+      description.hashCode ^
+      location.hashCode;
   }
 }

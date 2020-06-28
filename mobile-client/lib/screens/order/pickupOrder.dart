@@ -14,9 +14,10 @@ class PickupOrderCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
+            isThreeLine: true,
             leading: Icon(CupertinoIcons.check_mark_circled),
-            title: Text("Order ID: " + _order.id.toString()),
-            subtitle: Text(_order.time),
+            title: Text(_order.storeName),
+            subtitle: Text("Order ID: " + _order.id.toString() + "\n" + _order.time),
             onTap: () {
               Navigator.push(context,
                   CupertinoPageRoute(builder: (context) => PickupOrder()));

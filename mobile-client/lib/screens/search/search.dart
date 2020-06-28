@@ -94,13 +94,15 @@ class _SearchState extends State<Search> {
                 initialData: List(),
                 builder: (context, snapshot) {
                   return snapshot.hasData ?
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: snapshot.data.length,
-                    itemBuilder: (_, int position) {
-                      final store = snapshot.data[position];
-                      return StoreCard(store);
-                    }
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.length,
+                      itemBuilder: (_, int position) {
+                        final store = snapshot.data[position];
+                        return StoreCard(store);
+                      }
+                    ),
                   )
                 : 
                 Center(
