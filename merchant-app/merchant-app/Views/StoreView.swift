@@ -14,12 +14,9 @@ enum sheetOption {
     case barcode, custom
 }
 
-struct ItemList: View {
+struct StoreView: View {
     
     @EnvironmentObject var dataStore: DataStore
-//    @State var items: [Item] = [
-//        Item(name: "Ketchup", description: "asdashd asdas dohasdoas", price: 2.99, imageURL: "https://images-na.ssl-images-amazon.com/images/I/71Q28KBgotL._SX679_.jpg")
-//    ]
     
     @State private var showActionSheet = false
     @State private var showSheet = false
@@ -31,22 +28,48 @@ struct ItemList: View {
         VStack {
             if !self.showSheet {
                 NavigationView {
-                    VStack {
-                        List {
-                            ForEach(self.dataStore.items) { item in
-                                ItemRow(item: item)
-                            }
-                            .onDelete(perform: delete)
+                    VStack(spacing: 0) {
+                        
+                        ZStack(alignment: .topTrailing) {
+                            WebImage(url: URL(string: self.dataStore.store!.imageURL))
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .overlay(
+                                    VStack {
+                                        Spacer()
+                                        if self.dataStore.store!.merchantName != nil {
+                                            Text(self.dataStore.store!.merchantName!)
+                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                        }
+                                        Text(self.dataStore.store!.storeName)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                    }
+                                    .foregroundColor(.white)
+                                    .padding([.bottom, .leading], 10)
+                                    .font(.system(size: 20))
+                                    .shadow(radius: 10)
+                            )
+                            
+                            
                         }
-                        .navigationBarTitle("Product Catalog")
-                        .navigationBarItems(trailing:
+                        
+                        List {
+                            
                             Button(action: {
                                 self.showActionSheet = true
-                            }, label: {
-                                Image(systemName: "plus")
-                                    .padding(10)
-                            })
-                                .actionSheet(isPresented: $showActionSheet) {
+                            }) {
+                                Text("Add New Item")
+                                .padding(.vertical, 15)
+                                    .frame(maxWidth: UIScreen.main.bounds.width * 0.75, alignment: .center)
+                                .foregroundColor(.white)
+                            }
+                            .background(
+                                RoundedRectangle(cornerRadius: 13, style: .continuous)
+                                .foregroundColor(.blue)
+                            )
+                            .padding(.vertical, 15)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .actionSheet(isPresented: $showActionSheet) {
                                     ActionSheet(
                                         title: Text("Does this item have a barcode?"),
                                         buttons: [
@@ -61,9 +84,16 @@ struct ItemList: View {
                                             .cancel()
                                     ])
                             }
-                        )
+                            
+                            ForEach(self.dataStore.items) { item in
+                                ItemRow(item: item)
+                            }
+                            .onDelete(perform: delete)
+                        }
+                        .navigationBarTitle("")
+                        .navigationBarHidden(true)
                     }
-                    
+                    .edgesIgnoringSafeArea(.top)
                 }
             } else {
                 ItemAdder(sheetOption: self.$sheetOption, showSheet: self.$showSheet).environmentObject(self.dataStore)
@@ -92,12 +122,6 @@ struct ItemList: View {
         
     }
     
-    struct ItemList_Previews: PreviewProvider {
-        static var previews: some View {
-            ItemList()
-        }
-    }
-    
     struct ItemRow: View {
         
         @State var item: Item
@@ -109,7 +133,11 @@ struct ItemList: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(maxWidth: 75)
                 
-                Text(item.name)
+                VStack(spacing: 5) {
+                    Text(item.name)
+                    Text(item.description)
+                    .lineLimit(2)
+                }
                 
                 Spacer()
                 

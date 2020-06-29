@@ -16,28 +16,44 @@ struct Splash: View {
     
     var body: some View {
         VStack {
-            if self.dataStore.isLoggedIn {
-                ItemList().environmentObject(dataStore)
+            if self.dataStore.isLoggedIn && self.dataStore.store != nil {
+                ContentView().environmentObject(dataStore)
             } else {
                 Text("Loading ...")
             }
         }
         .onAppear {
-            let url = "\(self.dataStore.proxy)/merchantApp/getItemsForStore"
-            let parameters: Parameters = [
+            var url = "\(self.dataStore.proxy)/merchantApp/getItemsForStore"
+            var parameters: Parameters = [
                 "storeID": self.dataStore.storeID
             ]
             
             AF.request(url, method: .post, parameters: parameters).responseDecodable(of: [Item].self) { response in
                 switch response.result {
                 case .success(let response):
-                    print(response)
                     self.dataStore.items = response
                     self.dataStore.isLoggedIn = true
                 case .failure(let err):
                     print(err)
                 }
             }
+            
+            url = "\(self.dataStore.proxy)/merchant/storeDetails"
+            parameters = [
+                "id": self.dataStore.storeID
+            ]
+            
+            AF.request(url, method: .get, parameters: parameters).responseDecodable(of: Store.self){ response in
+                switch response.result {
+                case .success(let response):
+                    self.dataStore.store = response
+                case .failure(let err):
+                    print(err)
+                }
+            }
+            
+            
+            
         }
     }
 }
