@@ -2,11 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:visa_curbside/screens/search/custom_order_page.dart';
 import 'package:visa_curbside/screens/search/item_details.dart';
 import 'package:visa_curbside/services/DatabaseHelper.dart';
+import 'package:visa_curbside/shared/constants.dart';
 import '../../models/store.dart';
 import 'package:visa_curbside/models/item.dart';
 import './cart.dart';
+import './custom_order_page.dart';
 
 
 var databaseHelper = new DatabaseHelper();
@@ -28,6 +31,7 @@ class _StoreDetailsState extends State<StoreDetails> {
   Widget build(BuildContext context) {
     
     return CupertinoPageScaffold(
+      
       navigationBar: CupertinoNavigationBar(
         middle: Text("VisaCurbside"),
         trailing: GestureDetector(
@@ -90,13 +94,29 @@ class _StoreDetailsState extends State<StoreDetails> {
                 builder: (context, snapshot) {
                   return snapshot.hasData ?
                   Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (_, int position) {
-                        final item = snapshot.data[position];
-                        return ItemCard(item, showAddToCartDialog);
-                      }
+                    child: Column(
+                      children: <Widget>[
+                        Card(
+                          child: ListTile(
+                            leading: Icon(Icons.add),
+                            title: Text("Add Custom Item",
+                            style: kOrderHeadersTextStyle),
+                            onTap: () {
+                              Navigator.push(
+                                context, CupertinoPageRoute(builder: (context) => CustomOrderPage(_itemsInCart)));
+                              print("custom order tapped");
+                            },
+                          ),
+                        ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: snapshot.data.length,
+                          itemBuilder: (_, int position) {
+                            final item = snapshot.data[position];
+                            return ItemCardStoreDetails(item, showAddToCartDialog);
+                          }
+                        ),
+                      ],
                     ),
                   )
                 : 
@@ -165,10 +185,10 @@ double getTotal(List<Item>itemsInCart) {
   
 }
 
-class ItemCard extends StatelessWidget {
+class ItemCardStoreDetails extends StatelessWidget {
   final Item _item;
   final Function _showAddToCartDialog;
-  ItemCard(this._item, this._showAddToCartDialog);
+  ItemCardStoreDetails(this._item, this._showAddToCartDialog);
   @override
   Widget build(BuildContext context) {
     return Card(

@@ -39,13 +39,7 @@ class _SearchState extends State<Search> {
         heroTag: "search screen",
         transitionBetweenRoutes: false,
         middle: Text("Visa Curbside"),
-        trailing: GestureDetector(
-          child: Icon(CupertinoIcons.profile_circled),
-          onTap: () {
-            Navigator.push(
-                context, CupertinoPageRoute(builder: (context) => Settings()));
-          },
-        ),
+        
       ),
       child: SafeArea(
         child: CupertinoPageScaffold(
