@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:visa_curbside/models/order.dart';
 import 'package:visa_curbside/screens/search/storeDetails.dart';
 import 'package:visa_curbside/services/DatabaseHelper.dart';
+import 'package:visa_curbside/shared/constants.dart';
 import '../../models/store.dart';
 import './messageMerchant.dart';
 import './payNow.dart';
+import 'package:visa_curbside/models/item.dart';
+import 'package:visa_curbside/screens/search/cart.dart';
 
 class PendingOrderCard extends StatelessWidget {
   Order _order;
+  Store _store;
   PendingOrderCard(this._order);
   @override
   Widget build(BuildContext context) {
@@ -22,9 +26,10 @@ class PendingOrderCard extends StatelessWidget {
             leading: Icon(CupertinoIcons.clock),
             title: Text(_order.storeName),
             subtitle: Text("Order ID: " + _order.id.toString() + "\n" + _order.time),
-            onTap: () {
+            onTap: () async {
+              _store = await databaseHelper.getStoreDetailsFromID(int.parse(_order.storeID));
               Navigator.push(context,
-                  CupertinoPageRoute(builder: (context) => PendingOrder(_order)));
+                  CupertinoPageRoute(builder: (context) => PendingOrder(_order, _store)));
             },
           ),
         ],
@@ -35,8 +40,10 @@ class PendingOrderCard extends StatelessWidget {
 
 class PendingOrder extends StatefulWidget {
   Order _order;
-  PendingOrder(this._order);
+  Store _store;
+  PendingOrder(this._order, this._store);
 
+  List<Item> _items;
   @override
   _PendingOrderState createState() => _PendingOrderState();
 }
@@ -44,65 +51,72 @@ class PendingOrder extends StatefulWidget {
 DatabaseHelper databaseHelper = new DatabaseHelper();
 
 class _PendingOrderState extends State<PendingOrder> {
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           middle: Text("Order: " + widget._order.id.toString()),
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            FutureBuilder<Store>(
-                future: databaseHelper.getStoreDetailsFromID(int.parse(widget._order.storeID)),
-                initialData: Store(),
-                builder: (context, snapshot) {
-                Store store = snapshot.data;
-                return snapshot.hasData ?
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: <Widget>[
-                      Column(
-                        children: <Widget>[
-                          Text("Store Info:"),
-                          Text(store.merchantName),
-                          Text(store.description),
-                          Text(store.location),
-                          Text("Items:"),
-                          Text(widget._order.itemIDs.toString()),
-                          Text("Total:"),
-                          Text("\$ " + widget._order.total.toString()),
-                          CupertinoButton(
-                            child: Text("Message Merchant"),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  CupertinoPageRoute(
-                                      builder: (context) => MessageMerchant()));
-                            },
-                          ),
-                        CupertinoButton(
-                          
-                          child: Text("Pay Now"),
-                          onPressed: () {
-                            Navigator.push(context,
-                                CupertinoPageRoute(builder: (context) => PayNow()));
-                          },
-                        ),
-                        ],
-                      ),
-                    ],
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(widget._store.storeName, 
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold
+                  ),),
+              Text(widget._store.location),
+              SizedBox(height: 50,),
+              Text("Cart Details", style: kOrderHeadersTextStyle.copyWith(color: Colors.black),),
+              FutureBuilder<List<Item>>(
+                  future: databaseHelper.getItemsFromIDs(widget._order.itemIDs),
+                  initialData: List(),
+                  builder: (context, snapshot) {
+                  widget._items = snapshot.data;
+                  return snapshot.hasData ?
+                  Container(
+                      child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: widget._items.length,
+                      itemBuilder: (_, int position) {
+                        return Card(
+                          child: Text(widget._items[position].name),
+                        );
+                      }),
+                  )
+                  : 
+                  Center(
+                    child: CircularProgressIndicator()
+                  );
+                  }
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CupertinoButton.filled(
+                    child: Text("Message Merchant"),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => MessageMerchant()));
+                    },
                   ),
-                )
-                : 
-                Center(
-                  child: CircularProgressIndicator()
-                );
-                }
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CupertinoButton.filled(
+                  child: Text("Pay Now"),
+                  onPressed: () {
+                    Navigator.push(context,
+                        CupertinoPageRoute(builder: (context) => PayNow()));
+                  },
               ),
-            
-          ],
+                ),
+              
+            ],
+          ),
         ));
   }
 }

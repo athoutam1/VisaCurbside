@@ -25,13 +25,6 @@ class _OrderPageState extends State<OrderPage> {
         heroTag: "order screen",
         transitionBetweenRoutes: false,
         middle: Text("Visa Curbside"),
-        trailing: GestureDetector(
-          child: Icon(CupertinoIcons.profile_circled),
-          onTap: () {
-            Navigator.push(
-                context, CupertinoPageRoute(builder: (context) => Settings()));
-          },
-        ),
       ),
       child: SafeArea(
         child: Column(
@@ -49,8 +42,7 @@ class _OrderPageState extends State<OrderPage> {
                       itemCount: snapshot.data.length,
                       itemBuilder: (_, int position) {
                         final order = snapshot.data[position];
-
-
+                        
                         if (order.isPending == 1 && order.isReadyForPickup == 0) {
                           return PendingOrderCard(order);
                         } else if (order.isPending == 0 && order.isReadyForPickup == 1) {
@@ -64,7 +56,6 @@ class _OrderPageState extends State<OrderPage> {
                         } else if (order.shopperID == "PAST_ORDER_HEADER") {
                           return Text(" Past Orders", style: kOrderHeadersTextStyle);
                         }
-
                       }
                     ),
                   )

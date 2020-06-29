@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:visa_curbside/screens/settings/settings.dart';
 
 import '../search/search.dart';
 import '../order/order_page.dart';
@@ -18,6 +19,10 @@ class Home extends StatelessWidget {
             icon: Icon(CupertinoIcons.create_solid),
             title: Text('Orders'),
           ),
+          BottomNavigationBarItem(
+            icon: Icon(CupertinoIcons.profile_circled),
+            title: Text("Profile")
+          )
         ],
         currentIndex: 0,
       ),
@@ -28,6 +33,9 @@ class Home extends StatelessWidget {
             break;
           case 1:
             return OrderPage();
+            break;
+          case 2:
+            return Settings();
             break;
         }
         return null;

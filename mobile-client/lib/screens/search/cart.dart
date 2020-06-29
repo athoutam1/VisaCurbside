@@ -48,31 +48,31 @@ class _CartState extends State<Cart> {
           letterSpacing: 3
         )),
         FutureBuilder<List<Item>>(
-                future: databaseHelper.getItemsFromIDs(widget._itemIDsInCart),
-                initialData: List(),
-                builder: (context, snapshot) {
-                  widget._itemsInCart = snapshot.data;
-                  return snapshot.hasData ?
-                  Container(
-                    height: 600,
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (_, int position) {
-                        final item = snapshot.data[position];
-                        return ItemCard(item);
-                      }
-                    ),
-                  )
-                : 
-                Center(
-                  child: CircularProgressIndicator()
-                );
+          future: databaseHelper.getItemsFromIDs(widget._itemIDsInCart),
+          initialData: List(),
+          builder: (context, snapshot) {
+            widget._itemsInCart = snapshot.data;
+            return snapshot.hasData ?
+            Container(
+              height: 600,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: snapshot.data.length,
+                itemBuilder: (_, int position) {
+                  final item = snapshot.data[position];
+                  return ItemCard(item);
                 }
               ),
-              SizedBox(height: 25,),
+            )
+          : 
+          Center(
+            child: CircularProgressIndicator()
+          );
+          }
+        ),
+        SizedBox(height: 25,),
 
-              CupertinoButton.filled(
+        CupertinoButton.filled(
                 child: Text("Confirm Order"),
                 onPressed: () {
                   showConfirmOrderAlertDialog(context, widget._itemsInCart, widget._itemIDsInCart, widget._store);
