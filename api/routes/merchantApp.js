@@ -5,6 +5,8 @@ var _ = require("lodash");
 const storage = require("../services/firebase").storage;
 const sql = require("../services/mysql");
 const merchant = require("../models/merchant");
+const db = require("../services/firebase").db;
+const admin = require("../services/firebase").admin;
 
 router.post("/addItemToCatalog", async (req, res) => {
   const { name, price, description, imageURL, storeID } = req.body;
@@ -14,6 +16,22 @@ router.post("/addItemToCatalog", async (req, res) => {
       ${Number(price)}, "${description}", "${imageURL}", ${Number(storeID)});
     `);
     res.json({ itemID: response.insertId });
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
+router.get("/messageShopper", async (req, res) => {
+  const { storeID, shopperID, message } = req.query;
+  try {
+    const chatRef = db.collection("chats").doc(`${shopperID}AND${storeID}`);
+    await chatRef.update({
+      messages: admin.firestore.FieldValue.arrayUnion({
+        message: message,
+        messenger: "store",
+      }),
+    });
+    res.sendStatus(200);
   } catch (error) {
     res.sendStatus(500);
   }

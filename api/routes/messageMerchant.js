@@ -8,7 +8,6 @@ router.get("/", async function (req, res) {
   const { message, storeID, userID } = req.query;
 
   const chatRef = db.collection("chats").doc(`${userID}AND${storeID}`);
-  const doc = await chatRef.get();
   await chatRef.set({
     messages: [
       {
@@ -34,7 +33,7 @@ router.get("/", async function (req, res) {
     if (responseSpeech == "Sorry, I can't help you with that.") {
       // The merchant needs to respond
     } else {
-      chatRef.update({
+      await chatRef.update({
         messages: admin.firestore.FieldValue.arrayUnion({
           message: responseSpeech,
           messenger: "veronica",
