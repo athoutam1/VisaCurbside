@@ -18,5 +18,10 @@ app.use("/merchant", require("./routes/merchant"));
 app.use("/order", require("./routes/order"));
 app.use("/productData", require("./routes/productData"));
 app.use("/merchantApp", require("./routes/merchantApp"));
+app.use("/messageMerchant", require("./routes/messageMerchant"));
+app.use(
+  "/dialogflowFirebaseFulfillment",
+  require("./routes/dialogflowFulfillment")
+);
 
 module.exports = app;
