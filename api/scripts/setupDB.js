@@ -30,16 +30,19 @@ const promisePool = pool.promise();
       CREATE TABLE Stores(
         id INT PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
-        merchantID VARCHAR(255) NOT NULL,
-        merchantName VARCHAR(255) NOT NULL,
+        merchantID VARCHAR(255),
+        merchantName VARCHAR(255),
         description MEDIUMTEXT NOT NULL,
         location MEDIUMTEXT NOT NULL,
-        imageURL MEDIUMTEXT
+        imageURL MEDIUMTEXT,
+        openTime TIME,
+        closeTime TIME,
+        parkingDetails MEDIUMTEXT
       );
     `);
     await sql.query(`
-      INSERT INTO Stores(id, name, merchantID, merchantName, description, location) 
-      VALUES(1, "Publix in Tampa", "asd87870dd", "Publix", "this store sells food", "123 Publix Tampa Dr, USA");
+      INSERT INTO Stores(id, name, merchantID, merchantName, description, location, openTime, closeTime, parkingDetails) 
+      VALUES(1, "Publix in Tampa", "asd87870dd", "Publix", "this store sells food", "123 Publix Tampa Dr, USA", "08:00", "21:30", "There is a parking garage behind the store. The 2nd floor is for customer use with a 30 minute free parking limit");
     `);
     await sql.query(`
       INSERT INTO Stores(id, name, merchantID, merchantName, description, location) 

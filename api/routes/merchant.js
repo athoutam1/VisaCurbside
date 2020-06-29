@@ -2,9 +2,10 @@ var express = require("express");
 var router = express.Router();
 var _ = require("lodash");
 
-const admin = require("../services/firebase").admin;
 const sql = require("../services/mysql");
 const merchant = require("../models/merchant");
+const db = require("../services/firebase").db;
+const admin = require("../services/firebase").admin;
 
 // Takes in search query and returns a store preview (info to put in search results)
 router.get("/search", async (req, res) => {
@@ -112,6 +113,18 @@ router.post("/changeOrderStatus", async (req, res) => {
     }, time = NOW()
       WHERE id = ${orderID};
     `);
+
+    if (!isPending && !isReadyForPickup) {
+      // Delete chat from firebase
+      let [response, responseFields] = await sql.query(`
+        select shopperID, storeID
+        from orders;
+      `);
+      await db
+        .collection("chats")
+        .doc(`${response[0].shopperID}AND${response[0].storeID}`)
+        .delete();
+    }
     res.sendStatus(200);
   } catch (error) {
     res.sendStatus(500);
