@@ -31,6 +31,9 @@
 		31570B2024AA816A000C89A6 /* OrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31570B1F24AA816A000C89A6 /* OrderView.swift */; };
 		31570B2224AA8180000C89A6 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31570B2124AA8180000C89A6 /* ProfileView.swift */; };
 		31570B2424AA84EB000C89A6 /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31570B2324AA84EB000C89A6 /* Store.swift */; };
+		31570B2624AA9324000C89A6 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31570B2524AA9324000C89A6 /* Order.swift */; };
+		31570B2824AA9E16000C89A6 /* OrderDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31570B2724AA9E16000C89A6 /* OrderDetailsView.swift */; };
+		31D4F81C24AAA41F00E51F5B /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D4F81B24AAA41F00E51F5B /* ChatView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,6 +58,9 @@
 		31570B1F24AA816A000C89A6 /* OrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderView.swift; sourceTree = "<group>"; };
 		31570B2124AA8180000C89A6 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		31570B2324AA84EB000C89A6 /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		31570B2524AA9324000C89A6 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
+		31570B2724AA9E16000C89A6 /* OrderDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsView.swift; sourceTree = "<group>"; };
+		31D4F81B24AAA41F00E51F5B /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		848B8E4A2CD05DC6EF7DD289 /* Pods-merchant-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-merchant-app.release.xcconfig"; path = "Target Support Files/Pods-merchant-app/Pods-merchant-app.release.xcconfig"; sourceTree = "<group>"; };
 		871217B34A6030485252391F /* Pods-merchant-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-merchant-app.debug.xcconfig"; path = "Target Support Files/Pods-merchant-app/Pods-merchant-app.debug.xcconfig"; sourceTree = "<group>"; };
 		E5F7FD616A767907E6003DF8 /* Pods_merchant_app.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_merchant_app.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -128,6 +134,7 @@
 				31570ADA24A92BA1000C89A6 /* DataStore.swift */,
 				313C803424A82E97009FFAE2 /* Item.swift */,
 				31570B2324AA84EB000C89A6 /* Store.swift */,
+				31570B2524AA9324000C89A6 /* Order.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -136,11 +143,11 @@
 			isa = PBXGroup;
 			children = (
 				313C803124A82E88009FFAE2 /* StoreView.swift */,
-				31570B1F24AA816A000C89A6 /* OrderView.swift */,
-				31570B2124AA8180000C89A6 /* ProfileView.swift */,
 				31570AC624A8352C000C89A6 /* ItemAdder.swift */,
-				31570AC824A847C7000C89A6 /* ImagePicker.swift */,
-				31570ACD24A84DD6000C89A6 /* LottieView.swift */,
+				31570B1F24AA816A000C89A6 /* OrderView.swift */,
+				31570B2724AA9E16000C89A6 /* OrderDetailsView.swift */,
+				31570B2124AA8180000C89A6 /* ProfileView.swift */,
+				31D4F81B24AAA41F00E51F5B /* ChatView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -148,7 +155,9 @@
 		31570B1C24AA80F1000C89A6 /* Subviews */ = {
 			isa = PBXGroup;
 			children = (
+				31570ACD24A84DD6000C89A6 /* LottieView.swift */,
 				31570AD424A85820000C89A6 /* TextView.swift */,
+				31570AC824A847C7000C89A6 /* ImagePicker.swift */,
 			);
 			path = Subviews;
 			sourceTree = "<group>";
@@ -311,7 +320,10 @@
 				3120A4D824A828F60069A235 /* SceneDelegate.swift in Sources */,
 				31570AD524A85820000C89A6 /* TextView.swift in Sources */,
 				3120A4DA24A828F60069A235 /* ContentView.swift in Sources */,
+				31D4F81C24AAA41F00E51F5B /* ChatView.swift in Sources */,
+				31570B2624AA9324000C89A6 /* Order.swift in Sources */,
 				31570B2224AA8180000C89A6 /* ProfileView.swift in Sources */,
+				31570B2824AA9E16000C89A6 /* OrderDetailsView.swift in Sources */,
 				31570ACE24A84DD6000C89A6 /* LottieView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -380,7 +392,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -434,7 +446,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
