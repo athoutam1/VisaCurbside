@@ -41,12 +41,12 @@ const promisePool = pool.promise();
       );
     `);
     await sql.query(`
-      INSERT INTO Stores(id, name, merchantID, merchantName, description, location, openTime, closeTime, parkingDetails) 
-      VALUES(1, "Publix in Tampa", "asd87870dd", "Publix", "this store sells food", "123 Publix Tampa Dr, USA", "08:00", "21:30", "There is a parking garage behind the store. The 2nd floor is for customer use with a 30 minute free parking limit");
+      INSERT INTO Stores(id, name, merchantID, merchantName, description, location, openTime, closeTime, parkingDetails, imageURL) 
+      VALUES(1, "Publix in Tampa", "asd87870dd", "Publix", "this store sells food", "123 Publix Tampa Dr, USA", "08:00", "21:30", "There is a parking garage behind the store. The 2nd floor is for customer use with a 30 minute free parking limit", "https://media2.fdncms.com/orlando/imager/u/original/27243881/publix-1000-b.jpg");
     `);
     await sql.query(`
-      INSERT INTO Stores(id, name, merchantID, merchantName, description, location) 
-      VALUES(2, "Target Atlantic Station", "SID1", "Target", "food and home stuff", "Atlantic Station Dr, Atlanta, GA");
+      INSERT INTO Stores(id, name, merchantID, merchantName, description, location, imageURL) 
+      VALUES(2, "Target Atlantic Station", "SID1", "Target", "food and home stuff", "Atlantic Station Dr, Atlanta, GA", "https://media2.fdncms.com/orlando/imager/u/original/27243881/publix-1000-b.jpg");
     `);
     await sql.query(`
       CREATE TABLE Items(
