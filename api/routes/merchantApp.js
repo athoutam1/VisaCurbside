@@ -26,14 +26,50 @@ router.get("/messageShopper", async (req, res) => {
   const { storeID, shopperID, message } = req.query;
   try {
     const chatRef = db.collection("chats").doc(`${shopperID}AND${storeID}`);
-    await chatRef.update({
-      messages: admin.firestore.FieldValue.arrayUnion({
-        message: message,
-        messenger: "store",
-      }),
-    });
+
+    try {
+      await chatRef.update({
+        messages: admin.firestore.FieldValue.arrayUnion({
+          message: message,
+          messenger: "store",
+        }),
+      });
+    } catch (e) {
+      await chatRef.set({
+        messages: [
+          {
+            message,
+            messenger: "store",
+          },
+        ],
+      });
+    }
+
+    // if (chatRef.get() && chatRef.get().exists) {
+    // await chatRef.update({
+    //   messages: admin.firestore.FieldValue.arrayUnion({
+    //     message: message,
+    //     messenger: "store",
+    //   }),
+    // });
+    // } else {
+    //   console.log("no");
+    //   await chatRef.set(
+    //     {
+    //       messages: [
+    //         {
+    //           message,
+    //           messenger: "store",
+    //         },
+    //       ],
+    //     },
+    //     { merge: true }
+    //   );
+    // }
+
     res.sendStatus(200);
   } catch (error) {
+    console.log(error);
     res.sendStatus(500);
   }
 });

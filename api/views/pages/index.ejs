@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css" />
+    <script type="text/javascript">
+      function onVisaCheckoutReady() {
+        V.init({
+          apikey: "QU523FVA7B0DSTRVRCPH21rKq_DNKR_2DqsCx_io7AKCOctzU",
+          encryptionKey: "",
+          paymentRequest: {
+            currencyCode: "USD",
+            subtotal: <%=amount%>
+          },
+        });
+        V.on("payment.success", function (payment) {
+          // alert(JSON.stringify(payment));
+          console.log("Payment succesful")
+          console.log(payment)
+          window.flutter_inappwebview.callHandler('success')
+        });
+        V.on("payment.cancel", function (payment) {
+          // alert(JSON.stringify(payment));
+          console.log("Payment Cancelled")
+          console.log(payment)
+        });
+        V.on("payment.error", function (payment, error) {
+          // alert(JSON.stringify(error));
+          console.log("Payment Error")
+          console.log(payment)
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <div class="main-container">
+      <img
+        alt="Visa Checkout"
+        class="v-button"
+        id="pay-button"
+        role="button"
+        src="https://sandbox.secure.checkout.visa.com/wallet-services-web/xo/button.png"
+      />
+    </div>
+    <script
+      type="text/javascript"
+      src="https://sandbox-assets.secure.checkout.visa.com/
+checkout-widget/resources/js/integration/v1/sdk.js"
+    ></script>
+  </body>
+</html>
