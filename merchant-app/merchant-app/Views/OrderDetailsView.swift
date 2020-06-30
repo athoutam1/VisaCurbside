@@ -50,7 +50,7 @@ struct OrderDetailsView: View {
                 .font(.title)
                 Spacer()
                 
-                NavigationLink(destination: ChatView(chatID: "\(self.order.shopperID)AND\(self.dataStore.storeID)").environmentObject(dataStore)) {
+                NavigationLink(destination: ChatView(chatID: "\(self.order.shopperID)AND\(self.dataStore.storeID)", order: self.order).environmentObject(dataStore)) {
                     HStack {
                         Text("Chat Now")
                         Image(systemName: "message")
