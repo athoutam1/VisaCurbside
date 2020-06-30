@@ -13,13 +13,14 @@ class MessageMerchant extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<Message>>.value(
-      value: FirestoreDatabaseService().messages,
+      value: FirestoreDatabaseService().getMessagesFroUserIDAndStoreID(_uid, _store.storeID.toString()),
       child: CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           middle: Text("Chat with Merchant"),
         ),
         child: MessageList(_store, _uid),
-      ),
+      )
+      
     );
   }
 }
