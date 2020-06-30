@@ -11,6 +11,7 @@ import 'package:visa_curbside/models/item.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import './webview.dart';
 
 var databaseHelper = new DatabaseHelper();
 
@@ -26,117 +27,55 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
-
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-    navigationBar: CupertinoNavigationBar(
-      middle: Text("Cart",
-      style: TextStyle(
-        fontSize: 24,
-        letterSpacing: 3
-      )),
-    ),
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        SizedBox(height: 25,),
-        Text("\$" + widget._total.toString(),
-        style: TextStyle(
-          fontSize: 48,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 3
-        )),
-        FutureBuilder<List<Item>>(
-          future: databaseHelper.getItemsFromIDs(widget._itemIDsInCart),
-          initialData: List(),
-          builder: (context, snapshot) {
-            widget._itemsInCart = snapshot.data;
-            return snapshot.hasData ?
-            Container(
-              height: 600,
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: snapshot.data.length,
-                itemBuilder: (_, int position) {
-                  final item = snapshot.data[position];
-                  return ItemCard(item);
-                }
-              ),
-            )
-          : 
-          Center(
-            child: CircularProgressIndicator()
-          );
-          }
-        ),
-        SizedBox(height: 25,),
-
-        CupertinoButton.filled(
-                child: Text("Confirm Order"),
-                onPressed: () {
-                  showConfirmOrderAlertDialog(context, widget._itemsInCart, widget._itemIDsInCart, widget._store);
-                },
-              ),
-      ],
-    ),
-  );
-  }
-}
-double getTotal(List<Item>itemsInCart) {
-  if (itemsInCart == null) {
-    return 0;
-  }
-    double total = 0;
-    itemsInCart.forEach((element) {
-      total += element.price;
-    });
-    double mod = pow(10.0, 2);
-    return ((total * mod).round().toDouble() / mod);
-  }
-
-void showConfirmOrderAlertDialog(BuildContext context, List<Item> itemsInCart, List<int> itemIDsinCart, Store store) {
-
-  showDialog( 
-      context: context,
-      child: CupertinoAlertDialog(
-        title: Text("Are you ready to submit your order?"),
-        content: Text("Total: \$ " + getTotal(itemsInCart).toString()),
-        actions: <Widget>[
-          CupertinoButton(
-              child: Text("Submit"),
-              onPressed: () async {
-                if (itemIDsinCart.length != 0) {
-                  var headers = {'Content-Type': 'application/json'};
-                String uri = 'http://localhost:3005/merchant/confirmOrder';
-                 dynamic data = {
-                  "storeID": store.storeID,
-                  "itemIDs": itemIDsinCart,
-                  "userID" : globalUser.uid.toString()
-                 };
-                
-                http.Response res =
-                await http.post(uri, headers: headers,body: jsonEncode(data));
-
-                print('status code:  ${res.statusCode}');
-
-                print("submit button clicked");
-                } else {
-                  print("Order cannot be empty");
-                }
-                
-                Navigator.of(context, rootNavigator: true).pop();
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
+      navigationBar: CupertinoNavigationBar(
+        middle: Text("Cart", style: TextStyle(fontSize: 24, letterSpacing: 3)),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          SizedBox(
+            height: 25,
           ),
-          CupertinoButton(
-            child: Text("Cancel"),
+          Text("\$" + widget._total.toString(),
+              style: TextStyle(
+                  fontSize: 48, fontWeight: FontWeight.bold, letterSpacing: 3)),
+          FutureBuilder<List<Item>>(
+              future: databaseHelper.getItemsFromIDs(widget._itemIDsInCart),
+              initialData: List(),
+              builder: (context, snapshot) {
+                widget._itemsInCart = snapshot.data;
+                return snapshot.hasData
+                    ? Container(
+                        height: 600,
+                        child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: snapshot.data.length,
+                            itemBuilder: (_, int position) {
+                              final item = snapshot.data[position];
+                              return ItemCard(item);
+                            }),
+                      )
+                    : Center(child: CircularProgressIndicator());
+              }),
+          SizedBox(
+            height: 25,
+          ),
+          CupertinoButton.filled(
+            child: Text("Confirm Order"),
             onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop();
-              print("cancel submit order");
-            })
+              // showConfirmOrderAlertDialog(context, widget._itemsInCart,
+              //     widget._itemIDsInCart, widget._store);
+              Navigator.push(
+                  context, CupertinoPageRoute(builder: (context) => WebView()));
+            },
+          ),
         ],
-      ));
+      ),
+    );
+  }
 }
 
 class ItemCard extends StatelessWidget {
@@ -147,41 +86,41 @@ class ItemCard extends StatelessWidget {
     return Card(
       child: Column(
         children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 4,
-                  child: ListTile(
-                    title: Text(_item.name,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold
-                    )),
-                    isThreeLine: true,
-                    subtitle: Text(" ${_item.description}\n " + "\$" + _item.price.toString(),
-                    style: TextStyle(letterSpacing: 2)),
-                    onTap: () {
-                      Navigator.push(
-                context, CupertinoPageRoute(builder: (context) => ItemDetails(_item)));
-                      print("clicked" + _item.name);
-                    },
-                  ),
+          Row(
+            children: <Widget>[
+              Expanded(
+                flex: 4,
+                child: ListTile(
+                  title: Text(_item.name,
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  isThreeLine: true,
+                  subtitle: Text(
+                      " ${_item.description}\n " +
+                          "\$" +
+                          _item.price.toString(),
+                      style: TextStyle(letterSpacing: 2)),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        CupertinoPageRoute(
+                            builder: (context) => ItemDetails(_item)));
+                    print("clicked" + _item.name);
+                  },
                 ),
-                Expanded(
-                  flex:1, 
-                  child: ListTile(
-                    contentPadding: EdgeInsets.symmetric(horizontal: 10),
-                    selected: true,
-                    leading: Icon(Icons.edit),
-                    onTap: () {
-                      
-                    },
-                  ),
-                )
-                
-              ],
-            )
+              ),
+              Expanded(
+                flex: 1,
+                child: ListTile(
+                  contentPadding: EdgeInsets.symmetric(horizontal: 10),
+                  selected: true,
+                  leading: Icon(Icons.edit),
+                  onTap: () {},
+                ),
+              )
             ],
-          ),
+          )
+        ],
+      ),
     );
   }
 }
