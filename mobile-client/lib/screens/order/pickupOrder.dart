@@ -7,6 +7,7 @@ import 'package:visa_curbside/screens/order/payNow.dart';
 import 'package:visa_curbside/services/DatabaseHelper.dart';
 import 'package:visa_curbside/shared/constants.dart';
 import '../../models/store.dart';
+import 'package:visa_curbside/models/dataStore.dart';
 
 DatabaseHelper databaseHelper = new DatabaseHelper();
 class PickupOrderCard extends StatelessWidget {
@@ -98,7 +99,7 @@ class _PickupOrderState extends State<PickupOrder> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => MessageMerchant()));
+                              builder: (context) => MessageMerchant(widget._store, globalUser.uid)));
                     },
                   ),
                 ),
