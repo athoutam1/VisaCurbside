@@ -48,15 +48,13 @@ router.get("/details", async (req, res) => {
 // Returns all orders for a specific user based on user.UID
 router.get("/getOrdersByUser", async (req, res) => {
   const { userID } = req.query;
-  console.log(
-    `Getting all orders for user with uid: ${userID}`
-  );
+  console.log(`Getting all orders for user with uid: ${userID}`);
   try {
     let [response, responseFields] = await sql.query(`
         SELECT * FROM ORDERS WHERE SHOPPERID = "${userID}";
       `);
-      response = response.map(
-        (response) => 
+    response = response.map(
+      (response) =>
         new order.Order(
           response.id,
           response.storeID,
@@ -68,37 +66,35 @@ router.get("/getOrdersByUser", async (req, res) => {
           response.isReadyForPickup,
           response.time
         )
-      )
+    );
 
     for (let i = 0; i < response.length; i++) {
       let orderID = response[i].id;
       let [response2, responseFields2] = await sql.query(`
       SELECT itemID FROM ORDEREDITEMS WHERE ORDERID = ${orderID};
     `);
-    let [response4, responseFields4] = await sql.query(`
+      let [response4, responseFields4] = await sql.query(`
     select sum(price)from orders 
     join ordereditems on orders.id = ordereditems.orderid 
     join items on ordereditems.itemid=items.id 
     where orders.id=${orderID};
   `);
-      response[i].total = response4[0]['sum(price)'];
-      
+      response[i].total = response4[0]["sum(price)"];
+
       let array = [];
       for (let c = 0; c < response2.length; c++) {
-        array.push(response2[c].itemID)
+        array.push(response2[c].itemID);
       }
       response[i].itemIDs = array;
     }
-
 
     for (let i = 0; i < response.length; i++) {
       let storeID = response[i].storeID;
       let [response3, responseFields3] = await sql.query(`
       SELECT name FROM STORES WHERE id = ${storeID};
     `);
-      response[i].storeName = response3[0].name
+      response[i].storeName = response3[0].name;
     }
-    
 
     res.json(response);
   } catch (error) {
