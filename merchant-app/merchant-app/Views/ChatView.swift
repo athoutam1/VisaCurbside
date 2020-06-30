@@ -113,30 +113,48 @@ struct ChatView: View {
                 hideKeyboard()
             }
             .onAppear {
-                self.dataStore.db.collection("chats").document(self.chatID)
-                .addSnapshotListener { documentSnapshot, error in
-                  guard let document = documentSnapshot else {
-                    print("Error fetching document: \(error!)")
-                    return
-                  }
-                  guard let data = document.data() else {
-                    print("Document data was empty.")
-                    return
-                  }
+                
+                let docRef = self.dataStore.db.collection("chats").document(self.chatID)
                     
-                    do {
-                        let old = data["messages"] as? [NSDictionary]?
-                        let json = try JSONSerialization.data(withJSONObject: old)
-                        let decoder = JSONDecoder()
-                        decoder.keyDecodingStrategy = .convertFromSnakeCase
-                        let decodedMessages = try decoder.decode([Message].self, from: json)
-                        self.messages = decodedMessages
-                    } catch {
-                        print(error)
-                    }
+                docRef.getDocument { (document, error) in
+                    if (document != nil) && document!.exists {
+                        print("Document exists")
+                        docRef
+                        .addSnapshotListener { documentSnapshot, error in
+                            
+                            
+                          guard let document = documentSnapshot else {
+                            print("Error fetching document: \(error!)")
+                            return
+                          }
+                          guard let data = document.data() else {
+                            print("Document data was empty.")
+                            return
+                          }
+                            
+                            do {
+                                let old = data["messages"] as? [NSDictionary]?
+                                if old! != nil {
+                                    let json = try JSONSerialization.data(withJSONObject: old)
+                                    let decoder = JSONDecoder()
+                                    decoder.keyDecodingStrategy = .convertFromSnakeCase
+                                    let decodedMessages = try decoder.decode([Message].self, from: json)
+                                    self.messages = decodedMessages
+                                }
+                            } catch {
+                                print(error)
+                            }
 
-                    
+                            
+                        }
+                    } else {
+                        print("Document doesn't exist")
+                    }
                 }
+
+                
+                
+                
         }
     }
 }
