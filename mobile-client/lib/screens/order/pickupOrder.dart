@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:visa_curbside/models/item.dart';
 import 'package:visa_curbside/models/order.dart';
+import 'package:visa_curbside/screens/order/map_page.dart';
 import 'package:visa_curbside/screens/order/messageMerchant.dart';
 import 'package:visa_curbside/screens/order/payNow.dart';
 import 'package:visa_curbside/services/DatabaseHelper.dart';
@@ -109,7 +110,7 @@ class _PickupOrderState extends State<PickupOrder> {
                     child: Text("I am Here"),
                     onPressed: () {
                       Navigator.push(context,
-                          CupertinoPageRoute(builder: (context) => PayNow()));
+                          CupertinoPageRoute(builder: (context) => MapPage()));
                     },
               ),
                 ),
