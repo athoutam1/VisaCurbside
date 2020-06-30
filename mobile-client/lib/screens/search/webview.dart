@@ -9,6 +9,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:visa_curbside/shared/constants.dart';
+
 class WebView extends StatefulWidget {
   List<int> _itemIDsInCart;
   List<Item> _itemsInCart;
@@ -37,7 +39,7 @@ class _WebViewState extends State<WebView> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: InAppWebView(
-        initialUrl: "https://188e96b5057e.ngrok.io",
+        initialUrl: "https://c99efddced7f.ngrok.io",
         initialHeaders: {},
         initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
@@ -49,8 +51,26 @@ class _WebViewState extends State<WebView> {
 
           controller.addJavaScriptHandler(
               handlerName: "success",
-              callback: (args) {
-                // here
+              callback: (args) async {
+                if (widget._itemIDsInCart.length != 0) {
+                var headers = {'Content-Type': 'application/json'};
+                String uri = 'http://localhost:3005/merchant/confirmOrder';
+                dynamic data = {
+                  "storeID": widget._store.storeID,
+                  "itemIDs": widget._itemIDsInCart,
+                  "userID": globalUser.uid.toString(),
+                  "coordinates": kPublixAtlanta
+                };
+
+                http.Response res = await http.post(uri,
+                    headers: headers, body: jsonEncode(data));
+
+                print('status code:  ${res.statusCode}');
+
+                print("submit button clicked");
+              } else {
+                print("Order cannot be empty");
+              }
                 showConfirmOrderAlertDialog(context, widget._itemsInCart,
                     widget._itemIDsInCart, widget._store);
               });
@@ -86,24 +106,6 @@ void showConfirmOrderAlertDialog(BuildContext context, List<Item> itemsInCart,
           CupertinoButton(
             child: Text("Submit"),
             onPressed: () async {
-              if (itemIDsinCart.length != 0) {
-                var headers = {'Content-Type': 'application/json'};
-                String uri = 'http://localhost:3005/merchant/confirmOrder';
-                dynamic data = {
-                  "storeID": store.storeID,
-                  "itemIDs": itemIDsinCart,
-                  "userID": globalUser.uid.toString()
-                };
-
-                http.Response res = await http.post(uri,
-                    headers: headers, body: jsonEncode(data));
-
-                print('status code:  ${res.statusCode}');
-
-                print("submit button clicked");
-              } else {
-                print("Order cannot be empty");
-              }
 
               Navigator.of(context, rootNavigator: true).pop();
               Navigator.of(context).popUntil((route) => route.isFirst);

@@ -133,15 +133,15 @@ router.post("/changeOrderStatus", async (req, res) => {
 
 // Takes in list of item IDs, storeID, and user ID
 router.post("/confirmOrder", async (req, res) => {
-  const { storeID, itemIDs, userID } = req.body;
-
+  const { storeID, itemIDs, userID, coordinates } = req.body;
+  
   console.log(
     `User with ID ${userID} is trying to buy ${itemIDs} at store ${storeID}`
   );
   try {
     let [response, responseFields] = await sql.query(`
-        INSERT INTO Orders(shopperID, storeID, isPending, isReadyForPickup, time)
-        VALUES("${userID}", "${storeID}", 1, 0, NOW());
+        INSERT INTO Orders(shopperID, storeID, isPending, isReadyForPickup, time, coordinates)
+        VALUES("${userID}", "${storeID}", 1, 0, NOW(), "${coordinates}");
       `);
     let orderID = response.insertId;
     for (const itemID of itemIDs) {
