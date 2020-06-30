@@ -19,12 +19,14 @@ class MessageList extends StatefulWidget {
 
 class _MessageListState extends State<MessageList> {
   String _message = "";
+
   @override
   Widget build(BuildContext context) {
-    List<Message> messages = Provider.of<List<Message>>(context) ?? [];
-    print(widget._store.merchantName);
-    print(widget._uid);
-    return GestureDetector(
+
+    List<Message> messages = Provider.of<List<Message>>(context);
+    ScrollController _scrollController = new ScrollController();
+    return  messages != null 
+    ? GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
           child: Column(
         children: <Widget>[
@@ -33,8 +35,10 @@ class _MessageListState extends State<MessageList> {
             child: Container(
             color: Colors.grey[300],
             child: ListView.builder(
+              shrinkWrap: true,
               itemCount: messages.length,
               itemBuilder: (context, index) {
+                
                 return MessageTile(messages[index]);
               }),
             ),
@@ -46,7 +50,11 @@ class _MessageListState extends State<MessageList> {
           
         ],
       ),
-    );
+    )
+    : Center(
+        child: CircularProgressIndicator()
+      );
+    
       
   
   } 
@@ -65,23 +73,24 @@ class _MessageListState extends State<MessageList> {
               textInputAction: TextInputAction.send,
               onSubmitted: (value) async {
                 setState(() {
-                  _message = value;
-                });
-                if (_message != "") {
-                  Map<String, String> queryParameters = {
-                  "message": _message,
-                  "storeID": "1",
-                  "userID": "abc"
-                  };
-                  dynamic uri = Uri.http("localhost:3005", "/messageMerchant", queryParameters);
-                  print(uri);
-                  http.Response res =
-                  await http.get(uri);
-                  print(res.statusCode);
-                  print("send message");
-                  print(_message);
-                }
-                  },
+                    _message = value;
+                  });
+                  if (_message != "") {
+                    Map<String, String> queryParameters = {
+                    "message": _message,
+                    "storeID": widget._store.storeID.toString(),
+                    "userID": widget._uid
+                    };
+                    dynamic uri = Uri.http("localhost:3005", "/messageMerchant", queryParameters);
+                    print(uri);
+                    http.Response res =
+                    await http.get(uri);
+                    print(res.statusCode);
+                    print("send message");
+                    print(_message);
+                  }
+
+                },
               onChanged: (value) {
                 setState(() {
                   _message = value;
@@ -96,8 +105,8 @@ class _MessageListState extends State<MessageList> {
               if (_message != "") {
                 Map<String, String> queryParameters = {
                   "message": _message,
-                  "storeID": "1",
-                  "userID": "abc"
+                  "storeID": widget._store.storeID.toString(),
+                  "userID": widget._uid
                 };
                 dynamic uri = Uri.http("localhost:3005", "/messageMerchant", queryParameters);
                 print(uri);
@@ -107,6 +116,7 @@ class _MessageListState extends State<MessageList> {
                 print("send message");
                 print(_message);
               }
+              //_controller.clear();
             },
           )
         ],
