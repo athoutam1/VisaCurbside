@@ -69,7 +69,7 @@ class _CartState extends State<Cart> {
               // showConfirmOrderAlertDialog(context, widget._itemsInCart,
               //     widget._itemIDsInCart, widget._store);
               Navigator.push(
-                  context, CupertinoPageRoute(builder: (context) => WebView()));
+                  context, CupertinoPageRoute(builder: (context) => WebView(widget._itemsInCart, widget._itemIDsInCart, widget._store)));
             },
           ),
         ],

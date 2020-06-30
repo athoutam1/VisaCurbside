@@ -10,6 +10,10 @@ import 'dart:convert';
 import 'dart:math';
 
 class WebView extends StatefulWidget {
+  List<int> _itemIDsInCart;
+  List<Item> _itemsInCart;
+  Store _store;
+  WebView(this._itemsInCart, this._itemIDsInCart, this._store);
   @override
   _WebViewState createState() => _WebViewState();
 }
@@ -33,7 +37,7 @@ class _WebViewState extends State<WebView> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: InAppWebView(
-        initialUrl: "https://33f9240848dd.ngrok.io",
+        initialUrl: "https://188e96b5057e.ngrok.io",
         initialHeaders: {},
         initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
@@ -47,8 +51,8 @@ class _WebViewState extends State<WebView> {
               handlerName: "success",
               callback: (args) {
                 // here
-                // showConfirmOrderAlertDialog(context, widget._itemsInCart,
-                //     widget._itemIDsInCart, widget._store);
+                showConfirmOrderAlertDialog(context, widget._itemsInCart,
+                    widget._itemIDsInCart, widget._store);
               });
         },
         onLoadStart: (InAppWebViewController controller, String url) {
