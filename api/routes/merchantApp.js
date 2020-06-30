@@ -5,6 +5,7 @@ var _ = require("lodash");
 const storage = require("../services/firebase").storage;
 const sql = require("../services/mysql");
 const merchant = require("../models/merchant");
+const orders = require("../models/order");
 const db = require("../services/firebase").db;
 const admin = require("../services/firebase").admin;
 
@@ -55,6 +56,41 @@ router.post("/getItemsForStore", async (req, res) => {
     });
     res.json(response);
   } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
+router.get("/getOrders", async (req, res) => {
+  const { storeID } = req.query;
+  try {
+    let [response, responseFields] = await sql.query(`
+      SELECT Orders.id, shopperID, isPending, isReadyForPickup, time, name as shopperName FROM Orders
+      JOIN Users
+      ON Users.id = Orders.shopperID
+      WHERE storeID = ${storeID}
+    `);
+    for (let order of response) {
+      order.isPending = Boolean(order.isPending);
+      order.isReadyForPickup = Boolean(order.isReadyForPickup);
+    }
+    res.json(response);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
+router.get("/getOrderItems", async (req, res) => {
+  const { orderID } = req.query;
+  try {
+    let [response, responseFields] = await sql.query(`
+      SELECT Items.id, name, description, price, imageURL FROM OrderedItems
+      JOIN Items
+      ON Items.id = OrderedItems.id
+      WHERE orderID = ${orderID};
+    `);
+    res.json(response);
+  } catch (e) {
+    console.log(e);
     res.sendStatus(500);
   }
 });

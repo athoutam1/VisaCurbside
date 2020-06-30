@@ -59,8 +59,8 @@ struct StoreView: View {
                                 self.showActionSheet = true
                             }) {
                                 Text("Add New Item")
-                                .padding(.vertical, 15)
-                                    .frame(maxWidth: UIScreen.main.bounds.width * 0.75, alignment: .center)
+                                    .padding(.vertical, 15)
+                                    .frame(maxWidth: .infinity, alignment: .center)
                                 .foregroundColor(.white)
                             }
                             .background(
@@ -122,28 +122,32 @@ struct StoreView: View {
         
     }
     
-    struct ItemRow: View {
-        
-        @State var item: Item
-        
-        var body: some View {
-            HStack {
-                WebImage(url: URL(string: item.imageURL))
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: 75)
-                
-                VStack(spacing: 5) {
-                    Text(item.name)
-                    Text(item.description)
-                    .lineLimit(2)
-                }
-                
-                Spacer()
-                
-                Text("$\(String(item.price))")
+}
+
+
+struct ItemRow: View {
+    
+    @State var item: Item
+    
+    var body: some View {
+        HStack {
+            WebImage(url: URL(string: item.imageURL))
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: 75)
+            
+            VStack(spacing: 8) {
+                Text(item.name)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                Text(item.description)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .lineLimit(2)
             }
-            .padding(.horizontal, 5)
+            
+            Spacer()
+            
+            Text("$\(String(item.price))")
         }
+        .padding(.horizontal, 5)
     }
 }
