@@ -85,7 +85,8 @@ const promisePool = pool.promise();
         isPending BOOL NOT NULL,
         isReadyForPickup BOOL NOT NULL, 
         time TIMESTAMP NOT NULL,
-        FOREIGN KEY (shopperID) REFERENCES Users(id)
+        FOREIGN KEY (shopperID) REFERENCES Users(id),
+        coordinates VARCHAR(255)
       );
     `);
     await sql.query(`
