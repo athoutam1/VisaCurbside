@@ -20,14 +20,16 @@ struct ContentView: View {
                     Image(systemName: "cart.fill")
                     Text("Store")
                 }
-
-            OrderView()
-                .tabItem {
-                    Image(systemName: "doc.text.fill")
-                    Text("Order")
-                }
+            NavigationView {
+             OrderView().environmentObject(dataStore)
+            }
+            .tabItem {
+                Image(systemName: "doc.text.fill")
+                Text("Order")
+            }
             
-            ProfileView()
+            
+            ProfileView().environmentObject(dataStore)
             .tabItem {
                 Image(systemName: "person.fill")
                 Text("Profile")
