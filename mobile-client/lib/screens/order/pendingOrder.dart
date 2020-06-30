@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:visa_curbside/models/dataStore.dart';
 import 'package:visa_curbside/models/order.dart';
 import 'package:visa_curbside/screens/search/storeDetails.dart';
 import 'package:visa_curbside/services/DatabaseHelper.dart';
@@ -100,7 +101,7 @@ class _PendingOrderState extends State<PendingOrder> {
                       Navigator.push(
                           context,
                           CupertinoPageRoute(
-                              builder: (context) => MessageMerchant()));
+                              builder: (context) => MessageMerchant(widget._store, globalUser.uid)));
                     },
                   ),
                 ),
