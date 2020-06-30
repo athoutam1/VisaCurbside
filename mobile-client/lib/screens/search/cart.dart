@@ -97,7 +97,7 @@ double getTotal(List<Item>itemsInCart) {
 
 void showConfirmOrderAlertDialog(BuildContext context, List<Item> itemsInCart, List<int> itemIDsinCart, Store store) {
 
-  showDialog(
+  showDialog( 
       context: context,
       child: CupertinoAlertDialog(
         title: Text("Are you ready to submit your order?"),

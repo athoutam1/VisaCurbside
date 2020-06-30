@@ -6,18 +6,6 @@ const admin = require("../services/firebase").admin;
 const sql = require("../services/mysql");
 const order = require("../models/order");
 
-// Message Merchant by providing userID, merchantID, and the message (just a string)
-router.post("/messageMerchant", async (req, res) => {
-  const { userID, merchantID, message } = req.body;
-  console.log(`User ${userID} is messaging merchant ${merchantID}: ${message}`);
-  try {
-    res.json({
-      response: "Hey, What's up",
-    });
-  } catch (error) {
-    res.sendStatus(500);
-  }
-});
 
 // User would send a request here automatically if Visa approves their payment
 // Send the order ID so we can mark it as paid

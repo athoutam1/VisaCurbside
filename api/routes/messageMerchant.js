@@ -6,15 +6,19 @@ const admin = require("../services/firebase").admin;
 
 router.get("/", async function (req, res) {
   const { message, storeID, userID } = req.query;
-
+ 
   const chatRef = db.collection("chats").doc(`${userID}AND${storeID}`);
-  await chatRef.set({
-    messages: [
-      {
-        message,
-        messenger: "user",
-      },
-    ],
+  await chatRef.update({
+      messages: admin.firestore.FieldValue.arrayUnion({
+      message: message,
+      messenger: "user",
+    })
+    // messages: [
+    //   {
+    //     message,
+    //     messenger: "user",
+    //   },
+    // ],
   });
 
   try {

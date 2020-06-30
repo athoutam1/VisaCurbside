@@ -90,22 +90,28 @@ class _PickupOrderState extends State<PickupOrder> {
                   );
                   }
                 ),
-                CupertinoButton(
-                                child: Text("Message Merchant"),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      CupertinoPageRoute(
-                                          builder: (context) => MessageMerchant()));
-                                },
-                              ),
-                              CupertinoButton(
-                              child: Text("I am Here"),
-                              onPressed: () {
-                                Navigator.push(context,
-                                    CupertinoPageRoute(builder: (context) => PayNow()));
-                              },
-                            ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CupertinoButton.filled(
+                    child: Text("Message Merchant"),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => MessageMerchant()));
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CupertinoButton.filled(
+                    child: Text("I am Here"),
+                    onPressed: () {
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) => PayNow()));
+                    },
+              ),
+                ),
               
             ],
           ),
