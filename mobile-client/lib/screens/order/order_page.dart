@@ -50,7 +50,7 @@ class _OrderPageState extends State<OrderPage> {
                         } else if (order.isPending == 0 && order.isReadyForPickup == 0) {
                           return PastOrderCard(order);
                         } else if (order.isPending == 1 || order.isPending == 1) {
-                          return PickupOrderCard(order);
+                          return PendingOrderCard(order);
                         } else if (order.shopperID == "READY_FOR_PICKUP_HEADER") {
                           return Text(" Ready for Pick Up", style: kOrderHeadersTextStyle);
                         } else if (order.shopperID == "PENDING_HEADER") {
