@@ -36,6 +36,7 @@
 		31943DEF24ABE8A6000BFCCD /* DeliveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31943DEE24ABE8A6000BFCCD /* DeliveryView.swift */; };
 		31943DFA24AC0F9E000BFCCD /* PastOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31943DF924AC0F9D000BFCCD /* PastOrderView.swift */; };
 		31943DFC24ACF288000BFCCD /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31943DFB24ACF288000BFCCD /* LocationManager.swift */; };
+		31943DFF24AD218F000BFCCD /* ReplaceItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31943DFE24AD218F000BFCCD /* ReplaceItemView.swift */; };
 		31D4F81C24AAA41F00E51F5B /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D4F81B24AAA41F00E51F5B /* ChatView.swift */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +67,7 @@
 		31943DEE24ABE8A6000BFCCD /* DeliveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryView.swift; sourceTree = "<group>"; };
 		31943DF924AC0F9D000BFCCD /* PastOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastOrderView.swift; sourceTree = "<group>"; };
 		31943DFB24ACF288000BFCCD /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		31943DFE24AD218F000BFCCD /* ReplaceItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplaceItemView.swift; sourceTree = "<group>"; };
 		31D4F81B24AAA41F00E51F5B /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		848B8E4A2CD05DC6EF7DD289 /* Pods-merchant-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-merchant-app.release.xcconfig"; path = "Target Support Files/Pods-merchant-app/Pods-merchant-app.release.xcconfig"; sourceTree = "<group>"; };
 		871217B34A6030485252391F /* Pods-merchant-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-merchant-app.debug.xcconfig"; path = "Target Support Files/Pods-merchant-app/Pods-merchant-app.debug.xcconfig"; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				31570AC624A8352C000C89A6 /* ItemAdder.swift */,
 				31570B1F24AA816A000C89A6 /* OrderView.swift */,
 				31570B2724AA9E16000C89A6 /* OrderDetailsView.swift */,
+				31943DFE24AD218F000BFCCD /* ReplaceItemView.swift */,
 				31D4F81B24AAA41F00E51F5B /* ChatView.swift */,
 				31943DEE24ABE8A6000BFCCD /* DeliveryView.swift */,
 				31943DF924AC0F9D000BFCCD /* PastOrderView.swift */,
@@ -354,6 +357,7 @@
 				31570B2824AA9E16000C89A6 /* OrderDetailsView.swift in Sources */,
 				31943DEF24ABE8A6000BFCCD /* DeliveryView.swift in Sources */,
 				31570ACE24A84DD6000C89A6 /* LottieView.swift in Sources */,
+				31943DFF24AD218F000BFCCD /* ReplaceItemView.swift in Sources */,
 				31943DFA24AC0F9E000BFCCD /* PastOrderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

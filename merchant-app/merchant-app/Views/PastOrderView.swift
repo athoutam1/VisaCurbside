@@ -25,7 +25,7 @@ struct PastOrderView: View {
                 
                 VStack(spacing: 20) {
                     ForEach(self.orderItems, id: \.self) { item in
-                        ItemCard(item: item, editable: false)
+                        ItemCard(item: item, editable: false, showSheet: .constant(false), editingItem: .constant(nil), awaitingPayment: .constant(false))
                     }
                     
                 }

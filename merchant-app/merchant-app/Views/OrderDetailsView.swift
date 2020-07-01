@@ -19,6 +19,10 @@ struct OrderDetailsView: View {
     @State var orderItems: [Item] = []
     @State var awaitingPayment: Bool
     
+    @State private var showSheet = false
+    @State private var showReplaceSearch = false
+    @State var editingItem: Item?
+    
     var body: some View {
         ScrollView {
         VStack {
@@ -76,7 +80,7 @@ struct OrderDetailsView: View {
             
                 VStack(spacing: 20) {
                     ForEach(self.orderItems, id: \.self) { item in
-                        ItemCard(item: item, editable: true)
+                        ItemCard(item: item, editable: true, showSheet: self.$showSheet, editingItem: self.$editingItem, awaitingPayment: self.$awaitingPayment)
                     }
                     
                     Button(action: {
@@ -108,6 +112,41 @@ struct OrderDetailsView: View {
                         .padding(.vertical, 15)
                         .frame(maxWidth: UIScreen.main.bounds.width * 0.75)
                     
+                }
+                .sheet(isPresented: $showReplaceSearch, content: {
+                    ReplaceItemView(order: self.$order, orderItems: self.$orderItems, itemToReplace: self.$editingItem, showSheet: self.$showReplaceSearch).environmentObject(self.dataStore)
+                })
+                .actionSheet(isPresented: $showSheet) {
+                    ActionSheet(
+                        title: Text("How do you want to modify this item?"),
+                        buttons: [
+                            .default(Text("Replace"), action: {
+                                self.showReplaceSearch = true
+                            }),
+                            .default(Text("Remove"), action: {
+                                self.orderItems = self.orderItems.filter() {
+                                    $0 != self.editingItem!
+                                }
+                                let url = "\(self.dataStore.proxy)/merchantApp/removeItemFromOrder"
+                                let parameters: Parameters = [
+                                    "orderID": self.order.id,
+                                    "itemID": self.editingItem!.id!
+                                ]
+                                print(parameters)
+                                
+                                AF.request(url, method: .post, parameters: parameters).response { response in
+                                    switch response.result {
+                                    case .success(_):
+                                        print("item deleted")
+                                    case .failure(let err):
+                                        print(err)
+                                    }
+                                }
+                            }),
+                            .cancel({
+                                self.editingItem = nil
+                            })
+                        ])
                 }
             
             Spacer()
@@ -151,7 +190,11 @@ struct OrderDetailsView: View {
 
 struct ItemCard: View {
  @State var item: Item
-    @State var editable: Bool
+@State var editable: Bool
+    @Binding var showSheet: Bool
+    @Binding var editingItem: Item?
+    @Binding var awaitingPayment: Bool
+    
     var body: some View {
         
         HStack {
@@ -173,10 +216,15 @@ struct ItemCard: View {
             
             Spacer()
             
-            if self.editable {
-                Image(systemName: "pencil")
-                .foregroundColor(Color("Dark Blue"))
-                .font(.system(size: 15))
+            if self.editable && !self.awaitingPayment {
+                Button(action: {
+                    self.showSheet = true
+                    self.editingItem = self.item
+                }) {
+                    Image(systemName: "pencil")
+                    .foregroundColor(Color("Dark Blue"))
+                    .font(.system(size: 22))
+                }
             }
              
         }
