@@ -30,7 +30,7 @@ class _OrderPageState extends State<OrderPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-              SizedBox(height: 75,),
+              SizedBox(height: 15,),
               FutureBuilder<List<Order>>(
                 future: databaseHelper.getOrdersFromUID(globalUser.uid.toString()),
                 initialData: List(),
@@ -57,6 +57,12 @@ class _OrderPageState extends State<OrderPage> {
                           return Text(" Pending Orders", style: kOrderHeadersTextStyle);
                         } else if (order.shopperID == "PAST_ORDER_HEADER") {
                           return Text(" Past Orders", style: kOrderHeadersTextStyle);
+                        } else if (order.shopperID == "NO_READY_FOR_PICKUP_ORDERS") {
+                          return Center(child: Text("No Orders", style: TextStyle(fontSize: 12, color: Colors.grey),),);
+                        } else if (order.shopperID == "NO_PENDING_ORDERS") {
+                          return Center(child: Text("No Orders", style: TextStyle(fontSize: 12, color: Colors.grey),),);
+                        } else if (order.shopperID == "NO_PAST_ORDERS") {
+                          return Center(child: Text("No Orders", style: TextStyle(fontSize: 12, color: Colors.grey),),);
                         }
                       }
                     ),

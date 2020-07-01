@@ -78,6 +78,18 @@ const promisePool = pool.promise();
     INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Coca Cola", 0.99, "Soda Can", "url", 2);
     `);
     await sql.query(`
+    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Tuna", 0.99, "Blue fin tuna can", "url", 1);
+    `);
+    await sql.query(`
+    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Coca Cola", 0.99, "Soda Can", "url", 1);
+    `);
+    await sql.query(`
+    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Corn", 1.29, "Yellow Corn", "url", 1);
+    `);
+    await sql.query(`
+    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Gum", 0.99, "Chewing Gum", "url", 1);
+    `);
+    await sql.query(`
       CREATE TABLE Orders(
         id INT PRIMARY KEY AUTO_INCREMENT,
         shopperID VARCHAR(255) NOT NULL,

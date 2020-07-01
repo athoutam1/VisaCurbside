@@ -5,7 +5,7 @@ import 'package:visa_curbside/models/message.dart';
 import 'package:visa_curbside/models/store.dart';
 import 'package:visa_curbside/services/firestore_database.dart';
 import 'package:visa_curbside/screens/order/message_list.dart';
-
+ 
 class MessageMerchant extends StatelessWidget {
   final Store _store;
   final String _uid;
