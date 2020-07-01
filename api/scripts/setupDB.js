@@ -72,22 +72,22 @@ const promisePool = pool.promise();
       VALUES("Mustard", 3.99, "6 oz metal bottle", "https://target.scene7.com/is/image/Target/GUEST_2ce6d6ff-cb12-4f89-b433-35dd2079d3ba?wid=488&hei=488&fmt=pjpeg", 1);
     `);
     await sql.query(`
-    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Tuna", 0.99, "Blue fin tuna can", "url", 2);
+    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Tuna", 0.99, "Blue fin tuna can", "https://i5.walmartimages.com/asr/8876b816-9bfe-44dc-9219-8e76239ecacc_2.3f053cfbc39f59ba5b88fc406c9c7e20.jpeg?odnWidth=612&odnHeight=612&odnBg=ffffff", 2);
     `);
     await sql.query(`
-    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Coca Cola", 0.99, "Soda Can", "url", 2);
+    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Coca Cola", 0.99, "Soda Bottle", "https://www.mancunianfoods.com/wp-content/uploads/2019/04/1.25-coke-bottle.jpg", 2);
     `);
     await sql.query(`
-    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Tuna", 0.99, "Blue fin tuna can", "url", 1);
+    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Tuna", 0.99, "Blue fin tuna can", "https://i5.walmartimages.com/asr/8876b816-9bfe-44dc-9219-8e76239ecacc_2.3f053cfbc39f59ba5b88fc406c9c7e20.jpeg?odnWidth=612&odnHeight=612&odnBg=ffffff", 1);
     `);
     await sql.query(`
-    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Coca Cola", 0.99, "Soda Can", "url", 1);
+    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Coca Cola", 0.99, "Soda Can", "https://www.mancunianfoods.com/wp-content/uploads/2019/04/1.25-coke-bottle.jpg", 1);
     `);
     await sql.query(`
-    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Corn", 1.29, "Yellow Corn", "url", 1);
+    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Corn", 1.29, "Yellow Corn", "https://target.scene7.com/is/image/Target/GUEST_ca829045-cb99-4481-b4fe-89b8ca0d61b7?wid=488&hei=488&fmt=pjpeg", 1);
     `);
     await sql.query(`
-    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Gum", 0.99, "Chewing Gum", "url", 1);
+    INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Gum", 0.99, "Chewing Gum", "https://miro.medium.com/max/1024/1*oVqRbwsUDBgV8c6NF965gw.jpeg", 1);
     `);
     await sql.query(`
       CREATE TABLE Orders(
