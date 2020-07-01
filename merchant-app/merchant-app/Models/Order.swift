@@ -17,6 +17,7 @@ struct Order: Identifiable, Codable, Hashable {
   var isReadyForPickup: Bool
   var time: String
   var shopperName: String
+    var coordinates: String?
 }
 
 struct Message: Codable, Hashable {

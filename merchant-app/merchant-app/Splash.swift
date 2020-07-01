@@ -18,6 +18,7 @@ struct Splash: View {
         VStack {
             if self.dataStore.isLoggedIn && self.dataStore.store != nil {
                 ContentView().environmentObject(dataStore)
+//                DeliveryView().environmentObject(dataStore)
             } else {
                 Text("Loading ...")
             }

@@ -39,7 +39,7 @@ class _WebViewState extends State<WebView> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: InAppWebView(
-        initialUrl: "https://c99efddced7f.ngrok.io",
+        initialUrl: "https://33f9240848dd.ngrok.io",
         initialHeaders: {},
         initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
@@ -53,24 +53,24 @@ class _WebViewState extends State<WebView> {
               handlerName: "success",
               callback: (args) async {
                 if (widget._itemIDsInCart.length != 0) {
-                var headers = {'Content-Type': 'application/json'};
-                String uri = 'http://localhost:3005/merchant/confirmOrder';
-                dynamic data = {
-                  "storeID": widget._store.storeID,
-                  "itemIDs": widget._itemIDsInCart,
-                  "userID": globalUser.uid.toString(),
-                  "coordinates": kPublixAtlanta
-                };
+                  var headers = {'Content-Type': 'application/json'};
+                  String uri = 'http://localhost:3005/merchant/confirmOrder';
+                  dynamic data = {
+                    "storeID": widget._store.storeID,
+                    "itemIDs": widget._itemIDsInCart,
+                    "userID": globalUser.uid.toString(),
+                    "coordinates": kPublixAtlanta
+                  };
 
-                http.Response res = await http.post(uri,
-                    headers: headers, body: jsonEncode(data));
+                  http.Response res = await http.post(uri,
+                      headers: headers, body: jsonEncode(data));
 
-                print('status code:  ${res.statusCode}');
+                  print('status code:  ${res.statusCode}');
 
-                print("submit button clicked");
-              } else {
-                print("Order cannot be empty");
-              }
+                  print("submit button clicked");
+                } else {
+                  print("Order cannot be empty");
+                }
                 showConfirmOrderAlertDialog(context, widget._itemsInCart,
                     widget._itemIDsInCart, widget._store);
               });
@@ -106,7 +106,6 @@ void showConfirmOrderAlertDialog(BuildContext context, List<Item> itemsInCart,
           CupertinoButton(
             child: Text("Submit"),
             onPressed: () async {
-
               Navigator.of(context, rootNavigator: true).pop();
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
