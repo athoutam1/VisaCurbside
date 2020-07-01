@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:visa_curbside/models/dataStore.dart';
 import 'package:visa_curbside/models/order.dart';
 import 'package:visa_curbside/screens/search/storeDetails.dart';
+import 'package:visa_curbside/screens/search/webview.dart';
 import 'package:visa_curbside/services/DatabaseHelper.dart';
 import 'package:visa_curbside/shared/constants.dart';
 import '../../models/store.dart';
@@ -18,7 +19,7 @@ class PendingOrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.blue.shade200,
+      color: kLightBlue,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -95,7 +96,8 @@ class _PendingOrderState extends State<PendingOrder> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: CupertinoButton.filled(
+                  child: CupertinoButton(
+                    color: kVisaBlue,
                     child: Text("Message Merchant"),
                     onPressed: () {
                       Navigator.push(
@@ -107,11 +109,12 @@ class _PendingOrderState extends State<PendingOrder> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: CupertinoButton.filled(
-                  child: Text("Pay Now"),
-                  onPressed: () {
-                    Navigator.push(context,
-                        CupertinoPageRoute(builder: (context) => PayNow()));
+                  child: CupertinoButton(
+                    color: kVisaBlue,
+                    child: Text("Pay Now"), 
+                    onPressed: () {
+                      Navigator.push(context,
+                          CupertinoPageRoute(builder: (context) => WebView(widget._order, widget._items)));
                   },
               ),
                 ),

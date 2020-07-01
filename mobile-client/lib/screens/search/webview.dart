@@ -3,6 +3,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:visa_curbside/models/dataStore.dart';
+import 'package:visa_curbside/models/order.dart';
 import 'package:visa_curbside/models/store.dart';
 import 'package:visa_curbside/models/item.dart';
 import 'package:http/http.dart' as http;
@@ -12,10 +13,9 @@ import 'dart:math';
 import 'package:visa_curbside/shared/constants.dart';
 
 class WebView extends StatefulWidget {
-  List<int> _itemIDsInCart;
+  Order _order;
   List<Item> _itemsInCart;
-  Store _store;
-  WebView(this._itemsInCart, this._itemIDsInCart, this._store);
+  WebView(this._order, this._itemsInCart);
   @override
   _WebViewState createState() => _WebViewState();
 }
@@ -52,27 +52,25 @@ class _WebViewState extends State<WebView> {
           controller.addJavaScriptHandler(
               handlerName: "success",
               callback: (args) async {
-                if (widget._itemIDsInCart.length != 0) {
-                  var headers = {'Content-Type': 'application/json'};
-                  String uri = 'http://localhost:3005/merchant/confirmOrder';
-                  dynamic data = {
-                    "storeID": widget._store.storeID,
-                    "itemIDs": widget._itemIDsInCart,
-                    "userID": globalUser.uid.toString(),
-                    "coordinates": kPublixAtlanta
-                  };
 
-                  http.Response res = await http.post(uri,
-                      headers: headers, body: jsonEncode(data));
+                var headers = {'Content-Type': 'application/json'};
+                String uri = 'http://localhost:3005/merchant/changeOrderStatus';
+                dynamic data = {
+                  "orderID": widget._order.id,
+                  "isPending" : false, 
+                  "isReadyForPickup": true,
+                };
 
-                  print('status code:  ${res.statusCode}');
+                http.Response res = await http.post(uri,
+                    headers: headers, body: jsonEncode(data));
+                print("order paid for");
+                print('status code:  ${res.statusCode}');
+                print(widget._order.isPending);
+                print(widget._order.isReadyForPickup);
+                showOrderPaidForAlertDialog(context, widget._order, widget._itemsInCart);
 
-                  print("submit button clicked");
-                } else {
-                  print("Order cannot be empty");
-                }
-                showConfirmOrderAlertDialog(context, widget._itemsInCart,
-                    widget._itemIDsInCart, widget._store);
+               
+
               });
         },
         onLoadStart: (InAppWebViewController controller, String url) {
@@ -95,27 +93,24 @@ class _WebViewState extends State<WebView> {
   }
 }
 
-void showConfirmOrderAlertDialog(BuildContext context, List<Item> itemsInCart,
-    List<int> itemIDsinCart, Store store) {
+void showOrderPaidForAlertDialog(BuildContext context, Order _order, List<Item> _itemsInCart) {
   showDialog(
       context: context,
       child: CupertinoAlertDialog(
-        title: Text("Are you ready to submit your order?"),
-        content: Text("Total: \$ " + getTotal(itemsInCart).toString()),
+        title: Text("Your order has been submitted!"),
+        content: Text(
+          "Total: \$ " + getTotal(_itemsInCart).toString(),
+          style: TextStyle(fontSize: 20),
+        ),
         actions: <Widget>[
           CupertinoButton(
-            child: Text("Submit"),
+            child: Text("Thanks!"),
             onPressed: () async {
+
               Navigator.of(context, rootNavigator: true).pop();
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
           ),
-          CupertinoButton(
-              child: Text("Cancel"),
-              onPressed: () {
-                Navigator.of(context, rootNavigator: true).pop();
-                print("cancel submit order");
-              })
         ],
       ));
 }

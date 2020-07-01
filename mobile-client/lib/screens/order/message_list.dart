@@ -33,12 +33,10 @@ class _MessageListState extends State<MessageList> {
           Expanded(
             flex: 12,
             child: Container(
-            color: Colors.grey[300],
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: messages.length,
               itemBuilder: (context, index) {
-                
                 return MessageTile(messages[index]);
               }),
             ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:visa_curbside/models/message.dart';
+import 'package:visa_curbside/shared/constants.dart';
 
 class MessageTile extends StatelessWidget {
   final Message message;
@@ -16,8 +17,8 @@ class MessageTile extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
       decoration: BoxDecoration(
         color: isUser
-        ? Colors.green[200]
-        : Colors.lightBlue[200],
+        ? kLightYellow
+        : message.messenger == 'store' ? Colors.grey[400] : kLightBlue ,
         borderRadius: isUser
         ? BorderRadius.only(
           topLeft: Radius.circular(15),

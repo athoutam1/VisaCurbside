@@ -9,6 +9,7 @@ import 'package:visa_curbside/screens/search/item_details.dart';
 import 'package:visa_curbside/services/DatabaseHelper.dart';
 import 'package:visa_curbside/models/item.dart';
 import 'package:http/http.dart' as http;
+import 'package:visa_curbside/shared/constants.dart';
 import 'dart:convert';
 
 import './webview.dart';
@@ -63,19 +64,67 @@ class _CartState extends State<Cart> {
           SizedBox(
             height: 25,
           ),
-          CupertinoButton.filled(
+          CupertinoButton(
+            color: kVisaBlue,
             child: Text("Confirm Order"),
+            
             onPressed: () {
-              // showConfirmOrderAlertDialog(context, widget._itemsInCart,
-              //     widget._itemIDsInCart, widget._store);
-              Navigator.push(
-                  context, CupertinoPageRoute(builder: (context) => WebView(widget._itemsInCart, widget._itemIDsInCart, widget._store)));
+              showConfirmOrderAlertDialog(context, widget._itemsInCart,
+                  widget._itemIDsInCart, widget._store);
+              // Navigator.push(
+              //     context, CupertinoPageRoute(builder: (context) => WebView(widget._itemsInCart, widget._itemIDsInCart, widget._store)));
             },
           ),
         ],
       ),
     );
   }
+  void showConfirmOrderAlertDialog(BuildContext context, List<Item> itemsInCart,
+    List<int> itemIDsinCart, Store store) {
+  showDialog(
+      context: context,
+      child: CupertinoAlertDialog(
+        title: Text("Send Order to Store?"),
+        content: Text(
+          "Total: \$ " + getTotal(itemsInCart).toString(),
+          style: TextStyle(fontSize: 20),
+        ),
+        actions: <Widget>[
+          CupertinoButton(
+            child: Text("Yes"),
+            onPressed: () async {
+              if (widget._itemIDsInCart.length != 0) {
+                var headers = {'Content-Type': 'application/json'};
+                String uri = 'http://localhost:3005/merchant/confirmOrder';
+                dynamic data = {
+                  "storeID": widget._store.storeID,
+                  "itemIDs": widget._itemIDsInCart,
+                  "userID": globalUser.uid.toString(),
+                };
+
+                http.Response res = await http.post(uri,
+                    headers: headers, body: jsonEncode(data));
+
+                print('status code:  ${res.statusCode}');
+
+                print("submit button clicked");
+              } else {
+                print("Order cannot be empty");
+              }
+              Navigator.of(context, rootNavigator: true).pop();
+              Navigator.of(context).popUntil((route) => route.isFirst);
+            },
+          ),
+          CupertinoButton(
+            child: Text("No"),
+            onPressed: () async {
+              Navigator.of(context, rootNavigator: true).pop();
+
+            },
+          )
+        ],
+      ));
+}
 }
 
 class ItemCard extends StatelessWidget {

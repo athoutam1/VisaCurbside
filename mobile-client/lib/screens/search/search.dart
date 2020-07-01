@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:visa_curbside/services/DatabaseHelper.dart';
+import 'package:visa_curbside/shared/constants.dart';
 import '../settings/settings.dart';
 import 'package:visa_curbside/models/store.dart';
 import './storeDetails.dart';
@@ -48,8 +49,8 @@ class _SearchState extends State<Search> {
             child: Column(  
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Text("Search for Stores Near You",
-                style: TextStyle(fontSize: 20),),
+                Text("Discover Stores Near You",
+                style: kOrderHeadersTextStyle.copyWith(letterSpacing: 1.5)),
                 SizedBox(height: 20,),
                 CupertinoTextField(
                   cursorWidth: 3,
@@ -118,6 +119,8 @@ class _SearchState extends State<Search> {
 class StoreCard extends StatelessWidget {
   Store _store;
   StoreCard(this._store);
+
+  
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -133,6 +136,7 @@ class StoreCard extends StatelessWidget {
                 subtitle: Text(_store.storeName),
                 trailing: Icon(Icons.store),
                 onTap: () {
+                  
                   Navigator.push(context,
                 CupertinoPageRoute(builder: (context) => StoreDetails(_store)));
                 }
