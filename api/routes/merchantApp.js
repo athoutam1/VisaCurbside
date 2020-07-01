@@ -149,7 +149,7 @@ router.get("/getOrderItems", async (req, res) => {
     let [response, responseFields] = await sql.query(`
       SELECT Items.id, name, description, price, imageURL FROM OrderedItems
       JOIN Items
-      ON Items.id = OrderedItems.id
+      ON Items.id = OrderedItems.itemID
       WHERE orderID = ${orderID};
     `);
     res.json(response);

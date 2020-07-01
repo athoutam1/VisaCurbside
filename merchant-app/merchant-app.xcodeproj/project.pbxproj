@@ -150,10 +150,10 @@
 				31570AC624A8352C000C89A6 /* ItemAdder.swift */,
 				31570B1F24AA816A000C89A6 /* OrderView.swift */,
 				31570B2724AA9E16000C89A6 /* OrderDetailsView.swift */,
-				31570B2124AA8180000C89A6 /* ProfileView.swift */,
 				31D4F81B24AAA41F00E51F5B /* ChatView.swift */,
 				31943DEE24ABE8A6000BFCCD /* DeliveryView.swift */,
 				31943DF924AC0F9D000BFCCD /* PastOrderView.swift */,
+				31570B2124AA8180000C89A6 /* ProfileView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";

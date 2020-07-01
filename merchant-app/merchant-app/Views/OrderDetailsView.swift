@@ -8,6 +8,7 @@
 
 import SwiftUI
 import Alamofire
+import SDWebImageSwiftUI
 
 struct OrderDetailsView: View {
     
@@ -19,69 +20,67 @@ struct OrderDetailsView: View {
     @State var awaitingPayment: Bool
     
     var body: some View {
+        ScrollView {
         VStack {
             HStack {
                 Image(systemName: "person.fill")
-                    .font(.system(size: 40))
-                    .padding(12)
+                    .font(.system(size: 80))
+                    .padding(15)
+                    .background(Color(red: 239/255, green: 236/255, blue: 232/255))
                     .clipShape(Circle())
-                    .overlay(Circle().stroke(Color.black, lineWidth: 1))
+                    .foregroundColor(Color(red: 198/255, green: 195/255, blue: 189/255))
                 
-                VStack(alignment: .leading) {
+                Spacer()
+                
+                VStack(alignment: .leading, spacing: 5) {
                     Text(self.order.shopperName)
-                        .font(.system(size: 20))
+                        .font(.system(size: 17))
                         .bold()
                     Text("\(convertToDate(oldDate: self.order.time)?.localizedDescription ?? "")")
-                    if self.order.isPending && !self.order.isReadyForPickup {
-                        Text("\(self.order.shopperName) is waiting for you to approve their order")
-                            .foregroundColor(.gray)
-                    } else if !self.order.isPending && self.order.isReadyForPickup {
-                        Text("\(self.order.shopperName) will let you know when they've arrived")
-                        .foregroundColor(.gray)
+                    .font(.system(size: 14))
+                    HStack(alignment: .center) {
+                        Circle()
+                            .fill(Color("Yellow"))
+                            .frame(width: 7, height: 7)
+                        if self.order.isPending && !self.order.isReadyForPickup {
+                            Text("\(self.order.shopperName) is waiting for you to approve their order")
+                                .fixedSize(horizontal: false, vertical: true)
+                                .foregroundColor(Color("Yellow"))
+                                .font(.system(size: 12))
+                        } else if !self.order.isPending && self.order.isReadyForPickup {
+                            Text("\(self.order.shopperName) will let you know when they've arrived")
+                            .fixedSize(horizontal: false, vertical: true)
+                            .foregroundColor(Color("Yellow"))
+                            .font(.system(size: 12))
+                        }
                     }
                 }
-                Spacer()
                 
             }
             .padding()
             
             Divider()
-            .padding(.horizontal)
+            .foregroundColor(.black)
             
             HStack {
                 Text("Items")
-                .font(.title)
+                    .font(.system(size: 20))
                 Spacer()
                 
                 NavigationLink(destination: ChatView(chatID: "\(self.order.shopperID)AND\(self.dataStore.storeID)", order: self.order).environmentObject(dataStore)) {
-                    HStack {
-                        Text("Chat Now")
-                        Image(systemName: "message")
-                    }
+                    Image(systemName: "message")
+                    .foregroundColor(Color("Dark Blue"))
                 }
             }
             .padding(.horizontal)
             
-            List {
-                ForEach(self.orderItems) { item in
-                    ItemRow(item: item)
-                }
-                
-                if !self.awaitingPayment {
-                        Button(action: {
-                            //
-                        }) {
-                            Text("Add New Item")
-                            .padding(.vertical, 15)
-                            .frame(maxWidth: .infinity, alignment: .center)
-                            .foregroundColor(.white)
-                        }
-                        .background(
-                            RoundedRectangle(cornerRadius: 13, style: .continuous)
-                            .foregroundColor(.green)
-                        )
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        Button(action: {
+                VStack(spacing: 20) {
+                    ForEach(self.orderItems, id: \.self) { item in
+                        ItemCard(item: item, editable: true)
+                    }
+                    
+                    Button(action: {
+                        if !self.awaitingPayment {
                             let url = "\(self.dataStore.proxy)/merchantApp/approveOrder"
                             let parameters: Parameters = [
                                 "orderID": self.order.id
@@ -90,36 +89,31 @@ struct OrderDetailsView: View {
                             AF.request(url, method: .post, parameters: parameters).response { response in
                                 switch response.result {
                                 case .success(_):
-                                    print("order approved")
                                     self.mode.wrappedValue.dismiss()
                                 case .failure(let err):
                                     print(err)
                                 }
                             }
-                        }) {
-                            Text("Approve Order")
-                            .padding(.vertical, 15)
-                                .frame(maxWidth: .infinity, alignment: .center)
-                            .foregroundColor(.white)
                         }
-                        .background(
-                            RoundedRectangle(cornerRadius: 13, style: .continuous)
-                            .foregroundColor(.blue)
-                        )
-                        .frame(maxWidth: .infinity, alignment: .center)
-                } else {
-                    Text("Awaiting Customer Payment ...")
-                    .font(.system(size: 18))
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(.top, 20)
+                    }) {
+                        Text(!self.awaitingPayment ? "Approve Order" : "Awaiting Customer Payment ...")
+                            .padding(.vertical, 15)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .foregroundColor(.white)
+                    }
+                    .background(
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                            .foregroundColor(!self.awaitingPayment ? Color("Dark Blue") : Color(red: 149/255, green: 165/255, blue: 166/255))
+                    )
+                        .padding(.vertical, 15)
+                        .frame(maxWidth: UIScreen.main.bounds.width * 0.75)
+                    
                 }
-                
-                
-            }
             
             Spacer()
         }
-        
+        .padding(.horizontal, 30)
+        }
         .navigationBarTitle("Order Details", displayMode: .large)
         .onAppear {
             let url = "\(self.dataStore.proxy)/merchantApp/getOrderItems"
@@ -153,4 +147,47 @@ struct OrderDetailsView: View {
         }
     }
     
+}
+
+struct ItemCard: View {
+ @State var item: Item
+    @State var editable: Bool
+    var body: some View {
+        
+        HStack {
+            WebImage(url: URL(string: item.imageURL))
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(maxWidth: 75, maxHeight: 75)
+            
+            VStack(spacing: 8) {
+                Text(item.name)
+                .bold()
+                .lineLimit(1)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text(item.description)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .lineLimit(2)
+            }
+            
+            Spacer()
+            
+            if self.editable {
+                Image(systemName: "pencil")
+                .foregroundColor(Color("Dark Blue"))
+                .font(.system(size: 15))
+            }
+             
+        }
+        .foregroundColor(.black)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 20)
+        .padding(.horizontal)
+        .background(Color(red: 248/255, green: 248/255, blue: 248/255))
+        .cornerRadius(10)
+        .clipped()
+        .shadow(radius: 5)
+        
+    }
 }

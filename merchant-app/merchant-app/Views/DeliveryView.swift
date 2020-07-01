@@ -43,17 +43,17 @@ struct DeliveryView: View {
                         }
                     }
                 }) {
-                    Text("Delivered")
+                    Text("Mark as Delivered")
                     .padding(.vertical, 15)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .foregroundColor(.white)
+                    .background(
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                        .foregroundColor(Color("Dark Blue"))
+                    )
+                    .padding(.vertical, 15)
+                    .frame(maxWidth: UIScreen.main.bounds.width * 0.75)
                 }
-                .background(
-                    RoundedRectangle(cornerRadius: 13, style: .continuous)
-                    .foregroundColor(.blue)
-                )
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.horizontal)
             }
             
             Spacer()
@@ -63,14 +63,14 @@ struct DeliveryView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .foregroundColor(.white)
                 .background(
-                    RoundedRectangle(cornerRadius: 13, style: .continuous)
-                    .foregroundColor(.blue)
+                    RoundedRectangle(cornerRadius: 25, style: .continuous)
+                    .foregroundColor(Color("Dark Blue"))
                 )
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.horizontal)
+                .padding(.vertical, 15)
+                .frame(maxWidth: UIScreen.main.bounds.width * 0.75)
             }
             
-            
+            Spacer()
             Spacer()
         }
     .navigationBarTitle("Order Pickup")

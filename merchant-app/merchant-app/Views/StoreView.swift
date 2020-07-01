@@ -34,19 +34,21 @@ struct StoreView: View {
                             WebImage(url: URL(string: self.dataStore.store!.imageURL))
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
+                                .blur(radius: 3.5)
                                 .overlay(
                                     VStack {
                                         Spacer()
                                         if self.dataStore.store!.merchantName != nil {
                                             Text(self.dataStore.store!.merchantName!)
-                                                .frame(maxWidth: .infinity, alignment: .leading)
+                                                .frame(maxWidth: .infinity, alignment: .center)
                                         }
                                         Text(self.dataStore.store!.storeName)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
+                                            .frame(maxWidth: .infinity, alignment: .center)
+                                        Spacer()
                                     }
                                     .foregroundColor(.white)
-                                    .padding([.bottom, .leading], 10)
-                                    .font(.system(size: 20))
+//                                    .padding([.bottom, .leading], 10)
+                                    .font(.system(size: 28))
                                     .shadow(radius: 10)
                             )
                             
@@ -55,20 +57,26 @@ struct StoreView: View {
                         
                         List {
                             
-                            Button(action: {
-                                self.showActionSheet = true
-                            }) {
-                                Text("Add New Item")
+                            HStack {
+                                Spacer()
+                                Button(action: {
+                                    self.showActionSheet = true
+                                }) {
+                                    Text("Add Item")
                                     .padding(.vertical, 15)
                                     .frame(maxWidth: .infinity, alignment: .center)
-                                .foregroundColor(.white)
+                                    .foregroundColor(.white)
+                                }
+                                .background(
+                                    RoundedRectangle(cornerRadius: 25, style: .continuous)
+                                    .foregroundColor(Color("Dark Blue"))
+                                )
+                                .padding(.vertical, 15)
+                                .frame(maxWidth: UIScreen.main.bounds.width * 0.75)
+                                Spacer()
                             }
-                            .background(
-                                RoundedRectangle(cornerRadius: 13, style: .continuous)
-                                .foregroundColor(.blue)
-                            )
-                            .padding(.vertical, 15)
-                            .frame(maxWidth: .infinity, alignment: .center)
+                                
+                                
                             .actionSheet(isPresented: $showActionSheet) {
                                     ActionSheet(
                                         title: Text("Does this item have a barcode?"),
@@ -134,20 +142,25 @@ struct ItemRow: View {
             WebImage(url: URL(string: item.imageURL))
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(maxWidth: 75)
+                .frame(maxWidth: 75, maxHeight: 75)
             
             VStack(spacing: 8) {
-                Text(item.name)
+                HStack {
+                    Text(item.name)
+                    .bold()
+                    .lineLimit(1)
+                    Text("- $\(String(item.price))")
+                }
                 .frame(maxWidth: .infinity, alignment: .leading)
+                
                 Text(item.description)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .lineLimit(2)
             }
             
-            Spacer()
-            
-            Text("$\(String(item.price))")
+             Spacer()
         }
         .padding(.horizontal, 5)
+        .padding(.vertical, 5)
     }
 }
