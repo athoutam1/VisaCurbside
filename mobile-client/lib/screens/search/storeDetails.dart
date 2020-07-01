@@ -10,6 +10,7 @@ import 'package:visa_curbside/models/item.dart';
 import './cart.dart';
 import './custom_order_page.dart';
 import 'package:badges/badges.dart';
+import 'dart:async';
 
 var databaseHelper = new DatabaseHelper();
 
@@ -26,9 +27,17 @@ class _StoreDetailsState extends State<StoreDetails> {
   int _counter = 0;
   double _total = 0;
   String _query = "";
+  _liveUpdates() {
+    Timer.periodic(Duration(milliseconds: 100), (timer) {
+      setState(() {});
+      timer.cancel();
+     });
+  }
+  
 
   @override
   Widget build(BuildContext context) {
+    // _liveUpdates();
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: Text("VisaCurbside"),

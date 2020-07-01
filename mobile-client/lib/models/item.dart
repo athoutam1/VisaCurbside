@@ -6,6 +6,8 @@ class Item {
   final double price;
   final String imageURL;
   final String description;
+
+  
   
   Item({
     this.id,
