@@ -1,6 +1,6 @@
 import 'dart:collection';
 import 'dart:math';
-
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:visa_curbside/models/dataStore.dart';
@@ -29,6 +29,13 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
+  _liveUpdates() {
+    Timer.periodic(Duration(milliseconds: 100), (timer) {
+      widget._total = getTotal(widget._itemsInCart);
+      setState(() {});
+      timer.cancel();
+     });
+  }
   void _generateItemFrequency() {
     widget._itemQuantities = new HashMap();
     widget._itemsInCart.forEach((element) {
@@ -42,6 +49,7 @@ class _CartState extends State<Cart> {
 
   @override
   Widget build(BuildContext context) {
+    _liveUpdates();
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         middle: Text("Cart", style: TextStyle(fontSize: 24, letterSpacing: 3)),
@@ -70,10 +78,14 @@ class _CartState extends State<Cart> {
                   List<ItemCard> _cards = new List();
                   List<Item> keys = widget._itemQuantities.keys.toList();
                   List<int> values = widget._itemQuantities.values.toList();
+                 
                   for (int i = 0; i < widget._itemQuantities.length; i++) {
                     _cards.add(
                         ItemCard(keys[i], values[i], widget._itemIDsInCart));
                   }
+                  _cards.sort((a, b) {
+                    return a._item.id.compareTo(b._item.id);
+                  });
                   return snapshot.hasData
                       ? Container(
                           height: 525,
@@ -153,6 +165,7 @@ class _CartState extends State<Cart> {
 }
 
 class ItemCard extends StatefulWidget {
+
   final Item _item;
   final int _quantity;
   List<int> _itemIDsInCart;
@@ -206,9 +219,9 @@ class _ItemCardState extends State<ItemCard> {
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {
-                          // setState(() {
-                          //widget._itemIDsInCart.remove(widget._item.id);
-                          // });
+                          setState(() {
+                          widget._itemIDsInCart.remove(widget._item.id);
+                          });
                           print("minus 1");
                         },
                       ),
@@ -222,9 +235,9 @@ class _ItemCardState extends State<ItemCard> {
                           style: TextStyle(color: Colors.white),
                         ),
                         onPressed: () {
-                          // setState(() {
-                          //   widget._itemIDsInCart.add(widget._item.id);
-                          // });
+                          setState(() {
+                            widget._itemIDsInCart.add(widget._item.id);
+                          });
                           print(widget._itemIDsInCart);
                           print("add 1");
                         },

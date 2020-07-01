@@ -96,16 +96,19 @@ class _PickupOrderState extends State<PickupOrder> {
                   padding: const EdgeInsets.fromLTRB(0, 5, 0, 15),
                   child: Text(widget._store.location),
                 ),
-                Container(
-                  height: 400,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                  ),
-                  child: GoogleMap(
-                    onMapCreated: _onMapCreated,
-                    initialCameraPosition:
-                        CameraPosition(target: _center, zoom: 16.5),
-                    onCameraMove: _onCameraMove,
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(50),
+                  child: Container(
+                    height: 400,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: GoogleMap(
+                      onMapCreated: _onMapCreated,
+                      initialCameraPosition:
+                          CameraPosition(target: _center, zoom: 16.5),
+                      onCameraMove: _onCameraMove,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -166,7 +169,7 @@ class _PickupOrderState extends State<PickupOrder> {
                   ),
                 ),
                 Text(
-                  "Cart Details",
+                  "Order Summary",
                   style: kOrderHeadersTextStyle.copyWith(color: Colors.black),
                 ),
                 FutureBuilder<List<Item>>(

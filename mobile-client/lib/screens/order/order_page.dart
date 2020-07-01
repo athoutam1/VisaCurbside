@@ -9,17 +9,26 @@ import './pastOrder.dart';
 import '../../models/store.dart';
 import 'package:visa_curbside/services/DatabaseHelper.dart';
 import 'package:visa_curbside/shared/constants.dart';
+import 'dart:async';
 
 DatabaseHelper databaseHelper = new DatabaseHelper();
 
 class OrderPage extends StatefulWidget {
+  
   @override
   _OrderPageState createState() => _OrderPageState();
 }
 
 class _OrderPageState extends State<OrderPage> {
+  _liveUpdates() {
+    Timer.periodic(Duration(seconds: 2), (timer) {
+      setState(() {});
+      timer.cancel();
+     });
+  }
   @override
   Widget build(BuildContext context) {
+    _liveUpdates();
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         heroTag: "order screen",
@@ -35,6 +44,8 @@ class _OrderPageState extends State<OrderPage> {
                 future: databaseHelper.getOrdersFromUID(globalUser.uid.toString()),
                 initialData: List(),
                 builder: (context, snapshot) {
+                    
+                  
                   return snapshot.hasData ?
                   Expanded(
                     child: ListView.builder(
