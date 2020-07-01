@@ -128,8 +128,6 @@ class _PickupOrderState extends State<PickupOrder> {
                         print('status code:  ${res.statusCode}');
                         print(widget._order.isPending);
                         print(widget._order.isReadyForPickup);
-                   
-
                     },
               ),
                 ),
