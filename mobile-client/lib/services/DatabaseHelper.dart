@@ -59,6 +59,8 @@ class DatabaseHelper {
     orders.forEach((element) {
       if (element.isPending == 1 && element.isReadyForPickup == 0) {
         pending.add(element);               
+      } else if (element.isPending == 1 && element.isReadyForPickup == 1) {
+        ready.add(element);
       } else if (element.isPending == 0 && element.isReadyForPickup == 1) {
         ready.add(element);
       } else {
