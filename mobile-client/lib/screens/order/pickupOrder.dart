@@ -9,6 +9,8 @@ import 'package:visa_curbside/services/DatabaseHelper.dart';
 import 'package:visa_curbside/shared/constants.dart';
 import '../../models/store.dart';
 import 'package:visa_curbside/models/dataStore.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 DatabaseHelper databaseHelper = new DatabaseHelper();
 class PickupOrderCard extends StatelessWidget {
@@ -94,7 +96,8 @@ class _PickupOrderState extends State<PickupOrder> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: CupertinoButton.filled(
+                  child: CupertinoButton(
+                    color: kVisaBlue,
                     child: Text("Message Merchant"),
                     onPressed: () {
                       Navigator.push(
@@ -106,11 +109,27 @@ class _PickupOrderState extends State<PickupOrder> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: CupertinoButton.filled(
+                  child: CupertinoButton(
+                    color: kVisaBlue,
                     child: Text("I am Here"),
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.push(context,
                           CupertinoPageRoute(builder: (context) => MapPage()));
+                        var headers = {'Content-Type': 'application/json'};
+                        String uri = 'http://localhost:3005/order/here';
+                        dynamic data = {
+                          "orderID": widget._order.id,
+                          "coordinates": kPublixAtlanta
+                        };
+
+                        http.Response res = await http.post(uri,
+                            headers: headers, body: jsonEncode(data));
+                        print("I am here sent");
+                        print('status code:  ${res.statusCode}');
+                        print(widget._order.isPending);
+                        print(widget._order.isReadyForPickup);
+                   
+
                     },
               ),
                 ),

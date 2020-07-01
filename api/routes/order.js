@@ -22,11 +22,16 @@ router.post("/confirmPayment", async (req, res) => {
 // Tells the merchant that I'm here
 // Send your userID and orderID
 router.post("/here", async (req, res) => {
-  const { orderID } = req.body;
+  const { orderID, coordinates } = req.body;
   console.log(
     `Telling merchant in order ${orderID} that the user in order ${orderID} is here`
   );
   try {
+    let [response, responseFields] = await sql.query(`
+        UPDATE Orders SET coordinates = "${coordinates}"
+        WHERE id = ${orderID}
+      `);
+  
     res.sendStatus(200);
   } catch (error) {
     res.sendStatus(500);

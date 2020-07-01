@@ -6,6 +6,7 @@ class ItemDetails extends StatelessWidget {
   ItemDetails(this._item);
   @override
   Widget build(BuildContext context) {
+    print(_item);
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           middle: Text("Item Details"),
