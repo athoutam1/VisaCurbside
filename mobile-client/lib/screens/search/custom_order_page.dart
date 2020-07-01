@@ -14,8 +14,7 @@ class _CustomOrderPageState extends State<CustomOrderPage> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
-        middle: Text("Add Custom Order"),
-        
+        middle: Text("Custom Item"),
       ),
       child: SafeArea(
         child: CupertinoPageScaffold(
