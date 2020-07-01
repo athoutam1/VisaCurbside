@@ -10,10 +10,10 @@ class MessageTile extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isUser = message.messenger == 'user' ? true : false;
     return Container(
-      
+       
       margin: isUser 
-        ? EdgeInsets.only(top: 8, bottom: 8, left: 100)
-        : EdgeInsets.only(top: 8, bottom: 8, right: 100),
+        ? EdgeInsets.only(top: 8, bottom: 8, left: 100, right: 0)
+        : EdgeInsets.only(top: 8, bottom: 8, right: 100, left: 0),
       padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
       decoration: BoxDecoration(
         color: isUser
@@ -21,11 +21,13 @@ class MessageTile extends StatelessWidget {
         : message.messenger == 'store' ? Colors.grey[400] : kLightBlue ,
         borderRadius: isUser
         ? BorderRadius.only(
-          topLeft: Radius.circular(15),
-          bottomLeft: Radius.circular(15))
+          topLeft: Radius.circular(20),
+          bottomLeft: Radius.circular(20),
+          bottomRight: Radius.circular(30))
         : BorderRadius.only(
-          topRight: Radius.circular(15),
-          bottomRight: Radius.circular(15))
+          topRight: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+          bottomLeft: Radius.circular(30))
       ),
 
       child: isUser 

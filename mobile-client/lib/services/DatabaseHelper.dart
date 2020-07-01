@@ -67,15 +67,28 @@ class DatabaseHelper {
         past.add(element);
       }
     });
+    
     finalList.add(Order(shopperID: "READY_FOR_PICKUP_HEADER"));
+    if (ready.length == 0) {
+      finalList.add(Order(shopperID: "NO_READY_FOR_PICKUP_ORDERS"));
+    }
     ready.forEach((element) {
       finalList.add(element);
     });
+
+    
     finalList.add(Order(shopperID: "PENDING_HEADER"));
+    if (pending.length == 0) {
+      finalList.add(Order(shopperID: "NO_PENDING_ORDERS"));
+    }
     pending.forEach((element) {
       finalList.add(element);
     });
+
     finalList.add(Order(shopperID: "PAST_ORDER_HEADER"));
+    if (past.length == 0) {
+      finalList.add(Order(shopperID: "NO_PAST_ORDERS"));
+    }
     past.forEach((element) {
       finalList.add(element);
     });

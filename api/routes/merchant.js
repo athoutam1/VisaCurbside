@@ -159,5 +159,22 @@ router.post("/confirmOrder", async (req, res) => {
   }
 });
 
+//add custom item to database
+// router.post("/addCustomItem", async (req, res) => {
+//   const { name, price, price, description, storeID } = req.body;
+//   console.log(
+//     `Adding a custom item to the DB`
+//   );
+//   try {
+//     let [response, responseFields] = await sql.query(`
+//        INSERT INTO Items(name, price, description, imageURL, storeID)
+//        VALUES(${name}, ${price}, ${description}, "url.com", ${storeID})
+//       `);
+  
+//     res.sendStatus(200);
+//   } catch (error) {
+//     res.sendStatus(500);
+//   }
+// });
 
 module.exports = router;
