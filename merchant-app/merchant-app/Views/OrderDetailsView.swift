@@ -12,9 +12,11 @@ import Alamofire
 struct OrderDetailsView: View {
     
     @EnvironmentObject var dataStore: DataStore
+    @Environment(\.presentationMode) var mode: Binding<PresentationMode>
     
     @State var order: Order
     @State var orderItems: [Item] = []
+    @State var awaitingPayment: Bool
     
     var body: some View {
         VStack {
@@ -24,7 +26,7 @@ struct OrderDetailsView: View {
                     .padding(12)
                     .clipShape(Circle())
                     .overlay(Circle().stroke(Color.black, lineWidth: 1))
-                Spacer()
+                
                 VStack(alignment: .leading) {
                     Text(self.order.shopperName)
                         .font(.system(size: 20))
@@ -38,6 +40,7 @@ struct OrderDetailsView: View {
                         .foregroundColor(.gray)
                     }
                 }
+                Spacer()
                 
             }
             .padding()
@@ -64,34 +67,54 @@ struct OrderDetailsView: View {
                     ItemRow(item: item)
                 }
                 
-                Button(action: {
-                    //
-                }) {
-                    Text("Add New Item")
-                    .padding(.vertical, 15)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .foregroundColor(.white)
-                }
-                .background(
-                    RoundedRectangle(cornerRadius: 13, style: .continuous)
-                    .foregroundColor(.green)
-                )
-                .frame(maxWidth: .infinity, alignment: .center)
-                
-                
-                Button(action: {
-                    //
-                }) {
-                    Text("Accept Order")
-                    .padding(.vertical, 15)
+                if !self.awaitingPayment {
+                        Button(action: {
+                            //
+                        }) {
+                            Text("Add New Item")
+                            .padding(.vertical, 15)
+                            .frame(maxWidth: .infinity, alignment: .center)
+                            .foregroundColor(.white)
+                        }
+                        .background(
+                            RoundedRectangle(cornerRadius: 13, style: .continuous)
+                            .foregroundColor(.green)
+                        )
                         .frame(maxWidth: .infinity, alignment: .center)
-                    .foregroundColor(.white)
+                        Button(action: {
+                            let url = "\(self.dataStore.proxy)/merchantApp/approveOrder"
+                            let parameters: Parameters = [
+                                "orderID": self.order.id
+                            ]
+                            
+                            AF.request(url, method: .post, parameters: parameters).response { response in
+                                switch response.result {
+                                case .success(_):
+                                    print("order approved")
+                                    self.mode.wrappedValue.dismiss()
+                                case .failure(let err):
+                                    print(err)
+                                }
+                            }
+                        }) {
+                            Text("Approve Order")
+                            .padding(.vertical, 15)
+                                .frame(maxWidth: .infinity, alignment: .center)
+                            .foregroundColor(.white)
+                        }
+                        .background(
+                            RoundedRectangle(cornerRadius: 13, style: .continuous)
+                            .foregroundColor(.blue)
+                        )
+                        .frame(maxWidth: .infinity, alignment: .center)
+                } else {
+                    Text("Awaiting Customer Payment ...")
+                    .font(.system(size: 18))
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(.top, 20)
                 }
-                .background(
-                    RoundedRectangle(cornerRadius: 13, style: .continuous)
-                    .foregroundColor(.blue)
-                )
-                .frame(maxWidth: .infinity, alignment: .center)
+                
+                
             }
             
             Spacer()
@@ -108,6 +131,21 @@ struct OrderDetailsView: View {
                 switch response.result {
                 case .success(let response):
                     self.orderItems = response
+                case .failure(let err):
+                    print(err)
+                }
+            }
+        }
+        .onDisappear {
+            let url = "\(self.dataStore.proxy)/merchantApp/getOrders"
+            let parameters: Parameters = [
+                "storeID": self.dataStore.store!.storeID
+            ]
+            
+            AF.request(url, method: .get, parameters: parameters).responseDecodable(of: [Order].self){ response in
+                switch response.result {
+                case .success(let response):
+                    self.dataStore.orders = response
                 case .failure(let err):
                     print(err)
                 }

@@ -9,6 +9,34 @@ const orders = require("../models/order");
 const db = require("../services/firebase").db;
 const admin = require("../services/firebase").admin;
 
+router.post("/approveOrder", async (req, res) => {
+  const { orderID } = req.body;
+  try {
+    await sql.query(`
+      UPDATE Orders
+      SET isPending = 1, isReadyForPickup = 1
+      WHERE id = ${orderID}
+    `);
+    res.sendStatus(200);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
+router.post("/orderDelivered", async (req, res) => {
+  const { orderID } = req.body;
+  try {
+    await sql.query(`
+      UPDATE Orders
+      SET isPending = 0, isReadyForPickup = 0
+      WHERE id = ${orderID}
+    `);
+    res.sendStatus(200);
+  } catch (error) {
+    res.sendStatus(500);
+  }
+});
+
 router.post("/addItemToCatalog", async (req, res) => {
   const { name, price, description, imageURL, storeID } = req.body;
   try {
@@ -100,7 +128,7 @@ router.get("/getOrders", async (req, res) => {
   const { storeID } = req.query;
   try {
     let [response, responseFields] = await sql.query(`
-      SELECT Orders.id, shopperID, isPending, isReadyForPickup, time, name as shopperName FROM Orders
+      SELECT Orders.id, shopperID, isPending, isReadyForPickup, time, name as shopperName, coordinates FROM Orders
       JOIN Users
       ON Users.id = Orders.shopperID
       WHERE storeID = ${storeID}

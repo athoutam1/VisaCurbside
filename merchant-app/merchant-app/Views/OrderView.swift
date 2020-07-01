@@ -12,6 +12,7 @@ import Alamofire
 struct OrderView: View {
     
     @EnvironmentObject var dataStore: DataStore
+//    @State var showOrderDetailsView = false
     
     var body: some View {
             
@@ -23,9 +24,9 @@ struct OrderView: View {
                             .font(.title)
                     ) {
                         ForEach(self.dataStore.orders.filter({ (order) -> Bool in
-                            order.isPending && !order.isReadyForPickup
-                        })) { order in
-                            NavigationLink(destination: OrderDetailsView(order: order).environmentObject(self.dataStore)) {
+                            (order.isPending && !order.isReadyForPickup) || (order.isPending && order.isReadyForPickup)
+                        }), id: \.self) { order in
+                            NavigationLink(destination: OrderDetailsView(order: order, awaitingPayment: (order.isPending && order.isReadyForPickup)).environmentObject(self.dataStore)) {
                                 OrderRow(order: order)
                             }
                         }
@@ -36,8 +37,10 @@ struct OrderView: View {
                     ) {
                         ForEach(self.dataStore.orders.filter({ (order) -> Bool in
                             !order.isPending && order.isReadyForPickup
-                        })) { order in
-                            OrderRow(order: order)
+                        }), id: \.self) { order in
+                            NavigationLink(destination: DeliveryView(order: order).environmentObject(self.dataStore)) {
+                                OrderRow(order: order)
+                            }
                         }
                     }
                     Section(header:
@@ -45,8 +48,10 @@ struct OrderView: View {
                     ) {
                         ForEach(self.dataStore.orders.filter({ (order) -> Bool in
                             !order.isPending && !order.isReadyForPickup
-                        })) { order in
-                            OrderRow(order: order)
+                        }), id: \.self) { order in
+                            NavigationLink(destination: PastOrderView(order: order).environmentObject(self.dataStore)) {
+                                OrderRow(order: order)
+                            }
                         }
                     }
                     
@@ -62,6 +67,7 @@ struct OrderView: View {
                 AF.request(url, method: .get, parameters: parameters).responseDecodable(of: [Order].self){ response in
                     switch response.result {
                     case .success(let response):
+                        print(response)
                         self.dataStore.orders = response
                     case .failure(let err):
                         print(err)

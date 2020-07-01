@@ -39,7 +39,7 @@ class _WebViewState extends State<WebView> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: InAppWebView(
-        initialUrl: "https://c99efddced7f.ngrok.io",
+        initialUrl: "https://33f9240848dd.ngrok.io",
         initialHeaders: {},
         initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
@@ -52,6 +52,7 @@ class _WebViewState extends State<WebView> {
           controller.addJavaScriptHandler(
               handlerName: "success",
               callback: (args) async {
+
                 var headers = {'Content-Type': 'application/json'};
                 String uri = 'http://localhost:3005/merchant/changeOrderStatus';
                 dynamic data = {
@@ -67,6 +68,9 @@ class _WebViewState extends State<WebView> {
                 print(widget._order.isPending);
                 print(widget._order.isReadyForPickup);
                 showOrderPaidForAlertDialog(context, widget._order, widget._itemsInCart);
+
+               
+
               });
         },
         onLoadStart: (InAppWebViewController controller, String url) {
@@ -102,7 +106,6 @@ void showOrderPaidForAlertDialog(BuildContext context, Order _order, List<Item> 
           CupertinoButton(
             child: Text("Thanks!"),
             onPressed: () async {
-              //TODO API CALL PAYMENT CONFIRMED CHANGE ORDER STATUS TO 0 1
 
               Navigator.of(context, rootNavigator: true).pop();
               Navigator.of(context).popUntil((route) => route.isFirst);
