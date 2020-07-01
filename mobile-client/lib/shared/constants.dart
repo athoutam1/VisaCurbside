@@ -9,8 +9,14 @@ Color kVisaBlue = Color.fromRGBO(26, 31, 113, 1);
 
 
 const kOrderHeadersTextStyle = TextStyle(
-  fontSize: 24,
+  fontSize: 26,
   color: Colors.black,
   letterSpacing: 3,
-  fontWeight: FontWeight.w600
+  fontWeight: FontWeight.w500
+);
+
+const kTextFormHeadersStyle = TextStyle(
+  fontSize: 24,
+  letterSpacing: 1.5,
+  fontWeight: FontWeight.w500
 );

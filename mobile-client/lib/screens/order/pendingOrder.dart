@@ -60,68 +60,112 @@ class _PendingOrderState extends State<PendingOrder> {
         navigationBar: CupertinoNavigationBar(
           middle: Text("Order: " + widget._order.id.toString()),
         ),
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(widget._store.storeName, 
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold
-                  ),),
-              Text(widget._store.location),
-              SizedBox(height: 50,),
-              Text("Cart Details", style: kOrderHeadersTextStyle.copyWith(color: Colors.black),),
-              FutureBuilder<List<Item>>(
-                  future: databaseHelper.getItemsFromIDs(widget._order.itemIDs),
-                  initialData: List(),
-                  builder: (context, snapshot) {
-                  widget._items = snapshot.data;
+        child: SingleChildScrollView(
+          child: SafeArea(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 15, 0, 5),
+                  child: Text(widget._store.storeName, 
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold
+                      ),),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 5, 0, 15),
+                  child: Text(widget._store.location),
+                ),
+                SizedBox(height: 25,),
+                Text("Cart Details", style: kOrderHeadersTextStyle.copyWith(color: Colors.black),),
+                FutureBuilder<List<Item>>(
+                    future: databaseHelper.getItemsFromIDs(widget._order.itemIDs),
+                    initialData: List(),
+                    builder: (context, snapshot) {
+                    widget._items = snapshot.data;
+                    List<ItemCardStoreDetails> _cards = new List();
+                  List<Text> _texts = new List();
+                  for (int i = 0; i < widget._items.length; i++) {
+                    _cards.add(ItemCardStoreDetails(widget._items[i]));
+                    _texts.add(Text(widget._items[i].name));
+                  }
                   return snapshot.hasData ?
                   Container(
-                      child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: widget._items.length,
-                      itemBuilder: (_, int position) {
-                        return Card(
-                          child: Text(widget._items[position].name),
-                        );
-                      }),
+                    height: 500,
+                      child: ListView(
+                      shrinkWrap: false,
+                      children: _cards
+                      )
                   )
-                  : 
-                  Center(
-                    child: CircularProgressIndicator()
-                  );
-                  }
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CupertinoButton(
-                    color: kVisaBlue,
-                    child: Text("Message Merchant"),
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          CupertinoPageRoute(
-                              builder: (context) => MessageMerchant(widget._store, globalUser.uid)));
-                    },
+                  :  
+                    Center(
+                      child: CircularProgressIndicator()
+                    );
+                    }
                   ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300,
+                      decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(200)),
+                      color: kVisaBlue,),
+                      child: CupertinoButton(
+                        child: Text("Message Merchant", style: TextStyle(color: Colors.white)),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              CupertinoPageRoute(
+                                  builder: (context) => MessageMerchant(widget._store, globalUser.uid)));
+                        },
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      width: 300,
+                      decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(200)),
+                      color: kVisaBlue,),
+                      child: CupertinoButton(
+                        child: Text("Pay Now", style: TextStyle(color: Colors.white)), 
+                        onPressed: () {
+                          Navigator.push(context,
+                              CupertinoPageRoute(builder: (context) => WebView(widget._order, widget._items)));
+                      },
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CupertinoButton(
-                    color: kVisaBlue,
-                    child: Text("Pay Now"), 
-                    onPressed: () {
-                      Navigator.push(context,
-                          CupertinoPageRoute(builder: (context) => WebView(widget._order, widget._items)));
-                  },
-              ),
-                ),
-              
-            ],
+                    ),
+                  ),
+                
+              ],
+            ),
           ),
         ));
+  }
+}
+class ItemCardStoreDetails extends StatelessWidget {
+  final Item _item;
+ 
+  ItemCardStoreDetails(this._item);
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        title: Text(_item.name,
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        isThreeLine: true,
+        subtitle: Text(
+            " ${_item.description}\n " +
+                "\$" +
+                _item.price.toString(),
+            style: TextStyle(letterSpacing: 2)),
+        onTap: () {
+
+        },
+      ),
+    );
   }
 }
 

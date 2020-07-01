@@ -123,6 +123,7 @@ double getTotal(List<Item> itemsInCart) {
   itemsInCart.forEach((element) {
     total += element.price;
   });
+  
   double mod = pow(10.0, 2);
   return ((total * mod).round().toDouble() / mod);
 }
