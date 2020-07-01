@@ -9,5 +9,7 @@ target 'merchant-app' do
   pod 'Firebase/Storage'
   pod 'Firebase/Firestore'
   pod 'FirebaseFirestoreSwift'
+  pod 'GoogleMaps'
+  pod 'GooglePlaces'
 
 end

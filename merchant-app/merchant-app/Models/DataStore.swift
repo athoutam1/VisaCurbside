@@ -22,6 +22,8 @@ class DataStore: ObservableObject {
     
     @Published var proxy = "https://33f9240848dd.ngrok.io"
     
+    // Google maps API Key AIzaSyC1bpFx82bEj8dzGExzq9d253vz1CkQTfw
+    
     @Published var db = Firestore.firestore()
 
 }

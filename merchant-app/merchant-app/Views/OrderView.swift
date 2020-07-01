@@ -25,7 +25,7 @@ struct OrderView: View {
                 .padding(.bottom, 10)
                 
                 VStack(spacing: 18) {
-                    ForEach(self.dataStore.orders.filter({ (order) -> Bool in
+                    ForEach(self.dataStore.orders.reversed().filter({ (order) -> Bool in
                         (order.isPending && !order.isReadyForPickup) || (order.isPending && order.isReadyForPickup)
                     }), id: \.self) { order in
                         NavigationLink(destination: OrderDetailsView(order: order, awaitingPayment: (order.isPending && order.isReadyForPickup)).environmentObject(self.dataStore)) {
@@ -41,7 +41,7 @@ struct OrderView: View {
                 .padding(.bottom, 10)
                 
                 VStack(spacing: 18) {
-                ForEach(self.dataStore.orders.filter({ (order) -> Bool in
+                    ForEach(self.dataStore.orders.reversed().filter({ (order) -> Bool in
                     !order.isPending && order.isReadyForPickup
                 }), id: \.self) { order in
                     NavigationLink(destination: DeliveryView(order: order).environmentObject(self.dataStore)) {
@@ -57,7 +57,7 @@ struct OrderView: View {
                 .padding(.bottom, 10)
                 
                 VStack(spacing: 18) {
-                ForEach(self.dataStore.orders.filter({ (order) -> Bool in
+                    ForEach(self.dataStore.orders.reversed().filter({ (order) -> Bool in
                     !order.isPending && !order.isReadyForPickup
                 }), id: \.self) { order in
                     NavigationLink(destination: PastOrderView(order: order).environmentObject(self.dataStore)) {
@@ -73,17 +73,21 @@ struct OrderView: View {
             .padding(.horizontal, 30)
             .padding(.top, 15)
             .onAppear {
-                let url = "\(self.dataStore.proxy)/merchantApp/getOrders"
-                let parameters: Parameters = [
-                    "storeID": self.dataStore.store!.storeID
-                ]
-                
-                AF.request(url, method: .get, parameters: parameters).responseDecodable(of: [Order].self){ response in
-                    switch response.result {
-                    case .success(let response):
-                        self.dataStore.orders = response
-                    case .failure(let err):
-                        print(err)
+                Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                    let url = "\(self.dataStore.proxy)/merchantApp/getOrders"
+                    let parameters: Parameters = [
+                        "storeID": self.dataStore.store!.storeID
+                    ]
+                    
+                    AF.request(url, method: .get, parameters: parameters).responseDecodable(of: [Order].self){ response in
+                        switch response.result {
+                        case .success(let response):
+                            if self.dataStore.orders != response {
+                               self.dataStore.orders = response
+                            }
+                        case .failure(let err):
+                            print(err)
+                        }
                     }
                 }
             }

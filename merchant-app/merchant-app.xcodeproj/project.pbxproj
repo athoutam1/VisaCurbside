@@ -35,6 +35,7 @@
 		31570B2824AA9E16000C89A6 /* OrderDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31570B2724AA9E16000C89A6 /* OrderDetailsView.swift */; };
 		31943DEF24ABE8A6000BFCCD /* DeliveryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31943DEE24ABE8A6000BFCCD /* DeliveryView.swift */; };
 		31943DFA24AC0F9E000BFCCD /* PastOrderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31943DF924AC0F9D000BFCCD /* PastOrderView.swift */; };
+		31943DFC24ACF288000BFCCD /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31943DFB24ACF288000BFCCD /* LocationManager.swift */; };
 		31D4F81C24AAA41F00E51F5B /* ChatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D4F81B24AAA41F00E51F5B /* ChatView.swift */; };
 /* End PBXBuildFile section */
 
@@ -64,6 +65,7 @@
 		31570B2724AA9E16000C89A6 /* OrderDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailsView.swift; sourceTree = "<group>"; };
 		31943DEE24ABE8A6000BFCCD /* DeliveryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeliveryView.swift; sourceTree = "<group>"; };
 		31943DF924AC0F9D000BFCCD /* PastOrderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PastOrderView.swift; sourceTree = "<group>"; };
+		31943DFB24ACF288000BFCCD /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		31D4F81B24AAA41F00E51F5B /* ChatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatView.swift; sourceTree = "<group>"; };
 		848B8E4A2CD05DC6EF7DD289 /* Pods-merchant-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-merchant-app.release.xcconfig"; path = "Target Support Files/Pods-merchant-app/Pods-merchant-app.release.xcconfig"; sourceTree = "<group>"; };
 		871217B34A6030485252391F /* Pods-merchant-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-merchant-app.debug.xcconfig"; path = "Target Support Files/Pods-merchant-app/Pods-merchant-app.debug.xcconfig"; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				313C803424A82E97009FFAE2 /* Item.swift */,
 				31570B2324AA84EB000C89A6 /* Store.swift */,
 				31570B2524AA9324000C89A6 /* Order.swift */,
+				31943DFB24ACF288000BFCCD /* LocationManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -197,6 +200,7 @@
 				3120A4CF24A828F60069A235 /* Frameworks */,
 				3120A4D024A828F60069A235 /* Resources */,
 				73756E635D88B4DA53CC42D7 /* [CP] Embed Pods Frameworks */,
+				E9F475FBD15B3D4E226BD9DA /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -307,6 +311,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-merchant-app/Pods-merchant-app-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		E9F475FBD15B3D4E226BD9DA /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-merchant-app/Pods-merchant-app-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-merchant-app/Pods-merchant-app-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-merchant-app/Pods-merchant-app-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -326,6 +347,7 @@
 				3120A4D824A828F60069A235 /* SceneDelegate.swift in Sources */,
 				31570AD524A85820000C89A6 /* TextView.swift in Sources */,
 				3120A4DA24A828F60069A235 /* ContentView.swift in Sources */,
+				31943DFC24ACF288000BFCCD /* LocationManager.swift in Sources */,
 				31D4F81C24AAA41F00E51F5B /* ChatView.swift in Sources */,
 				31570B2624AA9324000C89A6 /* Order.swift in Sources */,
 				31570B2224AA8180000C89A6 /* ProfileView.swift in Sources */,
