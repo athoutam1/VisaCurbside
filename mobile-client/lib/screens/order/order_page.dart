@@ -28,7 +28,7 @@ class _OrderPageState extends State<OrderPage> {
   }
   @override
   Widget build(BuildContext context) {
-    _liveUpdates();
+    //_liveUpdates();
     return CupertinoPageScaffold(
       navigationBar: CupertinoNavigationBar(
         heroTag: "order screen",

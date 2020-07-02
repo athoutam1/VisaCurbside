@@ -18,12 +18,15 @@ router.get("/search", async (req, res) => {
     `);
     response = response.map(
       (response) =>
-        new merchant.StorePreview(
+        new merchant.Store(
           response.merchantID,
           response.merchantName,
           response.id,
           response.name,
-          response.location
+          response.description,
+          response.location,
+          response.imageURL,
+          response.logoURL
         )
     );
     res.json(response);

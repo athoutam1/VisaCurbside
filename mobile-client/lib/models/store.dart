@@ -12,6 +12,8 @@ class Store {
   final String storeName;
   final String description;
   final String location;
+  final String imageURL;
+  final String logoURL;
 
   
   Store({
@@ -21,6 +23,8 @@ class Store {
     this.storeName,
     this.description,
     this.location,
+    this.imageURL,
+    this.logoURL,
   });
 
   
@@ -32,6 +36,8 @@ class Store {
     String storeName,
     String description,
     String location,
+    String imageURL,
+    String logoURL,
   }) {
     return Store(
       merchantID: merchantID ?? this.merchantID,
@@ -40,6 +46,8 @@ class Store {
       storeName: storeName ?? this.storeName,
       description: description ?? this.description,
       location: location ?? this.location,
+      imageURL: imageURL ?? this.imageURL,
+      logoURL: logoURL ?? this.logoURL,
     );
   }
 
@@ -51,6 +59,8 @@ class Store {
       'storeName': storeName,
       'description': description,
       'location': location,
+      'imageURL': imageURL,
+      'logoURL': logoURL,
     };
   }
 
@@ -64,6 +74,8 @@ class Store {
       storeName: map['storeName'],
       description: map['description'],
       location: map['location'],
+      imageURL: map['imageURL'],
+      logoURL: map['logoURL'],
     );
   }
 
@@ -73,7 +85,7 @@ class Store {
 
   @override
   String toString() {
-    return 'Store(merchantID: $merchantID, merchantName: $merchantName, storeID: $storeID, storeName: $storeName, description: $description, location: $location)';
+    return 'Store(merchantID: $merchantID, merchantName: $merchantName, storeID: $storeID, storeName: $storeName, description: $description, location: $location, imageURL: $imageURL, logoURL: $logoURL)';
   }
 
   @override
@@ -86,7 +98,9 @@ class Store {
       o.storeID == storeID &&
       o.storeName == storeName &&
       o.description == description &&
-      o.location == location;
+      o.location == location &&
+      o.imageURL == imageURL &&
+      o.logoURL == logoURL;
   }
 
   @override
@@ -96,6 +110,8 @@ class Store {
       storeID.hashCode ^
       storeName.hashCode ^
       description.hashCode ^
-      location.hashCode;
+      location.hashCode ^
+      imageURL.hashCode ^
+      logoURL.hashCode;
   }
 }

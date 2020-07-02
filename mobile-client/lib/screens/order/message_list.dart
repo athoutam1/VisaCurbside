@@ -23,10 +23,9 @@ class _MessageListState extends State<MessageList> {
   @override
   Widget build(BuildContext context) {
 
-    List<Message> messages = Provider.of<List<Message>>(context);
+    List<Message> messages = Provider.of<List<Message>>(context) ?? [];
     ScrollController _scrollController = new ScrollController();
-    return  messages != null 
-    ? GestureDetector(
+    return  GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
           child: Column(
         children: <Widget>[
@@ -48,13 +47,8 @@ class _MessageListState extends State<MessageList> {
           
         ],
       ),
-    )
-    : Center(
-        child: CircularProgressIndicator()
-      );
-    
-      
-  
+    );
+
   } 
 
   _buildMessageComposer() {

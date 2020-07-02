@@ -12,20 +12,19 @@ import 'dart:convert';
 DatabaseHelper databaseHelper = new DatabaseHelper();
 
 class Search extends StatefulWidget {
-
   @override
   _SearchState createState() => _SearchState();
 }
 
 class _SearchState extends State<Search> {
-
   final SearchBarController<Store> _searchBarController = SearchBarController();
   bool isReplay = false;
   String _query = "";
-  
+
   Future<List<Store>> _getStores(String search) async {
     List<Store> storesList = new List<Store>();
-    http.Response res = await http.get('http://localhost:3005/merchant/search?query=' + search);
+    http.Response res =
+        await http.get('http://localhost:3005/merchant/search?query=' + search);
     List<dynamic> responses = jsonDecode(res.body);
     responses.forEach((element) {
       storesList.add(Store.fromMap(element));
@@ -36,117 +35,162 @@ class _SearchState extends State<Search> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      navigationBar: CupertinoNavigationBar(
-        heroTag: "search screen",
-        transitionBetweenRoutes: false,
-        middle: Text("Visa Curbside"),
-        
-      ),
-      child: SafeArea(
-        child: CupertinoPageScaffold(
-          child: Container(
+        navigationBar: CupertinoNavigationBar(
+          heroTag: "search screen",
+          transitionBetweenRoutes: false,
+          middle: Text("Visa Curbside"),
+        ),
+        child: SafeArea(
+          child: CupertinoPageScaffold(
+              child: Container(
             padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
-            child: Column(  
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 Text("Discover Stores Near You",
-                style: kOrderHeadersTextStyle.copyWith(letterSpacing: 1.5)),
-                SizedBox(height: 20,),
-                CupertinoTextField(
-                  cursorWidth: 3,
-                  placeholder: "search",
-                  autocorrect: false,
-                  onChanged: (value) => setState(() => _query = value),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 24,
+                        letterSpacing: 2.5)),
+                SizedBox(
+                  height: 10,
                 ),
-                SizedBox(height: 20,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                  CupertinoButton(
-                    child: Text("Filter",
-                    style: TextStyle(
-                      color: CupertinoColors.black
-                    )),
-                    color: CupertinoColors.lightBackgroundGray,
-                    onPressed: () {
-                      print("Search filter button pressed");
-                    }),
-                    SizedBox(width: 20),
-                  CupertinoButton(
-                    child: Text("Sort",
-                    style: TextStyle(
-                      color: CupertinoColors.black
-                    )),
-                    color: CupertinoColors.lightBackgroundGray,
-                    onPressed: () {
-                      print("Sort filter button pressed");
-                    })
-                ],
-              ),
-              SizedBox(height: 20,),
-              FutureBuilder<List<Store>>(
-                future: databaseHelper.getStores(_query),
-                initialData: List(),
-                builder: (context, snapshot) {
-                  return snapshot.hasData ?
-                  Expanded(
-                    child: ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: snapshot.data.length,
-                      itemBuilder: (_, int position) {
-                        final store = snapshot.data[position];
-                        return StoreCard(store);
-                      }
+                    Icon(
+                      CupertinoIcons.location,
+                      color: kVisaGold,
                     ),
-                  )
-                : 
-                Center(
-                  child: CircularProgressIndicator()
-                );
-                }
-              )
-                    
+                    Text("Atlanta, GA",
+                        style: TextStyle(
+                          color: kVisaGold,
+                          letterSpacing: 1.5,
+                          fontWeight: FontWeight.w500,
+                        ))
+                  ],
+                ),
+                SizedBox(
+                  height: 15,
+                ),
+                Container(
+                  height: 40,
+                  width: 350,
+                  child: CupertinoTextField(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                      color: Colors.grey[300],
+                    ),
+                    cursorWidth: 3,
+                    prefix: Icon(
+                      CupertinoIcons.search,
+                      color: Colors.black,
+                    ),
+                    autocorrect: false,
+                    onChanged: (value) => setState(() => _query = value),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 150,
+                      child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text("Distance",
+                              style: TextStyle(color: CupertinoColors.black)),
+                          color: Colors.blue[50],
+                          onPressed: () {
+                            print("Search filter button pressed");
+                          }),
+                    ),
+                    SizedBox(
+                      width: 50,
+                    ),
+                    Container(
+                      width: 150,
+                      child: RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text("Category",
+                              style: TextStyle(color: CupertinoColors.black)),
+                          color: Colors.grey[300],
+                          onPressed: () {
+                            print("Sort filter button pressed");
+                          }),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                FutureBuilder<List<Store>>(
+                    future: databaseHelper.getStores(_query),
+                    initialData: List(),
+                    builder: (context, snapshot) {
+                      return snapshot.hasData
+                          ? Expanded(
+                              child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: snapshot.data.length,
+                                  itemBuilder: (_, int position) {
+                                    final store = snapshot.data[position];
+                                    return StoreCard(store);
+                                  }),
+                            )
+                          : Center(child: CircularProgressIndicator());
+                    })
               ],
             ),
-          )
-          ),
-      )
-    );
+          )),
+        ));
   }
 }
-
 
 class StoreCard extends StatelessWidget {
   Store _store;
   StoreCard(this._store);
-
+  Image _icon;
   
   @override
   Widget build(BuildContext context) {
-    return Card(
-      
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Row(children: <Widget>[
-            Expanded(
-              child: ListTile(
-                title: Text(_store.merchantName, 
-                style: TextStyle(fontWeight: FontWeight.bold)),
-                subtitle: Text(_store.storeName),
-                trailing: Icon(Icons.store),
-                onTap: () {
-                  
-                  Navigator.push(context,
-                CupertinoPageRoute(builder: (context) => StoreDetails(_store)));
-                }
-              ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+      child: Card(
+        color: Colors.grey.shade200,
+          child: Column(
+            mainAxisSize: MainAxisSize.min, 
+            children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: ListTile(
+                    title: Text(_store.merchantName,
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    subtitle: Text(_store.storeName),
+                    leading: SizedBox(
+                      height: 60,
+                      width: 60,
+                      child: _store.logoURL != null ? Image.network(_store.logoURL) : Container(),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => StoreDetails(_store)));
+                  }),
             ),
-          ],)
-          ,
-        
-      ] 
-      )
+          ],
+        ),
+      ])),
     );
   }
 }

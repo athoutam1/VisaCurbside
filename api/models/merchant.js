@@ -16,7 +16,8 @@ exports.Store = class Store {
     storeName,
     description,
     location,
-    imageURL
+    imageURL,
+    logoURL
   ) {
     this.merchantID = merchantID;
     this.merchantName = merchantName;
@@ -25,6 +26,7 @@ exports.Store = class Store {
     this.description = description;
     this.location = location;
     this.imageURL = imageURL;
+    this.logoURL = logoURL;
   }
 };
 
@@ -35,6 +37,7 @@ exports.ItemPreview = class ItemPreview {
     this.price = price;
     this.description = description;
     this.imageURL = imageURL;
+    this.logoURL
   }
 };
 

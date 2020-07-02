@@ -35,11 +35,13 @@ const promisePool = pool.promise();
         description MEDIUMTEXT NOT NULL,
         location MEDIUMTEXT NOT NULL,
         imageURL MEDIUMTEXT,
+        logoURL MEDIUMTEXT,
         openTime TIME,
         closeTime TIME,
         parkingDetails MEDIUMTEXT
       );
     `);
+
     await sql.query(`
       INSERT INTO Stores(id, name, merchantID, merchantName, description, location, openTime, closeTime, parkingDetails, imageURL) 
       VALUES(1, "Publix in Tampa", "asd87870dd", "Publix", "this store sells food", "123 Publix Tampa Dr, USA", "08:00", "21:30", "There is a parking garage behind the store. The 2nd floor is for customer use with a 30 minute free parking limit", "https://media2.fdncms.com/orlando/imager/u/original/27243881/publix-1000-b.jpg");
@@ -48,6 +50,14 @@ const promisePool = pool.promise();
       INSERT INTO Stores(id, name, merchantID, merchantName, description, location, imageURL) 
       VALUES(2, "Target Atlantic Station", "SID1", "Target", "food and home stuff", "Atlantic Station Dr, Atlanta, GA", "https://media2.fdncms.com/orlando/imager/u/original/27243881/publix-1000-b.jpg");
     `);
+    await sql.query(`
+    INSERT INTO Stores(id, name, merchantID, merchantName, description, location, openTime, closeTime, parkingDetails, imageURL, logoURL) 
+    VALUES(3, "Uncle Ray's Hardware Store", "0001", "Uncle Ray's Hardware Store", "Corner hardware store", "450 State st, Atlanta, GA", "08:00", "21:30", "There is parking behind the store", "https://media2.fdncms.com/orlando/imager/u/original/27243881/publix-1000-b.jpg", "https://firebasestorage.googleapis.com/v0/b/visa-curbside.appspot.com/o/logos%2FhardwareStore.png?alt=media&token=a7492029-8ad0-4158-bbd9-38147092a68b");
+  `);
+  await sql.query(`
+    INSERT INTO Stores(id, name, merchantID, merchantName, description, location, openTime, closeTime, parkingDetails, imageURL, logoURL) 
+    VALUES(4, "Bloom Flower Store", "0002", "Bloom Flower Store", "Traditional flower arrangements", "120 Hemphill Av, Atlanta, GA", "08:00", "21:30", "There is parking behind the store", "https://media2.fdncms.com/orlando/imager/u/original/27243881/publix-1000-b.jpg", "https://firebasestorage.googleapis.com/v0/b/visa-curbside.appspot.com/o/logos%2FflowerStore.png?alt=media&token=8692b73b-50f7-4c2b-a8c6-7e5100006009");
+  `);
     await sql.query(`
       CREATE TABLE Items(
         id INT PRIMARY KEY AUTO_INCREMENT,
@@ -89,6 +99,8 @@ const promisePool = pool.promise();
     await sql.query(`
     INSERT INTO Items(name, price, description, imageURL, storeID) VALUE("Gum", 0.99, "Chewing Gum", "https://miro.medium.com/max/1024/1*oVqRbwsUDBgV8c6NF965gw.jpeg", 1);
     `);
+    
+    
     await sql.query(`
       CREATE TABLE Orders(
         id INT PRIMARY KEY AUTO_INCREMENT,
