@@ -25,7 +25,7 @@ class PickupOrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.green.shade200,
+      color: kLightYellow,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -147,10 +147,6 @@ class _PickupOrderState extends State<PickupOrder> {
                       child: Text("I am Here",
                           style: TextStyle(color: Colors.white)),
                       onPressed: () async {
-                        Navigator.push(
-                            context,
-                            CupertinoPageRoute(
-                                builder: (context) => MapPage()));
                         var headers = {'Content-Type': 'application/json'};
                         String uri = 'http://localhost:3005/order/here';
                         dynamic data = {
@@ -162,8 +158,7 @@ class _PickupOrderState extends State<PickupOrder> {
                             headers: headers, body: jsonEncode(data));
                         print("I am here sent");
                         print('status code:  ${res.statusCode}');
-                        print(widget._order.isPending);
-                        print(widget._order.isReadyForPickup);
+                        _showIAmHereAlertDiago(context);
                       },
                     ),
                   ),
@@ -195,6 +190,29 @@ class _PickupOrderState extends State<PickupOrder> {
             ),
           ),
         ));
+  }
+  void _showIAmHereAlertDiago(BuildContext context) {
+    showDialog(
+      barrierDismissible: true,
+      context: context, 
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            CupertinoAlertDialog(title: Text("Sending Your Coordinates"),),
+            LinearProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(kVisaBlue),
+              backgroundColor: kVisaGold,
+            )
+          ],
+        ),
+      )
+      );
+
+      Future.delayed(Duration(seconds: 2), () {
+        Navigator.pop(context);
+      }
+      );
   }
 }
 

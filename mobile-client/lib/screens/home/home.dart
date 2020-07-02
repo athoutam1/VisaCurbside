@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:visa_curbside/screens/settings/settings.dart';
+import 'package:visa_curbside/shared/constants.dart';
 
 import '../search/search.dart';
 import '../order/order_page.dart';
@@ -9,7 +10,9 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     
     return CupertinoTabScaffold(
+      
       tabBar: CupertinoTabBar(
+        activeColor: kVisaGold,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(CupertinoIcons.search),

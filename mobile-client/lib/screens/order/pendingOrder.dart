@@ -48,7 +48,8 @@ class PendingOrder extends StatefulWidget {
   Order _order;
   Store _store;
   PendingOrder(this._order, this._store);
-
+  bool _payNowInvalidTrigger = false;
+  
   List<Item> _items;
   @override
   _PendingOrderState createState() => _PendingOrderState();
@@ -57,8 +58,11 @@ class PendingOrder extends StatefulWidget {
 DatabaseHelper databaseHelper = new DatabaseHelper();
 
 class _PendingOrderState extends State<PendingOrder> {
+  
   @override
   Widget build(BuildContext context) {
+    bool _canPayNow = widget._order.isPending == 1 && widget._order.isReadyForPickup == 1;
+    
     return CupertinoPageScaffold(
         navigationBar: CupertinoNavigationBar(
           middle: Text("Order: " + widget._order.id.toString()),
@@ -332,24 +336,33 @@ class _PendingOrderState extends State<PendingOrder> {
                       ),
                     ),
                   ),
+                  widget._payNowInvalidTrigger ? 
+                   Text("Store Must Approve Your Order First!", style: TextStyle(color: Colors.red),)
+                   : Text(""),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
                       width: 300,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(Radius.circular(200)),
-                        color: kVisaBlue,
+                        color:  _canPayNow ? kVisaBlue : Colors.grey
                       ),
                       child: CupertinoButton(
                         child: Text("Pay Now",
                             style: TextStyle(color: Colors.white)),
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) =>
-                                      WebView(widget._order, widget._items)));
-                        },
+                          setState(() {
+                               widget._payNowInvalidTrigger = true;
+                            });
+                          if (_canPayNow) { 
+                            Navigator.push(
+                                context,
+                                CupertinoPageRoute(
+                                    builder: (context) =>
+                                        WebView(widget._order, widget._items)));
+                          } 
+                        }
+                        
                       ),
                     ),
                   ),
