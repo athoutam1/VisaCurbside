@@ -1,0 +1,12 @@
+${PODS_ROOT}/Target Support Files/Pods-ar-demo/Pods-ar-demo-frameworks.sh
+${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework
+${BUILT_PRODUCTS_DIR}/AssetImportKit/AssetImportKit.framework
+${BUILT_PRODUCTS_DIR}/Assimp/Assimp.framework
+${BUILT_PRODUCTS_DIR}/Bolts-Swift/BoltsSwift.framework
+${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework
+${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework
+${PODS_ROOT}/ConfigWiseSDK/ConfigWiseSDK.framework
+${BUILT_PRODUCTS_DIR}/Parse/Parse.framework
+${BUILT_PRODUCTS_DIR}/ParseLiveQuery/ParseLiveQuery.framework
+${BUILT_PRODUCTS_DIR}/Starscream/Starscream.framework
+${BUILT_PRODUCTS_DIR}/SwiftTryCatch/SwiftTryCatch.framework

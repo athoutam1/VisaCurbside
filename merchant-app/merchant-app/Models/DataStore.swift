@@ -20,7 +20,7 @@ class DataStore: ObservableObject {
     @Published var store: Store?
     @Published var orders: [Order] = []
     
-    @Published var proxy = "https://33f9240848dd.ngrok.io"
+    @Published var proxy = "https://6b12b85c7dfa.ngrok.io"
     
     // Google maps API Key AIzaSyC1bpFx82bEj8dzGExzq9d253vz1CkQTfw
     
