@@ -1,0 +1,6 @@
+framework module AssetImportKit {
+  umbrella header "AssetImportKit-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -9,20 +9,28 @@
 import SwiftUI
 import MapKit
 import Alamofire
+import GoogleMaps
 
 struct DeliveryView: View {
     @EnvironmentObject var dataStore: DataStore
     @Environment(\.presentationMode) var mode: Binding<PresentationMode>
-//    @State var manager = CLLocationManager()
+    
     @State var alert = false
     @State var order: Order
     
     var body: some View {
         VStack {
-            MapView()
+            if self.order.coordinates != nil {
+                GoogleMapsView(latitude: Double(self.order.coordinates!.split(separator: ",")[0].trimmingCharacters(in: .whitespacesAndNewlines))!, longitude: Double(self.order.coordinates!.split(separator: ",")[1].trimmingCharacters(in: .whitespacesAndNewlines))!, order: self.order)
                 .frame(maxHeight: UIScreen.main.bounds.height * 0.7)
                 .cornerRadius(20)
                 .padding()
+            } else {
+                GoogleMapsView(order: self.order)
+                .frame(maxHeight: UIScreen.main.bounds.height * 0.7)
+                .cornerRadius(20)
+                .padding()
+            }
             Spacer()
             Spacer()
             
@@ -43,17 +51,17 @@ struct DeliveryView: View {
                         }
                     }
                 }) {
-                    Text("Delivered")
+                    Text("Mark as Delivered")
                     .padding(.vertical, 15)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .foregroundColor(.white)
+                    .background(
+                        RoundedRectangle(cornerRadius: 25, style: .continuous)
+                        .foregroundColor(Color("Dark Blue"))
+                    )
+                    .padding(.vertical, 15)
+                    .frame(maxWidth: UIScreen.main.bounds.width * 0.75)
                 }
-                .background(
-                    RoundedRectangle(cornerRadius: 13, style: .continuous)
-                    .foregroundColor(.blue)
-                )
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.horizontal)
             }
             
             Spacer()
@@ -63,17 +71,17 @@ struct DeliveryView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .foregroundColor(.white)
                 .background(
-                    RoundedRectangle(cornerRadius: 13, style: .continuous)
-                    .foregroundColor(.blue)
+                    RoundedRectangle(cornerRadius: 25, style: .continuous)
+                    .foregroundColor(Color("Dark Blue"))
                 )
-                .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.horizontal)
+                .padding(.vertical, 15)
+                .frame(maxWidth: UIScreen.main.bounds.width * 0.75)
             }
             
-            
+            Spacer()
             Spacer()
         }
-    .navigationBarTitle("Order Pickup")
+        .navigationBarTitle("Order Pickup")
         .onDisappear {
             let url = "\(self.dataStore.proxy)/merchantApp/getOrders"
             let parameters: Parameters = [
@@ -92,28 +100,36 @@ struct DeliveryView: View {
     }
 }
 
-struct MapView: UIViewRepresentable {
 
-
-    func makeUIView(context: Context) -> MKMapView {
-        MKMapView(frame: .zero)
-    }
-
-    func updateUIView(_ view: MKMapView, context: Context) {
-        view.showsUserLocation = true
-        let locationManager = CLLocationManager()
-        let status = CLLocationManager.authorizationStatus()
-        locationManager.requestAlwaysAuthorization()
-        locationManager.requestWhenInUseAuthorization()
-
-        if status == .authorizedAlways || status == .authorizedWhenInUse {
-            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
-            locationManager.startUpdatingLocation()
-            let location: CLLocationCoordinate2D = locationManager.location!.coordinate
-            let span = MKCoordinateSpan(latitudeDelta: 0.009, longitudeDelta: 0.009)
-            let region = MKCoordinateRegion(center: location, span: span)
-            view.setRegion(region, animated: true)
+struct GoogleMapsView: UIViewRepresentable {
+    // 1
+    @ObservedObject var locationManager = LocationManager()
+    @State var latitude: Double?
+    @State var longitude: Double?
+    @State var order: Order
+    private let zoom: Float = 15.0
+    
+    // 2
+    func makeUIView(context: Self.Context) -> GMSMapView {
+        let camera = GMSCameraPosition.camera(withLatitude: locationManager.latitude, longitude: locationManager.longitude, zoom: zoom)
+        let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
+        mapView.isMyLocationEnabled = true
+        
+        if let lat = latitude {
+            let marker = GMSMarker()
+            marker.position = CLLocationCoordinate2D(latitude: lat, longitude: self.longitude!)
+            marker.title = self.order.shopperName
+            marker.snippet = "Order #\(self.order.id)"
+            marker.map = mapView
         }
+        
+        return mapView
     }
-
+    
+    // 3
+    func updateUIView(_ mapView: GMSMapView, context: Context) {
+        //        let camera = GMSCameraPosition.camera(withLatitude: locationManager.latitude, longitude: locationManager.longitude, zoom: zoom)
+        //        mapView.camera = camera
+        mapView.animate(toLocation: CLLocationCoordinate2D(latitude: locationManager.latitude, longitude: locationManager.longitude))
+    }
 }

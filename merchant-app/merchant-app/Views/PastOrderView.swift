@@ -15,14 +15,26 @@ struct PastOrderView: View {
     @State var orderItems: [Item] = []
     
     var body: some View {
-        VStack {
-            List {
-                ForEach(self.orderItems) { item in
-                    ItemRow(item: item)
+        ScrollView {
+            VStack {
+                
+                // This prevents that weird shrinking gray card bug
+                HStack {
+                    Spacer()
                 }
+                
+                VStack(spacing: 20) {
+                    ForEach(self.orderItems, id: \.self) { item in
+                        ItemCard(item: item, editable: false, showSheet: .constant(false), editingItem: .constant(nil), awaitingPayment: .constant(false))
+                    }
+                    
+                }
+                
+                Spacer()
             }
+            .padding(.horizontal, 30)
         }
-        .navigationBarTitle("Order #\(self.order.id)")
+        .navigationBarTitle("Order #\(self.order.id)", displayMode: .large)
         .onAppear {
             let url = "\(self.dataStore.proxy)/merchantApp/getOrderItems"
             let parameters: Parameters = [
@@ -32,6 +44,8 @@ struct PastOrderView: View {
             AF.request(url, method: .get, parameters: parameters).responseDecodable(of: [Item].self){ response in
                 switch response.result {
                 case .success(let response):
+                    print("HERE")
+                    print(response)
                     self.orderItems = response
                 case .failure(let err):
                     print(err)

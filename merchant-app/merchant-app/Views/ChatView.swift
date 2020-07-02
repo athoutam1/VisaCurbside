@@ -24,16 +24,17 @@ struct ChatView: View {
         ZStack {
             
             VStack {
+                
                 List {
                     ForEach(self.messages, id: \.self) { message in
                         VStack {
-                            if message.messenger == "store" {
+                            if message.messenger != "user" {
                                 HStack(alignment: .bottom) {
                                     Spacer()
                                     Text(message.message)
                                         .padding()
                                         .foregroundColor(.white)
-                                        .background(Color.blue)
+                                        .background(message.messenger == "veronica" ? Color(red: 229/255, green: 229/255, blue: 229/255) : Color(red: 154/255, green: 194/255, blue: 241/255))
                                         .clipShape(Bubble(chat: true))
                                     Image(message.messenger)
                                         .resizable()
@@ -51,13 +52,12 @@ struct ChatView: View {
                                     Text(message.message)
                                         .padding()
                                         .foregroundColor(.white)
-                                        .background(Color.blue)
+                                        .background(Color(red: 237/255, green: 197/255, blue: 136/255))
                                         .clipShape(Bubble(chat: false))
                                     Spacer()
                                 }
                             }
                         }
-                        
                     }
                 }
 //                .animation(nil)
@@ -87,7 +87,6 @@ struct ChatView: View {
                         AF.request(url, method: .get, parameters: parameters).response { response in
                             switch response.result {
                             case .success(let response):
-                                print(response)
                                 self.typingMessage = ""
                             case .failure(let err):
                                 print(err)
@@ -113,6 +112,7 @@ struct ChatView: View {
                 hideKeyboard()
             }
             .onAppear {
+                UITableView.appearance().separatorStyle = .none
                 
                 let docRef = self.dataStore.db.collection("chats").document(self.chatID)
                     
@@ -151,10 +151,10 @@ struct ChatView: View {
                         print("Document doesn't exist")
                     }
                 }
-
                 
-                
-                
+        }
+        .onDisappear {
+            UITableView.appearance().separatorStyle = .singleLine
         }
     }
 }

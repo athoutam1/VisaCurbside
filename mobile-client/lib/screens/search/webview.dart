@@ -39,7 +39,7 @@ class _WebViewState extends State<WebView> {
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
       child: InAppWebView(
-        initialUrl: "https://33f9240848dd.ngrok.io",
+        initialUrl: "https://de251bd1a771.ngrok.io",
         initialHeaders: {},
         initialOptions: InAppWebViewGroupOptions(
           crossPlatform: InAppWebViewOptions(
@@ -52,12 +52,11 @@ class _WebViewState extends State<WebView> {
           controller.addJavaScriptHandler(
               handlerName: "success",
               callback: (args) async {
-
                 var headers = {'Content-Type': 'application/json'};
                 String uri = 'http://localhost:3005/merchant/changeOrderStatus';
                 dynamic data = {
                   "orderID": widget._order.id,
-                  "isPending" : false, 
+                  "isPending": false,
                   "isReadyForPickup": true,
                 };
 
@@ -67,10 +66,8 @@ class _WebViewState extends State<WebView> {
                 print('status code:  ${res.statusCode}');
                 print(widget._order.isPending);
                 print(widget._order.isReadyForPickup);
-                showOrderPaidForAlertDialog(context, widget._order, widget._itemsInCart);
-
-               
-
+                showOrderPaidForAlertDialog(
+                    context, widget._order, widget._itemsInCart);
               });
         },
         onLoadStart: (InAppWebViewController controller, String url) {
@@ -93,7 +90,8 @@ class _WebViewState extends State<WebView> {
   }
 }
 
-void showOrderPaidForAlertDialog(BuildContext context, Order _order, List<Item> _itemsInCart) {
+void showOrderPaidForAlertDialog(
+    BuildContext context, Order _order, List<Item> _itemsInCart) {
   showDialog(
       context: context,
       child: CupertinoAlertDialog(
@@ -106,7 +104,6 @@ void showOrderPaidForAlertDialog(BuildContext context, Order _order, List<Item> 
           CupertinoButton(
             child: Text("Thanks!"),
             onPressed: () async {
-
               Navigator.of(context, rootNavigator: true).pop();
               Navigator.of(context).popUntil((route) => route.isFirst);
             },
@@ -123,7 +120,7 @@ double getTotal(List<Item> itemsInCart) {
   itemsInCart.forEach((element) {
     total += element.price;
   });
-  
+
   double mod = pow(10.0, 2);
   return ((total * mod).round().toDouble() / mod);
 }

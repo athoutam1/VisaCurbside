@@ -124,6 +124,33 @@ router.post("/getItemsForStore", async (req, res) => {
   }
 });
 
+router.post("/removeItemFromOrder", async (req, res) => {
+  const { orderID, itemID } = req.body;
+  try {
+    await sql.query(`
+      DELETE FROM OrderedItems
+      WHERE itemID = ${itemID} AND orderID = ${orderID};
+    `);
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+router.post("/addItemToOrder", async (req, res) => {
+  const { orderID, itemID, shopperID } = req.body;
+  try {
+    await sql.query(`
+      INSERT INTO OrderedItems(itemID, orderID, shopperID) VALUES(${itemID}, ${orderID}, "${shopperID}");
+    `);
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
 router.get("/getOrders", async (req, res) => {
   const { storeID } = req.query;
   try {
@@ -149,7 +176,7 @@ router.get("/getOrderItems", async (req, res) => {
     let [response, responseFields] = await sql.query(`
       SELECT Items.id, name, description, price, imageURL FROM OrderedItems
       JOIN Items
-      ON Items.id = OrderedItems.id
+      ON Items.id = OrderedItems.itemID
       WHERE orderID = ${orderID};
     `);
     res.json(response);

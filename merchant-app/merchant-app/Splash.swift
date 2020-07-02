@@ -20,7 +20,11 @@ struct Splash: View {
                 ContentView().environmentObject(dataStore)
 //                DeliveryView().environmentObject(dataStore)
             } else {
-                Text("Loading ...")
+                Image("loading")
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .edgesIgnoringSafeArea(.all)
+                .frame(maxHeight: .infinity)
             }
         }
         .onAppear {

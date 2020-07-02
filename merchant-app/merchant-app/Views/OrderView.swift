@@ -16,64 +16,84 @@ struct OrderView: View {
     
     var body: some View {
             
-            VStack {
+        ScrollView {
+            VStack(spacing: 35) {
                 
-                List {
-                    Section(header:
-                        ListHeader(text: "Pending Review", icon: "stopwatch")
-                            .font(.title)
-                    ) {
-                        ForEach(self.dataStore.orders.filter({ (order) -> Bool in
-                            (order.isPending && !order.isReadyForPickup) || (order.isPending && order.isReadyForPickup)
-                        }), id: \.self) { order in
-                            NavigationLink(destination: OrderDetailsView(order: order, awaitingPayment: (order.isPending && order.isReadyForPickup)).environmentObject(self.dataStore)) {
-                                OrderRow(order: order)
-                            }
+                Text("Pending Review")
+                .font(.system(size: 25))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, 10)
+                
+                VStack(spacing: 18) {
+                    ForEach(self.dataStore.orders.reversed().filter({ (order) -> Bool in
+                        (order.isPending && !order.isReadyForPickup) || (order.isPending && order.isReadyForPickup)
+                    }), id: \.self) { order in
+                        NavigationLink(destination: OrderDetailsView(order: order, awaitingPayment: (order.isPending && order.isReadyForPickup)).environmentObject(self.dataStore)) {
+                            OrderRow(order: order)
                         }
                     }
-                    
-                    Section(header:
-                        ListHeader(text: "Awaiting Pickup", icon: "car")
-                    ) {
-                        ForEach(self.dataStore.orders.filter({ (order) -> Bool in
-                            !order.isPending && order.isReadyForPickup
-                        }), id: \.self) { order in
-                            NavigationLink(destination: DeliveryView(order: order).environmentObject(self.dataStore)) {
-                                OrderRow(order: order)
-                            }
-                        }
-                    }
-                    Section(header:
-                        ListHeader(text: "Past Orders", icon: "clock")
-                    ) {
-                        ForEach(self.dataStore.orders.filter({ (order) -> Bool in
-                            !order.isPending && !order.isReadyForPickup
-                        }), id: \.self) { order in
-                            NavigationLink(destination: PastOrderView(order: order).environmentObject(self.dataStore)) {
-                                OrderRow(order: order)
-                            }
-                        }
-                    }
-                    
                 }
+                .padding(.leading, 15)
+                
+                Text("Awaiting Pickup")
+                .font(.system(size: 25))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, 10)
+                
+                VStack(spacing: 18) {
+                    ForEach(self.dataStore.orders.reversed().filter({ (order) -> Bool in
+                    !order.isPending && order.isReadyForPickup
+                }), id: \.self) { order in
+                    NavigationLink(destination: DeliveryView(order: order).environmentObject(self.dataStore)) {
+                        OrderRow(order: order)
+                    }
+                }
+                }
+                .padding(.leading, 15)
+                
+                Text("Past Orders")
+                .font(.system(size: 25))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.bottom, 10)
+                
+                VStack(spacing: 18) {
+                    ForEach(self.dataStore.orders.reversed().filter({ (order) -> Bool in
+                    !order.isPending && !order.isReadyForPickup
+                }), id: \.self) { order in
+                    NavigationLink(destination: PastOrderView(order: order).environmentObject(self.dataStore)) {
+                        OrderRow(order: order)
+                    }
+                }
+                }
+                .padding(.leading, 15)
+                
+                Spacer()
+                
             }
-            .navigationBarTitle("Orders", displayMode: .large)
+            .padding(.horizontal, 30)
+            .padding(.top, 15)
             .onAppear {
-                let url = "\(self.dataStore.proxy)/merchantApp/getOrders"
-                let parameters: Parameters = [
-                    "storeID": self.dataStore.store!.storeID
-                ]
-                
-                AF.request(url, method: .get, parameters: parameters).responseDecodable(of: [Order].self){ response in
-                    switch response.result {
-                    case .success(let response):
-                        print(response)
-                        self.dataStore.orders = response
-                    case .failure(let err):
-                        print(err)
+                Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { timer in
+                    let url = "\(self.dataStore.proxy)/merchantApp/getOrders"
+                    let parameters: Parameters = [
+                        "storeID": self.dataStore.store!.storeID
+                    ]
+                    
+                    AF.request(url, method: .get, parameters: parameters).responseDecodable(of: [Order].self){ response in
+                        switch response.result {
+                        case .success(let response):
+                            if self.dataStore.orders != response {
+                               self.dataStore.orders = response
+                            }
+                        case .failure(let err):
+                            print(err)
+                        }
                     }
                 }
             }
+        }
+            .navigationBarTitle("Orders", displayMode: .large)
+            
     }
 }
 
@@ -93,20 +113,33 @@ struct ListHeader: View {
 struct OrderRow: View {
     @State var order: Order
     var body: some View {
-        VStack(spacing: 6) {
-            HStack(alignment: .center, spacing: 12) {
-                Text("Order ID: \(self.order.id)")
-                .font(.system(size: 10))
-                .foregroundColor(.gray)
+        HStack {
+            VStack(spacing: 6) {
                 Text(self.order.shopperName)
-                .font(.system(size: 18))
-                Spacer()
+                    .font(.system(size: 18))
+                    .bold()
+                     .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("\(convertToDate(oldDate: self.order.time)?.localizedDescription ?? "")")
+                    .font(.system(size: 15))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("Order #: \(self.order.id)")
+                    .font(.system(size: 12))
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
-            Text("\(convertToDate(oldDate: self.order.time)?.localizedDescription ?? "")")
-            .font(.system(size: 15))
-            .frame(maxWidth: .infinity, alignment: .leading)
+            Spacer()
+            Image(systemName: "message")
+            .foregroundColor(Color("Dark Blue"))
         }
-        .padding(.vertical, 10)
+        .foregroundColor(.black)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 20)
+        .padding(.horizontal)
+        .background(Color(red: 248/255, green: 248/255, blue: 248/255))
+        .cornerRadius(10)
+        .clipped()
+        .shadow(radius: 5)
     }
 }
 
