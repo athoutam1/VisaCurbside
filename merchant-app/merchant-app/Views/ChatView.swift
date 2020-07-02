@@ -34,7 +34,7 @@ struct ChatView: View {
                                     Text(message.message)
                                         .padding()
                                         .foregroundColor(.white)
-                                        .background(message.messenger == "veronica" ? Color(red: 229/255, green: 229/255, blue: 229/255) : Color(red: 154/255, green: 194/255, blue: 241/255))
+                                        .background(message.messenger == "veronica" ? Color(red: 229/255, green: 229/255, blue: 229/255) : Color(red: 184/255, green: 217/255, blue: 255/255))
                                         .clipShape(Bubble(chat: true))
                                     Image(message.messenger)
                                         .resizable()
@@ -52,7 +52,7 @@ struct ChatView: View {
                                     Text(message.message)
                                         .padding()
                                         .foregroundColor(.white)
-                                        .background(Color(red: 237/255, green: 197/255, blue: 136/255))
+                                        .background(Color(red: 255/255, green: 212/255, blue: 147/255))
                                         .clipShape(Bubble(chat: false))
                                     Spacer()
                                 }
